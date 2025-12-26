@@ -63,31 +63,52 @@ export default function HomePage() {
 
       <Section
         title="Guias essenciais"
-        desc="Conteúdo evergreen para consultar sempre."
+        desc="Comece pelo conteúdo que já está publicado."
         items={[
-          { href: "/guias/guia-reciclagem-no-brasil", label: "Guia da Reciclagem no Brasil" },
-          { href: "/reciclagem/o-que-pode-ser-reciclado", label: "O que pode e o que não pode ser reciclado" },
-          { href: "/reciclagem/simbolos-da-reciclagem", label: "Símbolos da reciclagem" },
-          { href: "/reciclagem/logistica-reversa", label: "Logística reversa explicada" },
+          {
+            href: "/reciclagem/o-que-pode-ser-reciclado",
+            label: "O que pode e o que não pode ser reciclado",
+            note: "Lista prática + dúvidas comuns respondidas.",
+          },
+          {
+            href: "/reciclagem",
+            label: "Ver a categoria Reciclagem",
+            note: "Acesse todos os artigos publicados.",
+          },
         ]}
       />
 
       <Section
         title="Reciclagem na prática"
-        desc="Comece pelo básico, de forma simples."
+        desc="Atalhos úteis para navegação."
         items={[
-          { href: "/reciclagem", label: "Ver tudo em Reciclagem", note: "Tipos de resíduos, coleta seletiva e descarte correto." },
-          { href: "/reciclagem/eletronicos/onde-descartar", label: "Onde descartar lixo eletrônico" },
+          {
+            href: "/reciclagem",
+            label: "Ver tudo em Reciclagem",
+            note: "Artigos e guias práticos.",
+          },
+          {
+            href: "/guias",
+            label: "Ver todos os Guias",
+            note: "Evergreen para consultar sempre.",
+          },
         ]}
       />
 
       <Section
         title="Sustentabilidade & ESG"
-        desc="Conceitos e aplicação no dia a dia e nas empresas."
+        desc="Esta seção será preenchida após os próximos evergreen."
         items={[
-          { href: "/sustentabilidade", label: "Ver tudo em Sustentabilidade" },
-          { href: "/sustentabilidade/economia-circular", label: "Economia circular" },
-          { href: "/sustentabilidade/esg", label: "ESG na prática" },
+          {
+            href: "/sustentabilidade",
+            label: "Ver tudo em Sustentabilidade",
+            note: "Conceitos e aplicação no dia a dia e nas empresas.",
+          },
+          {
+            href: "/blog",
+            label: "Ir para o Blog",
+            note: "Conteúdo complementar e atualizações.",
+          },
         ]}
       />
     </main>
