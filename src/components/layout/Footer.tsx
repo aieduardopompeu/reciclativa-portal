@@ -1,11 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-white">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
-        <div className="space-y-2">
-          <div className="font-semibold">Reciclativa</div>
+        <div className="space-y-3">
+          <Image src="/logo.png" alt="Reciclativa" width={140} height={36} />
           <p className="text-sm text-slate-600">
             Reciclagem, sustentabilidade e economia circular no Brasil.
           </p>
