@@ -128,43 +128,53 @@ export function Header() {
       </div>
 
       {/* Dropdown mobile (no lugar dos chips) */}
-      {open ? (
-        <div className="md:hidden px-4 pb-4">
-          <div
-            ref={panelRef}
-            className="rounded-xl border border-emerald-200/80 bg-emerald-50/90 shadow-sm backdrop-blur"
-          >
-            <div className="p-2">
-              {nav.map((i) => {
-                const active = pathname === i.href;
-                return (
-                  <Link
-                    key={i.href}
-                    href={i.href}
-                    className={cn(
-                      "block rounded-lg px-3 py-2 text-sm transition",
-                      active
-                        ? "bg-white/70 text-emerald-900"
-                        : "text-slate-800 hover:bg-white/60"
-                    )}
-                  >
-                    {i.label}
-                  </Link>
-                );
-              })}
-            </div>
+{open ? (
+  <>
+    {/* Overlay */}
+    <div
+      className="fixed inset-0 z-40 bg-black/20 md:hidden"
+      aria-hidden
+      onClick={() => setOpen(false)}
+    />
 
-            <div className="border-t border-emerald-200/70 p-2">
+    {/* Painel */}
+    <div className="md:hidden">
+      <div
+        ref={panelRef}
+        className="fixed left-4 right-4 top-[72px] z-50 rounded-2xl border border-emerald-200/80 bg-white/95 shadow-lg backdrop-blur"
+      >
+        <div className="p-2">
+          {nav.map((i) => {
+            const active = pathname === i.href;
+            return (
               <Link
-                href="/guias"
-                className="block rounded-lg bg-emerald-600 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-emerald-500"
+                key={i.href}
+                href={i.href}
+                className={cn(
+                  "block rounded-xl px-3 py-2 text-sm transition",
+                  active
+                    ? "bg-emerald-50 text-emerald-900"
+                    : "text-slate-800 hover:bg-slate-50"
+                )}
               >
-                Ver guias
+                {i.label}
               </Link>
-            </div>
-          </div>
+            );
+          })}
         </div>
-      ) : null}
+
+        <div className="border-t border-slate-200 p-2">
+          <Link
+            href="/guias"
+            className="block rounded-xl bg-emerald-600 px-3 py-2 text-center text-sm font-semibold text-white transition hover:bg-emerald-500"
+          >
+            Ver guias
+          </Link>
+        </div>
+      </div>
+    </div>
+  </>
+) : null}
     </header>
   );
 }
