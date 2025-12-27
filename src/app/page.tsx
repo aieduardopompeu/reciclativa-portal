@@ -37,11 +37,19 @@ function Section({
 export default function HomePage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
-      <div className="rounded-2xl border border-slate-200 bg-white p-8">
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 md:p-12">
+        <div className="absolute inset-0 -z-10">
+          <img
+            src="/hero.webp"
+            alt="Reciclagem e sustentabilidade"
+            className="h-full w-full object-cover opacity-10"
+          />
+        </div>
+
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
           Reciclagem, Sustentabilidade e Economia Circular no Brasil
         </h1>
-        <p className="mt-3 max-w-2xl text-slate-600">
+        <p className="mt-3 max-w-2xl text-slate-700">
           Guias práticos, educação ambiental e soluções para pessoas e empresas.
         </p>
 
