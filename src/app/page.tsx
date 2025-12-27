@@ -1,513 +1,477 @@
-// src/app/page.tsx
-import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
-export const metadata: Metadata = {
-  title: "Reciclativa | Reciclagem, Sustentabilidade e Meio Ambiente no Brasil",
-  description:
-    "Conteúdos confiáveis sobre reciclagem, descarte correto de resíduos, coleta seletiva e práticas sustentáveis para pessoas, escolas e empresas.",
-  keywords: [
-    "reciclagem",
-    "sustentabilidade",
-    "meio ambiente",
-    "coleta seletiva",
-    "economia circular",
-    "resíduos sólidos",
-    "educação ambiental",
-    "símbolos da reciclagem",
-  ],
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: "Reciclativa | Reciclagem e Sustentabilidade no Brasil",
-    description:
-      "Aprenda a reciclar corretamente, entenda os símbolos da reciclagem e descubra boas práticas ambientais para o dia a dia.",
-    url: "/",
-    siteName: "Reciclativa",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Reciclativa | Reciclagem e Sustentabilidade",
-    description:
-      "Conteúdos confiáveis sobre reciclagem, descarte correto e sustentabilidade.",
-  },
-};
-
-type Card = {
+type Pillar = {
   title: string;
-  description: string;
+  desc: string;
   href: string;
-  icon: string;
+  badge: string;
 };
 
-const CATEGORIES: Card[] = [
+type Guide = {
+  title: string;
+  desc: string;
+  href: string;
+  tag: string;
+};
+
+type Post = {
+  title: string;
+  desc: string;
+  href: string;
+  meta: string;
+};
+
+const PILLARS: Pillar[] = [
   {
     title: "Reciclagem",
-    description: "Aprenda como separar e reciclar corretamente.",
+    desc: "Aprenda o que pode reciclar, como separar e onde descartar corretamente.",
     href: "/reciclagem",
-    icon: "♻️",
+    badge: "Pilar",
   },
   {
     title: "Sustentabilidade",
-    description: "Hábitos práticos e consumo consciente no dia a dia.",
+    desc: "Hábitos simples para reduzir impacto, consumo consciente e reuso no dia a dia.",
     href: "/sustentabilidade",
-    icon: "🌱",
+    badge: "Pilar",
   },
   {
-    title: "Meio Ambiente",
-    description: "Impactos, soluções e educação ambiental acessível.",
-    href: "/meio-ambiente",
-    icon: "🌎",
+    title: "Guias práticos",
+    desc: "Checklists, passo a passo e respostas rápidas para agir hoje.",
+    href: "/guias",
+    badge: "Comece aqui",
   },
   {
-    title: "Economia Circular",
-    description: "Reuso, reparo, reciclagem e modelos circulares.",
-    href: "/economia-circular",
-    icon: "🔁",
-  },
-  {
-    title: "Resíduos Sólidos",
-    description: "Tipos de resíduos e descarte correto, sem achismos.",
-    href: "/residuos-solidos",
-    icon: "🧰",
-  },
-  {
-    title: "Educação Ambiental",
-    description: "Conteúdo para escolas, famílias e projetos.",
-    href: "/educacao-ambiental",
-    icon: "📚",
+    title: "Blog",
+    desc: "Notícias, tendências e artigos para aprofundar seu conhecimento.",
+    href: "/blog",
+    badge: "Conteúdo",
   },
 ];
 
-const FEATURED: Array<Omit<Card, "icon"> & { tag?: string }> = [
+const GUIDES: Guide[] = [
   {
-    title: "O que é reciclagem e por que ela é importante",
-    description:
-      "Entenda o conceito, benefícios e como começar de forma simples.",
-    href: "/blog/o-que-e-reciclagem",
-    tag: "Pilar",
-  },
-  {
-    title: "Símbolos da reciclagem: guia completo",
-    description:
-      "O que significam (de verdade) os símbolos nas embalagens e materiais.",
-    href: "/simbolos-da-reciclagem",
+    title: "Coleta seletiva: como começar",
+    desc: "Organize em casa, entenda as categorias e evite erros comuns de separação.",
+    href: "/guias/coleta-seletiva",
     tag: "Guia",
   },
   {
-    title: "O que pode e o que não pode ser reciclado",
-    description:
-      "Lista prática por material, com dicas para evitar contaminação.",
-    href: "/blog/o-que-pode-ser-reciclado",
+    title: "Símbolos da reciclagem (o que significam)",
+    desc: "Decodifique os símbolos nas embalagens e descarte com segurança.",
+    href: "/simbolos-da-reciclagem",
     tag: "Essencial",
   },
   {
-    title: "Como funciona a coleta seletiva no Brasil",
-    description:
-      "Cores, fluxos, logística e como colaborar com eficiência.",
-    href: "/blog/coleta-seletiva-no-brasil",
-    tag: "Pilar",
+    title: "O que vai (e não vai) na reciclagem",
+    desc: "Uma lista prática para reduzir contaminação e aumentar reaproveitamento.",
+    href: "/guias/o-que-pode-reciclar",
+    tag: "Checklist",
   },
 ];
 
-const QUICK_LEARN: Array<Omit<Card, "description"> & { description: string }> = [
+const POSTS: Post[] = [
   {
-    title: "Tipos de reciclagem",
-    description: "Mecânica, química e energética — quando cada uma acontece.",
-    href: "/blog/tipos-de-reciclagem",
-    icon: "🧪",
+    title: "Como reduzir lixo na rotina (sem radicalizar)",
+    desc: "Estratégias simples para diminuir resíduos e economizar ao mesmo tempo.",
+    href: "/blog/reduzir-lixo-na-rotina",
+    meta: "Leitura: 6 min",
   },
   {
-    title: "Coleta seletiva: cores e significados",
-    description: "Guia rápido das cores e como separar sem erro.",
-    href: "/blog/cores-da-coleta-seletiva",
-    icon: "🟡",
+    title: "Economia circular: conceito e exemplos no Brasil",
+    desc: "Entenda o modelo e como empresas e cidades estão aplicando na prática.",
+    href: "/blog/economia-circular-exemplos",
+    meta: "Leitura: 7 min",
   },
   {
-    title: "Lixo eletrônico: como descartar",
-    description: "O que fazer com pilhas, baterias, celulares e cabos.",
-    href: "/blog/lixo-eletronico-descarte",
-    icon: "🔋",
+    title: "Reciclagem de plástico: erros que atrapalham tudo",
+    desc: "Os principais motivos de rejeição e como melhorar a triagem doméstica.",
+    href: "/blog/reciclagem-plastico-erros",
+    meta: "Leitura: 5 min",
   },
 ];
 
-function cn(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
-
-function Section({
-  eyebrow,
+function Card({
   title,
-  subtitle,
-  children,
-}: {
-  eyebrow?: string;
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <header className="mb-6 space-y-2">
-        {eyebrow ? (
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
-            {eyebrow}
-          </p>
-        ) : null}
-        <h2 className="text-2xl font-bold text-slate-50 sm:text-3xl">
-          {title}
-        </h2>
-        {subtitle ? (
-          <p className="max-w-3xl text-sm text-slate-300 sm:text-base">
-            {subtitle}
-          </p>
-        ) : null}
-      </header>
-      {children}
-    </section>
-  );
-}
-
-function CardLink({
-  title,
-  description,
+  desc,
   href,
-  icon,
-  tag,
+  badge,
 }: {
   title: string;
-  description: string;
+  desc: string;
   href: string;
-  icon?: string;
-  tag?: string;
+  badge?: string;
 }) {
   return (
     <Link
       href={href}
-      className={cn(
-        "group relative block rounded-2xl border border-slate-800 bg-slate-900/50 p-5",
-        "transition hover:border-slate-700 hover:bg-slate-900"
-      )}
+      className="group rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm transition hover:bg-white hover:shadow-md"
     >
-      <div className="flex items-start gap-3">
-        {icon ? (
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800 text-lg">
-            <span aria-hidden>{icon}</span>
-          </div>
-        ) : null}
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <h3 className="truncate text-base font-semibold text-slate-50 group-hover:text-white">
-              {title}
-            </h3>
-            {tag ? (
-              <span className="hidden rounded-full border border-slate-700 bg-slate-900 px-2 py-0.5 text-[11px] font-semibold text-slate-300 sm:inline">
-                {tag}
-              </span>
-            ) : null}
-          </div>
-          <p className="mt-1 line-clamp-2 text-sm text-slate-300">
-            {description}
-          </p>
-
-          <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-400">
-            <span>Ver</span>
-            <span
-              aria-hidden
-              className="transition-transform group-hover:translate-x-0.5"
-            >
-              →
-            </span>
-          </div>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-base font-semibold text-slate-950 group-hover:text-emerald-900">
+            {title}
+          </h3>
+          {badge ? (
+            <p className="mt-1 inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+              {badge}
+            </p>
+          ) : null}
         </div>
+
+        <span className="text-slate-300 transition group-hover:text-emerald-400">
+          <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M10 6l6 6-6 6-1.4-1.4L13.2 12 8.6 7.4 10 6Z"
+            />
+          </svg>
+        </span>
       </div>
+
+      <p className="mt-3 text-sm text-slate-700">{desc}</p>
     </Link>
   );
 }
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-50">
+    <main className="min-h-screen bg-white text-slate-900">
       {/* HERO */}
-      <div className="border-b border-slate-900">
-        <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-16 sm:px-6 sm:pt-20 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
-            Portal Reciclativa
+      <section className="relative overflow-hidden border-b border-slate-200">
+        {/* background image */}
+        <div className="absolute inset-0" aria-hidden>
+          <Image
+            src="/hero.webp"
+            alt=""
+            fill
+            priority
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white" />
+        </div>
+
+        <div className="relative mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
+            Reciclativa
           </p>
 
-          <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-50 sm:text-5xl">
-            Reciclagem, Sustentabilidade e Meio Ambiente no Brasil
+          <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
+            Reciclagem e sustentabilidade, sem complicação.
           </h1>
 
-          <p className="mt-4 max-w-3xl text-sm text-slate-300 sm:text-base">
-            Conteúdos confiáveis sobre reciclagem, descarte correto de resíduos e
-            práticas sustentáveis para pessoas, escolas e empresas.
+          <p className="mt-4 max-w-2xl text-base text-slate-700 sm:text-lg">
+            Guias práticos, checklists e conteúdo confiável para reduzir impacto,
+            reaproveitar recursos e tomar decisões mais conscientes.
           </p>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
-              href="/reciclagem"
-              className={cn(
-                "inline-flex items-center justify-center rounded-xl bg-emerald-500 px-5 py-3",
-                "text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
-              )}
-            >
-              Aprender a Reciclar
-            </Link>
-
-            <Link
-              href="/simbolos-da-reciclagem"
-              className={cn(
-                "inline-flex items-center justify-center rounded-xl border border-slate-800 bg-transparent px-5 py-3",
-                "text-sm font-semibold text-slate-100 transition hover:border-slate-700 hover:bg-slate-900"
-              )}
-            >
-              Símbolos da Reciclagem
-            </Link>
-          </div>
-
-          {/* micro KPIs / credibilidade leve (sem prometer coisas) */}
-          <div className="mt-10 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-slate-900 bg-slate-950 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Foco
-              </p>
-              <p className="mt-2 text-sm text-slate-200">
-                Conteúdo prático, direto ao ponto, sem “textão”.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-900 bg-slate-950 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Objetivo
-              </p>
-              <p className="mt-2 text-sm text-slate-200">
-                Ajudar você a separar, descartar e reciclar do jeito certo.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-900 bg-slate-950 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Navegação
-              </p>
-              <p className="mt-2 text-sm text-slate-200">
-                Páginas pilares e guias para encontrar rápido o que precisa.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* CATEGORIAS */}
-      <Section
-        eyebrow="Comece por aqui"
-        title="Categorias principais"
-        subtitle="Estrutura pensada para SEO e para você chegar no conteúdo certo com poucos cliques."
-      >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORIES.map((c) => (
-            <CardLink
-              key={c.href}
-              title={c.title}
-              description={c.description}
-              href={c.href}
-              icon={c.icon}
-            />
-          ))}
-        </div>
-      </Section>
-
-      {/* DESTAQUES */}
-      <Section
-        eyebrow="Conteúdo essencial"
-        title="Destaques editoriais"
-        subtitle="Artigos pilares (evergreen) para ranquear bem e ensinar de forma clara."
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          {FEATURED.map((p) => (
-            <CardLink
-              key={p.href}
-              title={p.title}
-              description={p.description}
-              href={p.href}
-              tag={p.tag}
-            />
-          ))}
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold text-slate-50">
-                Quer um caminho rápido?
-              </p>
-              <p className="mt-1 text-sm text-slate-300">
-                Vá direto para os guias e aprenda a separar resíduos sem erro.
-              </p>
-            </div>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               href="/guias"
-              className={cn(
-                "inline-flex items-center justify-center rounded-xl border border-slate-800 bg-transparent px-5 py-3",
-                "text-sm font-semibold text-slate-100 transition hover:border-slate-700 hover:bg-slate-900"
-              )}
+              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
             >
-              Ver guias completos
+              Ver guias
+            </Link>
+
+            <Link
+              href="/sustentabilidade"
+              className="rounded-xl border border-slate-300 bg-white/70 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-white"
+            >
+              Começar por Sustentabilidade
+            </Link>
+
+            <Link
+              href="/reciclagem"
+              className="rounded-xl border border-slate-300 bg-white/70 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-white"
+            >
+              Começar por Reciclagem
             </Link>
           </div>
-        </div>
-      </Section>
 
-      {/* POR QUE */}
-      <Section
-        eyebrow="Sobre"
-        title="Por que a Reciclativa existe"
-        subtitle="Autoridade se constrói com clareza, consistência e boa arquitetura de conteúdo."
-      >
-        <div className="grid gap-4 lg:grid-cols-3">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 lg:col-span-2">
-            <p className="text-sm leading-relaxed text-slate-200">
-              A Reciclativa é um portal independente dedicado à educação
-              ambiental, reciclagem e sustentabilidade. Nosso compromisso é
-              organizar informação prática, reduzir dúvidas comuns (como “isso
-              recicla?”) e orientar o descarte correto, com foco em boas práticas
-              e linguagem acessível.
-            </p>
-
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Clareza
-                </p>
-                <p className="mt-2 text-sm text-slate-200">
-                  Guias práticos e exemplos do dia a dia.
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Organização
-                </p>
-                <p className="mt-2 text-sm text-slate-200">
-                  Páginas pilares e links internos consistentes.
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Utilidade
-                </p>
-                <p className="mt-2 text-sm text-slate-200">
-                  Respostas rápidas para dúvidas frequentes.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
-            <p className="text-sm font-semibold text-slate-50">
-              Páginas que viram referência
-            </p>
-            <ul className="mt-3 space-y-2 text-sm text-slate-300">
-              <li>
-                <Link
-                  href="/simbolos-da-reciclagem"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  Símbolos da reciclagem
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/reciclagem"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  Reciclagem
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/coleta-seletiva"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  Coleta seletiva
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/residuos-solidos"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  Resíduos sólidos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/economia-circular"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  Economia circular
-                </Link>
-              </li>
-            </ul>
-
-            <div className="mt-5 rounded-xl border border-slate-800 bg-slate-950 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Dica
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-emerald-200/70 bg-emerald-50/70 p-4">
+              <p className="text-sm font-semibold text-slate-950">
+                Objetivo prático
               </p>
-              <p className="mt-2 text-sm text-slate-200">
-                Separe recicláveis limpos e secos para reduzir contaminação.
+              <p className="mt-1 text-sm text-slate-700">
+                Menos “teoria” e mais ação: passo a passo para fazer certo.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-200/70 bg-emerald-50/70 p-4">
+              <p className="text-sm font-semibold text-slate-950">
+                Foco em SEO e utilidade
+              </p>
+              <p className="mt-1 text-sm text-slate-700">
+                Conteúdo estruturado, links internos e FAQs para rankear.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-emerald-200/70 bg-emerald-50/70 p-4">
+              <p className="text-sm font-semibold text-slate-950">
+                Diretório e monetização
+              </p>
+              <p className="mt-1 text-sm text-slate-700">
+                Conectar pessoas e empresas com soluções ambientais.
               </p>
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* BLOCO EDUCATIVO RÁPIDO */}
-      <Section
-        eyebrow="Aprenda em minutos"
-        title="Atalhos educativos"
-        subtitle="Três temas que aumentam engajamento e resolvem dúvidas recorrentes."
-      >
-        <div className="grid gap-4 md:grid-cols-3">
-          {QUICK_LEARN.map((q) => (
-            <CardLink
-              key={q.href}
-              title={q.title}
-              description={q.description}
-              href={q.href}
-              icon={q.icon}
+      {/* PILARES */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-950">
+              Comece pelos pilares
+            </h2>
+            <p className="mt-2 text-sm text-slate-700">
+              Estrutura pensada para guiar o usuário e fortalecer a arquitetura
+              do site.
+            </p>
+          </div>
+
+          <Link
+            href="/guias"
+            className="hidden rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 sm:inline-flex"
+          >
+            Explorar guias
+          </Link>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {PILLARS.map((p) => (
+            <Card
+              key={p.href}
+              title={p.title}
+              desc={p.desc}
+              href={p.href}
+              badge={p.badge}
             />
           ))}
         </div>
-      </Section>
+      </section>
 
-      {/* CTA FINAL */}
-      <div className="border-t border-slate-900">
+      {/* GUIAS EM DESTAQUE */}
+      <section className="border-y border-slate-200 bg-emerald-50/40">
         <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 sm:p-8">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-xl font-bold text-slate-50">
-                  Quer aprender a reciclar corretamente no dia a dia?
-                </p>
-                <p className="mt-2 max-w-2xl text-sm text-slate-300">
-                  Acesse os guias e conteúdos essenciais para separar resíduos,
-                  entender símbolos e descartar com responsabilidade.
-                </p>
+          <div className="flex items-end justify-between gap-6">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-950">
+                Guias em destaque
+              </h2>
+              <p className="mt-2 text-sm text-slate-700">
+                Páginas pilar para rankear e resolver dúvidas recorrentes.
+              </p>
+            </div>
+
+            <Link
+              href="/guias"
+              className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            >
+              Ver todos
+            </Link>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            {GUIDES.map((g) => (
+              <Card
+                key={g.href}
+                title={g.title}
+                desc={g.desc}
+                href={g.href}
+                badge={g.tag}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ÚLTIMOS ARTIGOS */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-950">Últimos artigos</h2>
+            <p className="mt-2 text-sm text-slate-700">
+              Conteúdo recente para manter o site vivo e aumentar alcance.
+            </p>
+          </div>
+
+          <Link
+            href="/blog"
+            className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+          >
+            Ir para o Blog
+          </Link>
+        </div>
+
+        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+          {POSTS.map((p) => (
+            <Link
+              key={p.href}
+              href={p.href}
+              className="group rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm transition hover:bg-white hover:shadow-md"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="text-base font-semibold text-slate-950 group-hover:text-emerald-900">
+                  {p.title}
+                </h3>
+                <span className="text-xs font-semibold text-slate-500">
+                  {p.meta}
+                </span>
               </div>
-              <Link
-                href="/guias"
-                className={cn(
-                  "inline-flex items-center justify-center rounded-xl bg-emerald-500 px-5 py-3",
-                  "text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
-                )}
-              >
-                Ver guias completos
-              </Link>
+              <p className="mt-3 text-sm text-slate-700">{p.desc}</p>
+              <p className="mt-4 text-sm font-semibold text-emerald-700">
+                Ler artigo →
+              </p>
+            </Link>
+          ))}
+        </div>
+
+        <p className="mt-4 text-xs text-slate-500">
+          (Placeholder) Depois plugamos com MDX/CMS sem mudar o layout.
+        </p>
+      </section>
+
+      {/* DIRETÓRIO + ANUNCIE (Monetização) */}
+      <section className="border-y border-slate-200 bg-white">
+        <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200 bg-emerald-50/50 p-7">
+              <h2 className="text-xl font-bold text-slate-950">
+                Diretório de soluções ambientais
+              </h2>
+              <p className="mt-2 text-sm text-slate-700">
+                Encontre (e divulgue) empresas, cooperativas, serviços e
+                iniciativas por tema e região.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/diretorio"
+                  className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-500"
+                >
+                  Acessar diretório
+                </Link>
+                <Link
+                  href="/diretorio/cadastrar"
+                  className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+                >
+                  Cadastrar empresa
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white/70 p-7">
+              <h2 className="text-xl font-bold text-slate-950">
+                Anuncie na Reciclativa
+              </h2>
+              <p className="mt-2 text-sm text-slate-700">
+                Espaços para marcas e projetos alinhados com reciclagem,
+                sustentabilidade e impacto positivo.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                <li>• Banners em guias e artigos (alto intent)</li>
+                <li>• Publieditorial (com transparência)</li>
+                <li>• Destaque no diretório</li>
+              </ul>
+              <div className="mt-5">
+                <Link
+                  href="/anuncie"
+                  className="inline-flex rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+                >
+                  Ver mídia kit
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Footer: já está OK no seu projeto (não mexi aqui). */}
+      {/* FAQ curto (SEO) */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-bold text-slate-950">
+          Perguntas frequentes
+        </h2>
+        <p className="mt-2 text-sm text-slate-700">
+          Respostas rápidas para dúvidas comuns (ótimo para SEO).
+        </p>
+
+        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+          <div className="rounded-2xl border border-slate-200 bg-white/70 p-6">
+            <h3 className="text-base font-semibold text-slate-950">
+              O que não pode ir para a reciclagem?
+            </h3>
+            <p className="mt-2 text-sm text-slate-700">
+              Itens sujos, contaminados ou misturados podem inviabilizar a
+              triagem. Use nossos checklists para evitar erro.
+            </p>
+            <Link
+              href="/guias/o-que-pode-reciclar"
+              className="mt-4 inline-block text-sm font-semibold text-emerald-700"
+            >
+              Ver checklist →
+            </Link>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white/70 p-6">
+            <h3 className="text-base font-semibold text-slate-950">
+              Precisa lavar embalagens?
+            </h3>
+            <p className="mt-2 text-sm text-slate-700">
+              O ideal é remover excesso de resíduos para reduzir mau cheiro e
+              contaminação (não precisa “brilhar”).
+            </p>
+            <Link
+              href="/guias/coleta-seletiva"
+              className="mt-4 inline-block text-sm font-semibold text-emerald-700"
+            >
+              Como separar →
+            </Link>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white/70 p-6">
+            <h3 className="text-base font-semibold text-slate-950">
+              Como entender símbolos da reciclagem?
+            </h3>
+            <p className="mt-2 text-sm text-slate-700">
+              Símbolos indicam tipo de material e orientação de descarte. A
+              Reciclativa explica de forma prática.
+            </p>
+            <Link
+              href="/simbolos-da-reciclagem"
+              className="mt-4 inline-block text-sm font-semibold text-emerald-700"
+            >
+              Ver símbolos →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Rodapé de links internos */}
+      <section className="border-t border-slate-200 bg-emerald-50/30">
+        <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-700">
+            <span className="font-semibold text-slate-900">Atalhos:</span>
+            <Link href="/reciclagem" className="hover:text-emerald-700">
+              Reciclagem
+            </Link>
+            <Link href="/sustentabilidade" className="hover:text-emerald-700">
+              Sustentabilidade
+            </Link>
+            <Link href="/guias" className="hover:text-emerald-700">
+              Guias
+            </Link>
+            <Link href="/blog" className="hover:text-emerald-700">
+              Blog
+            </Link>
+            <Link href="/diretorio" className="hover:text-emerald-700">
+              Diretório
+            </Link>
+            <Link href="/anuncie" className="hover:text-emerald-700">
+              Anuncie
+            </Link>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
