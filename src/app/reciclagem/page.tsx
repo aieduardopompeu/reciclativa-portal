@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { reciclademArticles } from "@/content/reciclagem";
+import { CardLink } from "@/components/ui/CardLink";
 
 export default function ReciclagemIndexPage() {
   return (
@@ -11,16 +12,11 @@ export default function ReciclagemIndexPage() {
 
       <section className="mt-8 grid gap-4 md:grid-cols-2">
         {reciclademArticles.map((a) => (
-          <Link
-            key={a.slug}
+          <CardLink
             href={`/reciclagem/${a.slug}`}
-            className="rounded-xl border border-slate-200 p-5 hover:bg-slate-50"
-          >
-            <div className="text-sm font-semibold text-slate-900">
-              {a.title}
-            </div>
-            <p className="mt-2 text-sm text-slate-600">{a.description}</p>
-          </Link>
+            title={a.title}
+            description={a.description}
+          />
         ))}
       </section>
     </main>

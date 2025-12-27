@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CardLink } from "@/components/ui/CardLink";
 
 function Section({
   title,
@@ -18,16 +19,7 @@ function Section({
 
       <div className="grid gap-3 md:grid-cols-2">
         {items.map((i) => (
-          <Link
-            key={i.href}
-            href={i.href}
-            className="rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-          >
-            <div className="font-medium">{i.label}</div>
-            {i.note ? (
-              <div className="mt-1 text-sm text-slate-600">{i.note}</div>
-            ) : null}
-          </Link>
+          <CardLink href={i.href} title={i.label} description={i.note} />
         ))}
       </div>
     </section>
