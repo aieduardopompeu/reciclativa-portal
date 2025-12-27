@@ -2,9 +2,9 @@
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Guias | Reciclativa",
-  description: "Guias completos da Reciclativa: reciclagem, coleta seletiva, descarte correto e sustentabilidade.",
-  alternates: { canonical: "/guias" },
+  title: "Coleta seletiva no Brasil | Reciclativa",
+  description: "Como funciona a coleta seletiva no Brasil: cores, fluxos, logística e boas práticas.",
+  alternates: { canonical: "/blog/coleta-seletiva-no-brasil" },
 };
 
 export default function Page() {
@@ -16,10 +16,10 @@ export default function Page() {
             Reciclativa
           </p>
           <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-50 sm:text-5xl">
-            Guias completos
+            Como funciona a coleta seletiva no Brasil
           </h1>
           <p className="mt-4 max-w-3xl text-sm text-slate-300 sm:text-base">
-            Coleção de guias práticos para aprender e aplicar reciclagem e sustentabilidade.
+            Entenda o processo e como colaborar de forma eficiente.
           </p>
 
           <div className="mt-7 flex flex-wrap gap-3">

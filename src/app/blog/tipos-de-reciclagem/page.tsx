@@ -2,9 +2,9 @@
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Guias | Reciclativa",
-  description: "Guias completos da Reciclativa: reciclagem, coleta seletiva, descarte correto e sustentabilidade.",
-  alternates: { canonical: "/guias" },
+  title: "Tipos de reciclagem | Reciclativa",
+  description: "Tipos de reciclagem: mecânica, química e energética  conceitos e exemplos.",
+  alternates: { canonical: "/blog/tipos-de-reciclagem" },
 };
 
 export default function Page() {
@@ -16,10 +16,10 @@ export default function Page() {
             Reciclativa
           </p>
           <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-50 sm:text-5xl">
-            Guias completos
+            Tipos de reciclagem
           </h1>
           <p className="mt-4 max-w-3xl text-sm text-slate-300 sm:text-base">
-            Coleção de guias práticos para aprender e aplicar reciclagem e sustentabilidade.
+            Mecânica, química e energética  o que são e quando aparecem.
           </p>
 
           <div className="mt-7 flex flex-wrap gap-3">
