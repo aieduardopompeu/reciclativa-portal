@@ -64,11 +64,17 @@ export default function HomePage() {
       <Section
         title="Guias essenciais"
         desc="Comece pelo conteúdo que já está publicado."
+
         items={[
           {
             href: "/reciclagem/o-que-pode-ser-reciclado",
             label: "O que pode e o que não pode ser reciclado",
             note: "Lista prática + dúvidas comuns respondidas.",
+          },
+          {
+            href: "/reciclagem/simbolos-da-reciclagem",
+            label: "Símbolos da reciclagem",
+            note: "Entenda os símbolos e evite erros na separação.",
           },
           {
             href: "/reciclagem",
