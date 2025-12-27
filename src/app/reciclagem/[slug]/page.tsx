@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getReciclagemArticle } from "@/content/reciclagem";
 
 type Props = {
@@ -6,6 +7,18 @@ type Props = {
     slug: string;
   }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getReciclagemArticle(slug);
+
+  if (!article) return {};
+
+  return {
+    title: article.title,
+    description: article.description,
+  };
+}
 
 export default async function ReciclagemArtigoPage({ params }: Props) {
   const { slug } = await params;
