@@ -112,258 +112,218 @@ const CATEGORY_CHIPS: Array<{ label: string; value: "all" | Category }> = [
 ];
 
 function formatDateBR(iso: string) {
-  // evita Intl em edge cases e mantém simples
   const [y, m, d] = iso.split("-").map(Number);
-  const dd = String(d).padStart(2, "0");
-  const mm = String(m).padStart(2, "0");
-  return `${dd}/${mm}/${y}`;
+  return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
 }
 
-function categoryBadgeClass(category: Category) {
+function badgeClass(category: Category) {
+  // badges com boa leitura no tema claro
   switch (category) {
     case "Reciclagem":
-      return "bg-emerald-500/10 text-emerald-300 ring-emerald-500/20";
+      return "bg-emerald-50 text-emerald-700 ring-emerald-200";
     case "Sustentabilidade":
-      return "bg-sky-500/10 text-sky-300 ring-sky-500/20";
+      return "bg-sky-50 text-sky-700 ring-sky-200";
     case "Guias":
-      return "bg-violet-500/10 text-violet-300 ring-violet-500/20";
+      return "bg-violet-50 text-violet-700 ring-violet-200";
     case "Economia circular":
-      return "bg-amber-500/10 text-amber-300 ring-amber-500/20";
+      return "bg-amber-50 text-amber-800 ring-amber-200";
   }
+}
+
+function Card({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      {children}
+    </div>
+  );
 }
 
 function PostCard({ post }: { post: Post }) {
   return (
-    <article className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:bg-white/[0.06]">
-      <div className="flex items-center gap-2">
+    <article className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+      <div className="flex flex-wrap items-center gap-2">
         <span
           className={[
             "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1",
-            categoryBadgeClass(post.category),
+            badgeClass(post.category),
           ].join(" ")}
         >
           {post.category}
         </span>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-500">
           {formatDateBR(post.dateISO)}
           {post.readingTime ? ` • ${post.readingTime}` : ""}
         </span>
       </div>
 
-      <h3 className="mt-3 text-lg font-semibold tracking-tight text-white">
-        <Link className="outline-none focus:ring-2 focus:ring-emerald-400/40" href={`/blog/${post.slug}`}>
-          <span className="bg-gradient-to-b from-white to-white/80 bg-clip-text text-transparent">
-            {post.title}
-          </span>
+      <h3 className="mt-3 text-lg font-semibold tracking-tight text-slate-900">
+        <Link
+          className="outline-none hover:underline focus:ring-2 focus:ring-emerald-300"
+          href={`/blog/${post.slug}`}
+        >
+          {post.title}
         </Link>
       </h3>
 
-      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-300">
+      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">
         {post.excerpt}
       </p>
 
       <div className="mt-4">
         <Link
           href={`/blog/${post.slug}`}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
         >
-          Ler artigo
-          <span aria-hidden className="transition group-hover:translate-x-0.5">
-            →
-          </span>
+          Ler artigo <span aria-hidden className="transition group-hover:translate-x-0.5">→</span>
         </Link>
       </div>
     </article>
   );
 }
 
-function FeaturedCard({ post }: { post: Post }) {
+function FeaturedMain({ post }: { post: Post }) {
   return (
-    <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
       <div className="flex flex-wrap items-center gap-2">
-        <span
-          className={[
-            "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1",
-            categoryBadgeClass(post.category),
-          ].join(" ")}
-        >
+        <span className="inline-flex items-center rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-emerald-200 ring-1 ring-emerald-300/20">
           {post.category}
         </span>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-white/70">
           {formatDateBR(post.dateISO)}
           {post.readingTime ? ` • ${post.readingTime}` : ""}
         </span>
       </div>
 
-      <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
-        <Link className="outline-none focus:ring-2 focus:ring-emerald-400/40" href={`/blog/${post.slug}`}>
-          <span className="bg-gradient-to-b from-white to-white/80 bg-clip-text text-transparent">
-            {post.title}
-          </span>
+      <h2 className="mt-3 text-2xl font-bold tracking-tight text-white">
+        <Link href={`/blog/${post.slug}`} className="hover:underline focus:ring-2 focus:ring-emerald-300/40 outline-none">
+          {post.title}
         </Link>
       </h2>
 
-      <p className="mt-3 text-sm leading-relaxed text-slate-300">
-        {post.excerpt}
-      </p>
+      <p className="mt-3 text-sm leading-relaxed text-white/80">{post.excerpt}</p>
 
       <div className="mt-5 flex flex-wrap gap-3">
         <Link
           href={`/blog/${post.slug}`}
-          className="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-black hover:bg-emerald-400"
+          className="inline-flex items-center justify-center rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-300"
         >
           Ler agora
         </Link>
         <Link
           href="/guias"
-          className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] px-4 py-2 text-sm font-semibold text-white hover:bg-white/[0.06]"
+          className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
         >
           Ver guias
         </Link>
       </div>
-    </article>
+    </div>
   );
 }
 
 export default function Page() {
-  // escolhas para "Destaques"
   const featuredMain = POSTS[0];
   const featuredSecondary = POSTS.slice(1, 5);
 
-  // "Últimos posts" (ordem por data desc)
   const latest = [...POSTS].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
-
   const mostRead = [POSTS[1], POSTS[3], POSTS[5], POSTS[6]].filter(Boolean);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10">
-      {/* Hero + Breadcrumb */}
-      <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-7 md:p-10">
-        <div className="text-sm text-slate-400">
-          <Link href="/" className="hover:text-slate-200">
-            Home
-          </Link>{" "}
-          <span className="mx-2">/</span>
-          <span className="text-slate-200">Blog</span>
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      {/* HERO escuro (igual padrão da Reciclagem) */}
+      <section className="overflow-hidden rounded-3xl bg-slate-950">
+        <div className="px-6 py-10 md:px-10 md:py-12">
+          <div className="text-sm text-white/70">
+            <Link href="/" className="hover:text-white">Home</Link>
+            <span className="mx-2 text-white/40">/</span>
+            <span className="text-white/90">Blog</span>
+          </div>
+
+          <div className="mt-6">
+            <div className="text-xs font-semibold tracking-[0.22em] text-emerald-300/90">
+              RECICLATIVA • BLOG
+            </div>
+
+            <h1 className="mt-3 max-w-3xl text-3xl font-extrabold tracking-tight text-white md:text-5xl">
+              Blog Reciclativa: reciclagem, sustentabilidade e guias práticos
+            </h1>
+
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/80 md:text-base">
+              Atualizações, tendências e conteúdos complementares para separar resíduos com segurança,
+              evitar contaminação e entender o que realmente muda o impacto no dia a dia.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/guias"
+                className="inline-flex items-center justify-center rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-300"
+              >
+                Ver guias
+              </Link>
+              <Link
+                href="/reciclagem"
+                className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                Página pilar: Reciclagem
+              </Link>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-6">
-          <div className="text-xs font-semibold tracking-[0.2em] text-emerald-300/90">
-            RECICLATIVA • BLOG
-          </div>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-white md:text-5xl">
-            Blog Reciclativa: reciclagem, sustentabilidade e guias práticos
-          </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
-            Atualizações, tendências e conteúdos complementares para você separar resíduos com
-            segurança, evitar contaminação e entender o que realmente muda o impacto no dia a dia.
-          </p>
+        {/* Destaques (ainda no hero, para evitar “vazio”) */}
+        <div className="border-t border-white/10 px-6 py-6 md:px-10">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <FeaturedMain post={featuredMain} />
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/guias"
-              className="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-black hover:bg-emerald-400"
-            >
-              Ver guias
-            </Link>
-            <Link
-              href="/reciclagem"
-              className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] px-4 py-2 text-sm font-semibold text-white hover:bg-white/[0.06]"
-            >
-              Página pilar: Reciclagem
-            </Link>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {featuredSecondary.map((post) => (
+                <div key={post.slug} className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/80 ring-1 ring-white/10">
+                      {post.category}
+                    </span>
+                    <span className="text-xs text-white/70">{formatDateBR(post.dateISO)}</span>
+                  </div>
+                  <h3 className="mt-3 text-sm font-semibold text-white">
+                    <Link href={`/blog/${post.slug}`} className="hover:underline focus:ring-2 focus:ring-emerald-300/40 outline-none">
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 line-clamp-3 text-sm text-white/75">{post.excerpt}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Chips / categorias */}
-      <section className="mt-8">
+      {/* Chips (tema claro) */}
+      <section className="mt-6">
         <div className="flex flex-wrap items-center gap-2">
           {CATEGORY_CHIPS.map((chip) => (
             <button
               key={chip.label}
               type="button"
-              className="rounded-full border border-white/10 bg-white/[0.02] px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-white/[0.06]"
-              // UI-only por enquanto; você pode transformar em filtro real depois
+              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
               aria-label={`Filtrar por ${chip.label}`}
             >
               {chip.label}
             </button>
           ))}
         </div>
-        <p className="mt-2 text-xs text-slate-400">
-          Dica: depois, podemos transformar esses chips em filtro real (sem complicar o código).
-        </p>
       </section>
 
-      <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_320px]">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
         {/* Coluna principal */}
         <div className="min-w-0">
-          {/* Destaques */}
+          {/* Últimos posts */}
           <section>
             <div className="flex items-end justify-between gap-3">
-              <h2 className="text-xl font-semibold tracking-tight text-white">
-                Destaques
+              <h2 className="text-xl font-bold tracking-tight text-slate-900">
+                Últimos artigos
               </h2>
-              <span className="text-sm text-slate-400">{POSTS.length} artigos</span>
+              <span className="text-sm text-slate-500">{POSTS.length} artigos</span>
             </div>
-
-            <div className="mt-4 grid gap-6 lg:grid-cols-2">
-              <FeaturedCard post={featuredMain} />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                {featuredSecondary.map((post) => (
-                  <article
-                    key={post.slug}
-                    className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:bg-white/[0.06]"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={[
-                          "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1",
-                          categoryBadgeClass(post.category),
-                        ].join(" ")}
-                      >
-                        {post.category}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        {formatDateBR(post.dateISO)}
-                      </span>
-                    </div>
-
-                    <h3 className="mt-3 text-base font-semibold text-white">
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="outline-none focus:ring-2 focus:ring-emerald-400/40"
-                      >
-                        {post.title}
-                      </Link>
-                    </h3>
-
-                    <p className="mt-2 line-clamp-3 text-sm text-slate-300">
-                      {post.excerpt}
-                    </p>
-
-                    <div className="mt-3">
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="text-sm font-semibold text-emerald-300 hover:text-emerald-200"
-                      >
-                        Ler →
-                      </Link>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Últimos posts */}
-          <section className="mt-10">
-            <h2 className="text-xl font-semibold tracking-tight text-white">
-              Últimos artigos
-            </h2>
-            <p className="mt-2 text-sm text-slate-300">
+            <p className="mt-2 text-sm text-slate-600">
               Conteúdos novos e atualizações para aprofundar seu entendimento e evitar erros comuns.
             </p>
 
@@ -373,11 +333,10 @@ export default function Page() {
               ))}
             </div>
 
-            {/* Placeholder “Carregar mais” (sem paginação agora) */}
             <div className="mt-6">
               <button
                 type="button"
-                className="w-full rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-sm font-semibold text-white hover:bg-white/[0.06]"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
                 aria-label="Carregar mais artigos (em breve)"
               >
                 Carregar mais (em breve)
@@ -387,134 +346,134 @@ export default function Page() {
 
           {/* Trilhas */}
           <section className="mt-10">
-            <h2 className="text-xl font-semibold tracking-tight text-white">
+            <h2 className="text-xl font-bold tracking-tight text-slate-900">
               Trilhas recomendadas
             </h2>
-            <p className="mt-2 text-sm text-slate-300">
+            <p className="mt-2 text-sm text-slate-600">
               Leituras em sequência para aprender rápido, com clareza e sem ruído.
             </p>
 
             <div className="mt-5 grid gap-4 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-base font-semibold text-white">Começando do zero</h3>
+              <Card>
+                <h3 className="text-base font-semibold text-slate-900">Começando do zero</h3>
                 <ul className="mt-3 space-y-2 text-sm">
                   <li>
-                    <Link className="text-emerald-300 hover:text-emerald-200" href="/reciclagem">
+                    <Link className="text-emerald-700 hover:underline" href="/reciclagem">
                       Página pilar: Reciclagem →
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/o-que-e-reciclagem">
+                    <Link className="text-slate-700 hover:underline" href="/blog/o-que-e-reciclagem">
                       O que é reciclagem
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/o-que-pode-ser-reciclado">
+                    <Link className="text-slate-700 hover:underline" href="/blog/o-que-pode-ser-reciclado">
                       O que pode ser reciclado
                     </Link>
                   </li>
                 </ul>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-base font-semibold text-white">Materiais e símbolos</h3>
+              <Card>
+                <h3 className="text-base font-semibold text-slate-900">Materiais e símbolos</h3>
                 <ul className="mt-3 space-y-2 text-sm">
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/reciclagem-plastico">
+                    <Link className="text-slate-700 hover:underline" href="/blog/reciclagem-plastico">
                       Reciclagem de plástico
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/tipos-de-reciclagem">
+                    <Link className="text-slate-700 hover:underline" href="/blog/tipos-de-reciclagem">
                       Tipos de reciclagem
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/cores-da-coleta-seletiva">
+                    <Link className="text-slate-700 hover:underline" href="/blog/cores-da-coleta-seletiva">
                       Cores da coleta seletiva
                     </Link>
                   </li>
                 </ul>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-base font-semibold text-white">Coleta seletiva na prática</h3>
+              <Card>
+                <h3 className="text-base font-semibold text-slate-900">Coleta seletiva na prática</h3>
                 <ul className="mt-3 space-y-2 text-sm">
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/coleta-seletiva-no-brasil">
+                    <Link className="text-slate-700 hover:underline" href="/blog/coleta-seletiva-no-brasil">
                       Como funciona a coleta seletiva
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/lixo-eletronico-descarte">
+                    <Link className="text-slate-700 hover:underline" href="/blog/lixo-eletronico-descarte">
                       Lixo eletrônico: descarte correto
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-200 hover:text-white" href="/blog/reduzir-lixo-na-rotina">
+                    <Link className="text-slate-700 hover:underline" href="/blog/reduzir-lixo-na-rotina">
                       Reduzir lixo na rotina
                     </Link>
                   </li>
                 </ul>
-              </div>
+              </Card>
             </div>
           </section>
 
           {/* FAQ */}
           <section className="mt-10">
-            <h2 className="text-xl font-semibold tracking-tight text-white">
+            <h2 className="text-xl font-bold tracking-tight text-slate-900">
               Dúvidas rápidas
             </h2>
 
             <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-base font-semibold text-white">
+              <Card>
+                <h3 className="text-base font-semibold text-slate-900">
                   Precisa lavar embalagens para reciclar?
                 </h3>
-                <p className="mt-2 text-sm text-slate-300">
-                  Na maioria dos casos, basta remover excesso de alimento e reduzir odores/contaminação.
+                <p className="mt-2 text-sm text-slate-600">
+                  Na maioria dos casos, basta remover excesso de alimento e reduzir contaminação.
                   Isso aumenta a chance de aproveitamento do material.
                 </p>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-base font-semibold text-white">
+              <Card>
+                <h3 className="text-base font-semibold text-slate-900">
                   Papel engordurado é reciclável?
                 </h3>
-                <p className="mt-2 text-sm text-slate-300">
+                <p className="mt-2 text-sm text-slate-600">
                   Geralmente não. Gordura contamina fibras e dificulta o processo. Prefira descarte
                   orgânico quando aplicável (ou rejeito, dependendo do caso).
                 </p>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-base font-semibold text-white">
+              <Card>
+                <h3 className="text-base font-semibold text-slate-900">
                   Posso misturar vidro e metal na mesma sacola?
                 </h3>
-                <p className="mt-2 text-sm text-slate-300">
+                <p className="mt-2 text-sm text-slate-600">
                   O ideal é separar. Vidro quebrado pode ferir quem faz a triagem e contaminar outros
                   materiais. Embale com segurança.
                 </p>
-              </div>
+              </Card>
 
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                <h3 className="text-base font-semibold text-white">
+              <Card>
+                <h3 className="text-base font-semibold text-slate-900">
                   Quando não existe coleta seletiva, o que fazer?
                 </h3>
-                <p className="mt-2 text-sm text-slate-300">
-                  Busque ecopontos, cooperativas ou pontos de entrega voluntária (PEVs). Em muitos
-                  bairros, mercados e shoppings recebem itens específicos.
+                <p className="mt-2 text-sm text-slate-600">
+                  Busque ecopontos, cooperativas ou PEVs. Em muitos bairros, mercados e shoppings
+                  recebem itens específicos.
                 </p>
-              </div>
+              </Card>
             </div>
           </section>
 
           {/* CTA final */}
-          <section className="mt-10 rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-7 md:p-10">
-            <h2 className="text-2xl font-semibold tracking-tight text-white">
+          <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
               Quer aprender reciclagem do jeito certo?
             </h2>
-            <p className="mt-3 max-w-2xl text-sm text-slate-300">
+            <p className="mt-3 max-w-2xl text-sm text-slate-600">
               Comece pela página pilar e depois avance pelos guias. É o caminho mais rápido para
               separar corretamente e evitar contaminação.
             </p>
@@ -522,13 +481,13 @@ export default function Page() {
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/reciclagem"
-                className="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-black hover:bg-emerald-400"
+                className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
               >
                 Página pilar: Reciclagem
               </Link>
               <Link
                 href="/guias"
-                className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] px-4 py-2 text-sm font-semibold text-white hover:bg-white/[0.06]"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
               >
                 Ver todos os guias
               </Link>
@@ -539,56 +498,56 @@ export default function Page() {
         {/* Sidebar (desktop) */}
         <aside className="hidden lg:block">
           <div className="sticky top-6 space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <h3 className="text-sm font-semibold text-white">Links úteis</h3>
+            <Card>
+              <h3 className="text-sm font-semibold text-slate-900">Links úteis</h3>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>
-                  <Link className="text-emerald-300 hover:text-emerald-200" href="/reciclagem">
+                  <Link className="text-emerald-700 hover:underline" href="/reciclagem">
                     Página pilar: Reciclagem →
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-slate-200 hover:text-white" href="/guias">
+                  <Link className="text-slate-700 hover:underline" href="/guias">
                     Guias práticos
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-slate-200 hover:text-white" href="/sustentabilidade">
+                  <Link className="text-slate-700 hover:underline" href="/sustentabilidade">
                     Sustentabilidade
                   </Link>
                 </li>
               </ul>
-            </div>
+            </Card>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <h3 className="text-sm font-semibold text-white">Mais lidos</h3>
+            <Card>
+              <h3 className="text-sm font-semibold text-slate-900">Mais lidos</h3>
               <ul className="mt-3 space-y-3 text-sm">
                 {mostRead.map((p) => (
                   <li key={p.slug} className="flex flex-col">
-                    <Link className="text-slate-200 hover:text-white" href={`/blog/${p.slug}`}>
+                    <Link className="text-slate-800 hover:underline" href={`/blog/${p.slug}`}>
                       {p.title}
                     </Link>
-                    <span className="mt-1 text-xs text-slate-400">
+                    <span className="mt-1 text-xs text-slate-500">
                       {p.category} • {formatDateBR(p.dateISO)}
                     </span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </Card>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <h3 className="text-sm font-semibold text-white">Categorias</h3>
+            <Card>
+              <h3 className="text-sm font-semibold text-slate-900">Categorias</h3>
               <div className="mt-3 flex flex-wrap gap-2">
                 {CATEGORY_CHIPS.filter((c) => c.value !== "all").map((c) => (
                   <span
                     key={c.label}
-                    className="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-semibold text-slate-200"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700"
                   >
                     {c.label}
                   </span>
                 ))}
               </div>
-            </div>
+            </Card>
           </div>
         </aside>
       </div>
