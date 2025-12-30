@@ -66,13 +66,13 @@ export default function Page() {
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-sm font-semibold text-slate-900">Depende da cidade</p>
                 <p className="mt-2 text-sm text-slate-700">
-                  Isopor, cápsulas, laminados e itens “difíceis” variam por coleta.
+                  Isopor, cápsulas, laminados e itens difíceis variam por coleta.
                 </p>
               </div>
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-sm font-semibold text-slate-900">Dica prática</p>
                 <p className="mt-2 text-sm text-slate-700">
-                  Esvazie e retire o excesso. “Sem cheiro” já ajuda muito.
+                  Esvazie e retire o excesso. Sem cheiro já ajuda muito.
                 </p>
               </div>
             </div>

@@ -48,9 +48,6 @@ export default function Page() {
             Conteúdo será publicado em breve. Estrutura planejada: definição,
             princípios, benefícios, exemplos e como aplicar no dia a dia.
           </p>
-          <p>
-            Leitura relacionada:
-          </p>
           <ul>
             <li>
               <Link href="/reciclagem">Pilar de Reciclagem</Link>

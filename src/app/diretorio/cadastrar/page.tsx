@@ -46,8 +46,8 @@ export default function Page() {
           <article className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm lg:col-span-2">
             <h2 className="text-xl font-bold text-slate-950">Próximo passo</h2>
             <p className="mt-2 text-sm text-slate-700">
-              Vamos implementar um formulário com campos básicos:
-              nome, categoria, cidade/UF, contato, site/instagram e descrição.
+              Vamos implementar um formulário com campos básicos: nome, categoria,
+              cidade/UF, contato, site/instagram e descrição.
             </p>
 
             <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">

@@ -45,13 +45,10 @@ export default function Page() {
         <div className="prose prose-slate max-w-none">
           <h2>Em construção</h2>
           <p>
-            Conteúdo será publicado em breve. Estrutura planejada:
-            hábitos de compra, reuso, organização doméstica, compostagem simples,
-            e descarte correto.
+            Conteúdo será publicado em breve. Estrutura planejada: hábitos de compra,
+            reuso, organização doméstica, compostagem simples e descarte correto.
           </p>
-          <p>
-            Enquanto isso, você pode começar pelos guias:
-          </p>
+          <p>Enquanto isso, comece pelos guias:</p>
           <ul>
             <li>
               <Link href="/guias/coleta-seletiva">Coleta seletiva: como começar</Link>

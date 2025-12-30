@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Reciclagem de plástico: erros que atrapalham tudo",
   description:
-    "Principais erros no descarte de plástico que aumentam rejeição na triagem — e como evitar.",
+    "Principais erros no descarte de plástico que aumentam rejeição na triagem  e como evitar.",
   alternates: { canonical: "/blog/reciclagem-plastico-erros" },
 };
 
@@ -20,7 +20,7 @@ export default function Page() {
             Reciclagem de plástico: erros que atrapalham tudo
           </h1>
           <p className="mt-3 text-sm text-slate-700 sm:text-base">
-            Artigo-base criado para evitar 404. Em seguida, vira um post “pilar”
+            Artigo-base criado para evitar 404. Em seguida, vira um post pilar
             com exemplos, imagens e FAQ.
           </p>
 
@@ -46,7 +46,7 @@ export default function Page() {
           <h2>Em construção</h2>
           <p>
             Conteúdo será publicado em breve. Estrutura planejada: itens sujos,
-            mistura de materiais, rótulos/adesivos, plásticos “difíceis”, e como
+            mistura de materiais, rótulos/adesivos, plásticos difíceis, e como
             melhorar a separação em casa.
           </p>
           <ul>
