@@ -1,101 +1,12 @@
 // src/app/blog/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { POSTS, type Category } from "@/lib/blogPosts";
 
-type Category = "Reciclagem" | "Sustentabilidade" | "Guias" | "Economia circular";
-
-type Post = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  category: Category;
-  dateISO: string; // YYYY-MM-DD
-  readingTime?: string; // ex: "6 min"
-};
-
-const POSTS: Post[] = [
-  {
-    slug: "o-que-e-reciclagem",
-    title: "O que é reciclagem: conceito, etapas e por que isso muda tudo",
-    excerpt:
-      "Entenda como a reciclagem funciona na prática, o que realmente é reciclável e como evitar erros comuns no descarte.",
-    category: "Reciclagem",
-    dateISO: "2025-12-01",
-    readingTime: "6 min",
-  },
-  {
-    slug: "o-que-pode-ser-reciclado",
-    title: "O que pode ser reciclado: guia rápido para acertar no descarte",
-    excerpt:
-      "Uma visão prática do que entra (ou não) na reciclagem e como preparar corretamente cada tipo de resíduo.",
-    category: "Guias",
-    dateISO: "2025-12-02",
-    readingTime: "7 min",
-  },
-  {
-    slug: "tipos-de-reciclagem",
-    title: "Tipos de reciclagem: mecânica, química, energética e orgânica",
-    excerpt:
-      "Conheça os principais tipos de reciclagem e entenda quando cada processo faz mais sentido para diferentes materiais.",
-    category: "Reciclagem",
-    dateISO: "2025-12-03",
-    readingTime: "8 min",
-  },
-  {
-    slug: "coleta-seletiva-no-brasil",
-    title: "Coleta seletiva no Brasil: como funciona e como participar",
-    excerpt:
-      "Do básico ao prático: como separar em casa, o que fazer quando não há coleta na sua rua e como encontrar alternativas.",
-    category: "Guias",
-    dateISO: "2025-12-04",
-    readingTime: "7 min",
-  },
-  {
-    slug: "cores-da-coleta-seletiva",
-    title: "Cores da coleta seletiva: padrão, variações e como não errar",
-    excerpt:
-      "Um mapa mental simples das cores mais usadas e o que fazer quando sua cidade usa um padrão diferente.",
-    category: "Guias",
-    dateISO: "2025-12-05",
-    readingTime: "5 min",
-  },
-  {
-    slug: "economia-circular-e-linear",
-    title: "Economia circular vs. economia linear: diferenças e exemplos",
-    excerpt:
-      "Entenda a lógica do ciclo (reduzir, reutilizar, reciclar) e como isso impacta consumo, empresas e políticas públicas.",
-    category: "Economia circular",
-    dateISO: "2025-12-06",
-    readingTime: "6 min",
-  },
-  {
-    slug: "lixo-eletronico-descarte",
-    title: "Lixo eletrônico: como descartar corretamente sem poluir",
-    excerpt:
-      "O que é e-lixo, riscos ambientais, como separar e onde descartar de forma segura e responsável.",
-    category: "Sustentabilidade",
-    dateISO: "2025-12-07",
-    readingTime: "7 min",
-  },
-  {
-    slug: "reciclagem-plastico",
-    title: "Reciclagem de plástico: quais são os tipos e o que muda no processo",
-    excerpt:
-      "Do PET ao PP: como identificar plásticos, o que facilita a reciclagem e como reduzir contaminação na separação.",
-    category: "Reciclagem",
-    dateISO: "2025-12-08",
-    readingTime: "8 min",
-  },
-  {
-    slug: "reduzir-lixo-na-rotina",
-    title: "Como reduzir lixo na rotina: hábitos simples com grande impacto",
-    excerpt:
-      "Checklist prático para reduzir resíduos no dia a dia — sem radicalismo — e melhorar sua pegada ambiental.",
-    category: "Sustentabilidade",
-    dateISO: "2025-12-09",
-    readingTime: "6 min",
-  },
-];
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
+  "https://reciclativa-portal.vercel.app";
 
 const CATEGORY_CHIPS: Array<{ label: string; value: "all" | Category }> = [
   { label: "Todos", value: "all" },
@@ -161,10 +72,6 @@ function categoryMeta(category: "all" | Category) {
   };
 }
 
-/**
- * Metadata dinâmica por categoria + canonical dinâmico.
- * Observação: assume que o layout raiz já define metadataBase (URL do site).
- */
 export function generateMetadata({
   searchParams,
 }: {
@@ -176,9 +83,7 @@ export function generateMetadata({
   return {
     title: meta.title,
     description: meta.description,
-    alternates: {
-      canonical: meta.canonicalPath,
-    },
+    alternates: { canonical: meta.canonicalPath },
     openGraph: {
       title: meta.title,
       description: meta.description,
@@ -214,7 +119,7 @@ function Card({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PostCard({ post }: { post: Post }) {
+function PostCard({ post }: { post: (typeof POSTS)[number] }) {
   return (
     <article className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
       <div className="flex flex-wrap items-center gap-2">
@@ -241,9 +146,7 @@ function PostCard({ post }: { post: Post }) {
         </Link>
       </h3>
 
-      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">
-        {post.excerpt}
-      </p>
+      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600">{post.excerpt}</p>
 
       <div className="mt-4">
         <Link
@@ -257,7 +160,7 @@ function PostCard({ post }: { post: Post }) {
   );
 }
 
-function FeaturedMain({ post }: { post: Post }) {
+function FeaturedMain({ post }: { post: (typeof POSTS)[number] }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
       <div className="flex flex-wrap items-center gap-2">
@@ -321,8 +224,46 @@ export default function Page({
   const chipHref = (value: "all" | Category) =>
     value === "all" ? "/blog" : `/blog?cat=${encodeURIComponent(value)}`;
 
+  // JSON-LD: CollectionPage + ItemList (com URLs absolutas)
+  const canonicalPath = categoryMeta(activeCategory).canonicalPath;
+  const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+
+  const jsonLdCollectionPage = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name:
+      activeCategory === "all"
+        ? "Blog Reciclativa"
+        : `Blog Reciclativa: ${activeCategory}`,
+    url: canonicalUrl,
+    inLanguage: "pt-BR",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Reciclativa",
+      url: SITE_URL,
+    },
+    about:
+      activeCategory === "all"
+        ? ["reciclagem", "sustentabilidade", "coleta seletiva", "economia circular"]
+        : [activeCategory],
+    mainEntity: {
+      "@type": "ItemList",
+      itemListOrder: "https://schema.org/ItemListOrderDescending",
+      numberOfItems: latest.length,
+      itemListElement: latest.map((p, idx) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        url: `${SITE_URL}/blog/${p.slug}`,
+        name: p.title,
+      })),
+    },
+  };
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
+      {/* JSON-LD do /blog */}
+      <JsonLd id="jsonld-blog-collection" data={jsonLdCollectionPage} />
+
       {/* HERO */}
       <section className="overflow-hidden rounded-3xl bg-slate-950">
         <div className="px-6 py-10 md:px-10 md:py-12">
@@ -413,7 +354,7 @@ export default function Page({
         </div>
       </section>
 
-      {/* Chips SSR */}
+      {/* Chips */}
       <section className="mt-6">
         <div className="flex flex-wrap items-center gap-2">
           {CATEGORY_CHIPS.map((chip) => {
@@ -447,35 +388,17 @@ export default function Page({
               </h2>
               <span className="text-sm text-slate-500">{baseList.length} artigos</span>
             </div>
-            <p className="mt-2 text-sm text-slate-600">
-              Conteúdos novos e atualizações para aprofundar seu entendimento e evitar erros comuns.
-            </p>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {latest.map((post) => (
                 <PostCard key={post.slug} post={post} />
               ))}
             </div>
-
-            <div className="mt-6">
-              <button
-                type="button"
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
-                aria-label="Carregar mais artigos (em breve)"
-              >
-                Carregar mais (em breve)
-              </button>
-            </div>
           </section>
 
           {/* Trilhas */}
           <section className="mt-10">
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">
-              Trilhas recomendadas
-            </h2>
-            <p className="mt-2 text-sm text-slate-600">
-              Leituras em sequência para aprender rápido, com clareza e sem ruído.
-            </p>
+            <h2 className="text-xl font-bold tracking-tight text-slate-900">Trilhas recomendadas</h2>
 
             <div className="mt-5 grid gap-4 md:grid-cols-3">
               <Card>
@@ -492,10 +415,7 @@ export default function Page({
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      className="text-slate-700 hover:underline"
-                      href="/blog/o-que-pode-ser-reciclado"
-                    >
+                    <Link className="text-slate-700 hover:underline" href="/blog/o-que-pode-ser-reciclado">
                       O que pode ser reciclado
                     </Link>
                   </li>
@@ -516,10 +436,7 @@ export default function Page({
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      className="text-slate-700 hover:underline"
-                      href="/blog/cores-da-coleta-seletiva"
-                    >
+                    <Link className="text-slate-700 hover:underline" href="/blog/cores-da-coleta-seletiva">
                       Cores da coleta seletiva
                     </Link>
                   </li>
@@ -530,26 +447,17 @@ export default function Page({
                 <h3 className="text-base font-semibold text-slate-900">Coleta seletiva na prática</h3>
                 <ul className="mt-3 space-y-2 text-sm">
                   <li>
-                    <Link
-                      className="text-slate-700 hover:underline"
-                      href="/blog/coleta-seletiva-no-brasil"
-                    >
+                    <Link className="text-slate-700 hover:underline" href="/blog/coleta-seletiva-no-brasil">
                       Como funciona a coleta seletiva
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      className="text-slate-700 hover:underline"
-                      href="/blog/lixo-eletronico-descarte"
-                    >
+                    <Link className="text-slate-700 hover:underline" href="/blog/lixo-eletronico-descarte">
                       Lixo eletrônico: descarte correto
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      className="text-slate-700 hover:underline"
-                      href="/blog/reduzir-lixo-na-rotina"
-                    >
+                    <Link className="text-slate-700 hover:underline" href="/blog/reduzir-lixo-na-rotina">
                       Reduzir lixo na rotina
                     </Link>
                   </li>
@@ -557,105 +465,11 @@ export default function Page({
               </Card>
             </div>
           </section>
-
-          {/* FAQ */}
-          <section className="mt-10">
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">Dúvidas rápidas</h2>
-
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <Card>
-                <h3 className="text-base font-semibold text-slate-900">
-                  Precisa lavar embalagens para reciclar?
-                </h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  Na maioria dos casos, basta remover excesso de alimento e reduzir contaminação.
-                  Isso aumenta a chance de aproveitamento do material.
-                </p>
-              </Card>
-
-              <Card>
-                <h3 className="text-base font-semibold text-slate-900">
-                  Papel engordurado é reciclável?
-                </h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  Geralmente não. Gordura contamina fibras e dificulta o processo. Prefira descarte
-                  orgânico quando aplicável (ou rejeito, dependendo do caso).
-                </p>
-              </Card>
-
-              <Card>
-                <h3 className="text-base font-semibold text-slate-900">
-                  Posso misturar vidro e metal na mesma sacola?
-                </h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  O ideal é separar. Vidro quebrado pode ferir quem faz a triagem e contaminar outros
-                  materiais. Embale com segurança.
-                </p>
-              </Card>
-
-              <Card>
-                <h3 className="text-base font-semibold text-slate-900">
-                  Quando não existe coleta seletiva, o que fazer?
-                </h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  Busque ecopontos, cooperativas ou PEVs. Em muitos bairros, mercados e shoppings
-                  recebem itens específicos.
-                </p>
-              </Card>
-            </div>
-          </section>
-
-          {/* CTA final */}
-          <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Quer aprender reciclagem do jeito certo?
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm text-slate-600">
-              Comece pela página pilar e depois avance pelos guias. É o caminho mais rápido para
-              separar corretamente e evitar contaminação.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/reciclagem"
-                className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
-              >
-                Página pilar: Reciclagem
-              </Link>
-              <Link
-                href="/guias"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Ver todos os guias
-              </Link>
-            </div>
-          </section>
         </div>
 
         {/* Sidebar */}
         <aside className="hidden lg:block">
           <div className="sticky top-6 space-y-4">
-            <Card>
-              <h2 className="text-sm font-semibold text-slate-900">Links úteis</h2>
-              <ul className="mt-3 space-y-2 text-sm">
-                <li>
-                  <Link className="text-emerald-700 hover:underline" href="/reciclagem">
-                    Página pilar: Reciclagem →
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-slate-700 hover:underline" href="/guias">
-                    Guias práticos
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-slate-700 hover:underline" href="/sustentabilidade">
-                    Sustentabilidade
-                  </Link>
-                </li>
-              </ul>
-            </Card>
-
             <Card>
               <h2 className="text-sm font-semibold text-slate-900">
                 Mais lidos{activeCategory !== "all" ? `: ${activeCategory}` : ""}
@@ -676,21 +490,6 @@ export default function Page({
                   <li className="text-sm text-slate-600">Sem artigos nesta categoria.</li>
                 )}
               </ul>
-            </Card>
-
-            <Card>
-              <h2 className="text-sm font-semibold text-slate-900">Categorias</h2>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {CATEGORY_CHIPS.filter((c) => c.value !== "all").map((c) => (
-                  <Link
-                    key={c.label}
-                    href={chipHref(c.value as Category)}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
-                  >
-                    {c.label}
-                  </Link>
-                ))}
-              </div>
             </Card>
           </div>
         </aside>

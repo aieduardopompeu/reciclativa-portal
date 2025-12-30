@@ -1,23 +1,28 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
+  "https://reciclativa-portal.vercel.app";
 export const metadata: Metadata = {
-  title: "Reciclagem de plástico: erros que atrapalham tudo",
+  title: "Reciclagem de plÃ¡stico: erros que atrapalham tudo",
   description:
-    "Principais erros no descarte de plástico que aumentam rejeição na triagem  e como evitar.",
+    "Principais erros no descarte de plÃ¡stico que aumentam rejeiÃ§Ã£o na triagem  e como evitar.",
   alternates: { canonical: "/blog/reciclagem-plastico-erros" },
 };
 
 export default function Page() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      <header className="border-b border-slate-200 bg-emerald-50/40">
+<header className="border-b border-slate-200 bg-emerald-50/40">
         <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
             Blog
           </p>
           <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-            Reciclagem de plástico: erros que atrapalham tudo
+            Reciclagem de plÃ¡stico: erros que atrapalham tudo
           </h1>
           <p className="mt-3 text-sm text-slate-700 sm:text-base">
             Artigo-base criado para evitar 404. Em seguida, vira um post pilar
@@ -43,18 +48,18 @@ export default function Page() {
 
       <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
         <div className="prose prose-slate max-w-none">
-          <h2>Em construção</h2>
+          <h2>Em construÃ§Ã£o</h2>
           <p>
-            Conteúdo será publicado em breve. Estrutura planejada: itens sujos,
-            mistura de materiais, rótulos/adesivos, plásticos difíceis, e como
-            melhorar a separação em casa.
+            ConteÃºdo serÃ¡ publicado em breve. Estrutura planejada: itens sujos,
+            mistura de materiais, rÃ³tulos/adesivos, plÃ¡sticos difÃ­ceis, e como
+            melhorar a separaÃ§Ã£o em casa.
           </p>
           <ul>
             <li>
               <Link href="/guias/coleta-seletiva">Coleta seletiva</Link>
             </li>
             <li>
-              <Link href="/simbolos-da-reciclagem">Símbolos da reciclagem</Link>
+              <Link href="/simbolos-da-reciclagem">SÃ­mbolos da reciclagem</Link>
             </li>
             <li>
               <Link href="/reciclagem">Pilar de Reciclagem</Link>
@@ -65,3 +70,5 @@ export default function Page() {
     </main>
   );
 }
+
+

@@ -1,17 +1,22 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
+  "https://reciclativa-portal.vercel.app";
 export const metadata: Metadata = {
   title: "Economia circular: conceito e exemplos no Brasil",
   description:
-    "Entenda economia circular e veja exemplos práticos de aplicação no Brasil, com benefícios e desafios.",
+    "Entenda economia circular e veja exemplos prÃ¡ticos de aplicaÃ§Ã£o no Brasil, com benefÃ­cios e desafios.",
   alternates: { canonical: "/blog/economia-circular-exemplos" },
 };
 
 export default function Page() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      <header className="border-b border-slate-200 bg-emerald-50/40">
+<header className="border-b border-slate-200 bg-emerald-50/40">
         <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
             Blog
@@ -43,20 +48,20 @@ export default function Page() {
 
       <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
         <div className="prose prose-slate max-w-none">
-          <h2>Em construção</h2>
+          <h2>Em construÃ§Ã£o</h2>
           <p>
-            Conteúdo será publicado em breve. Estrutura planejada: definição,
-            princípios, benefícios, exemplos e como aplicar no dia a dia.
+            ConteÃºdo serÃ¡ publicado em breve. Estrutura planejada: definiÃ§Ã£o,
+            princÃ­pios, benefÃ­cios, exemplos e como aplicar no dia a dia.
           </p>
           <ul>
             <li>
               <Link href="/reciclagem">Pilar de Reciclagem</Link>
             </li>
             <li>
-              <Link href="/guias">Guias práticos</Link>
+              <Link href="/guias">Guias prÃ¡ticos</Link>
             </li>
             <li>
-              <Link href="/diretorio">Diretório de soluções</Link>
+              <Link href="/diretorio">DiretÃ³rio de soluÃ§Ãµes</Link>
             </li>
           </ul>
         </div>
@@ -64,3 +69,5 @@ export default function Page() {
     </main>
   );
 }
+
+

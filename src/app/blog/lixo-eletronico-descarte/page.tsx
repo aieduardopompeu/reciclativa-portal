@@ -1,6 +1,11 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
+  "https://reciclativa-portal.vercel.app";
 export const metadata: Metadata = {
   title: "Lixo eletrônico: como descartar | Reciclativa",
   description: "Como descartar lixo eletrônico: pilhas, baterias, celulares, cabos e eletroeletrônicos.",
@@ -10,7 +15,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-50">
-      <div className="border-b border-slate-900">
+<div className="border-b border-slate-900">
         <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-16 sm:px-6 sm:pt-20 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
             Reciclativa
@@ -53,3 +58,6 @@ export default function Page() {
     </main>
   );
 }
+
+
+
