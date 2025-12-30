@@ -111,13 +111,21 @@ const CATEGORY_CHIPS: Array<{ label: string; value: "all" | Category }> = [
   { label: "Economia circular", value: "Economia circular" },
 ];
 
+function isCategory(value: string): value is Category {
+  return (
+    value === "Reciclagem" ||
+    value === "Sustentabilidade" ||
+    value === "Guias" ||
+    value === "Economia circular"
+  );
+}
+
 function formatDateBR(iso: string) {
   const [y, m, d] = iso.split("-").map(Number);
   return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
 }
 
 function badgeClass(category: Category) {
-  // badges com boa leitura no tema claro
   switch (category) {
     case "Reciclagem":
       return "bg-emerald-50 text-emerald-700 ring-emerald-200";
@@ -194,11 +202,15 @@ function FeaturedMain({ post }: { post: Post }) {
         </span>
       </div>
 
-      <h2 className="mt-3 text-2xl font-bold tracking-tight text-white">
-        <Link href={`/blog/${post.slug}`} className="hover:underline focus:ring-2 focus:ring-emerald-300/40 outline-none">
+      {/* H3 para manter hierarquia (H2 é o título da seção) */}
+      <h3 className="mt-3 text-2xl font-bold tracking-tight text-white">
+        <Link
+          href={`/blog/${post.slug}`}
+          className="outline-none hover:underline focus:ring-2 focus:ring-emerald-300/40"
+        >
           {post.title}
         </Link>
-      </h2>
+      </h3>
 
       <p className="mt-3 text-sm leading-relaxed text-white/80">{post.excerpt}</p>
 
@@ -220,20 +232,45 @@ function FeaturedMain({ post }: { post: Post }) {
   );
 }
 
-export default function Page() {
-  const featuredMain = POSTS[0];
-  const featuredSecondary = POSTS.slice(1, 5);
+export default function Page({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  // categoria ativa via querystring
+  const catParamRaw = searchParams?.cat;
+  const catParam = Array.isArray(catParamRaw) ? catParamRaw[0] : catParamRaw;
+  const activeCategory: "all" | Category = catParam && isCategory(catParam) ? catParam : "all";
 
-  const latest = [...POSTS].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
-  const mostRead = [POSTS[1], POSTS[3], POSTS[5], POSTS[6]].filter(Boolean);
+  // dataset filtrado
+  const baseList =
+    activeCategory === "all" ? POSTS : POSTS.filter((p) => p.category === activeCategory);
+
+  // ordenação por data desc
+  const latest = [...baseList].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
+
+  // destaques: primeiro + próximos 4 (se houver)
+  const featuredMain = latest[0] ?? POSTS[0];
+  const featuredSecondary = latest.slice(1, 5);
+
+  // sidebar: “Mais lidos” (se filtro ativo, pega os primeiros 4 do filtro; senão lista fixa)
+  const mostRead =
+    activeCategory === "all"
+      ? [POSTS[1], POSTS[3], POSTS[5], POSTS[6]].filter(Boolean)
+      : latest.slice(0, 4);
+
+  // helper: link do chip
+  const chipHref = (value: "all" | Category) => (value === "all" ? "/blog" : `/blog?cat=${encodeURIComponent(value)}`);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
-      {/* HERO escuro (igual padrão da Reciclagem) */}
+      {/* HERO escuro */}
       <section className="overflow-hidden rounded-3xl bg-slate-950">
         <div className="px-6 py-10 md:px-10 md:py-12">
           <div className="text-sm text-white/70">
-            <Link href="/" className="hover:text-white">Home</Link>
+            <Link href="/" className="hover:text-white">
+              Home
+            </Link>
             <span className="mx-2 text-white/40">/</span>
             <span className="text-white/90">Blog</span>
           </div>
@@ -269,46 +306,75 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Destaques (ainda no hero, para evitar “vazio”) */}
+        {/* Destaques dentro do hero (evita “vazio”) */}
         <div className="border-t border-white/10 px-6 py-6 md:px-10">
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="flex items-end justify-between gap-3">
+            <h2 className="text-lg font-bold tracking-tight text-white">
+              Destaques{activeCategory !== "all" ? `: ${activeCategory}` : ""}
+            </h2>
+            <span className="text-sm text-white/70">{baseList.length} artigos</span>
+          </div>
+
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
             <FeaturedMain post={featuredMain} />
 
             <div className="grid gap-4 sm:grid-cols-2">
-              {featuredSecondary.map((post) => (
-                <div key={post.slug} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/80 ring-1 ring-white/10">
-                      {post.category}
-                    </span>
-                    <span className="text-xs text-white/70">{formatDateBR(post.dateISO)}</span>
-                  </div>
-                  <h3 className="mt-3 text-sm font-semibold text-white">
-                    <Link href={`/blog/${post.slug}`} className="hover:underline focus:ring-2 focus:ring-emerald-300/40 outline-none">
-                      {post.title}
-                    </Link>
-                  </h3>
-                  <p className="mt-2 line-clamp-3 text-sm text-white/75">{post.excerpt}</p>
+              {featuredSecondary.length > 0 ? (
+                featuredSecondary.map((post) => (
+                  <article
+                    key={post.slug}
+                    className="rounded-2xl border border-white/10 bg-white/5 p-5"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/80 ring-1 ring-white/10">
+                        {post.category}
+                      </span>
+                      <span className="text-xs text-white/70">{formatDateBR(post.dateISO)}</span>
+                    </div>
+
+                    <h3 className="mt-3 text-sm font-semibold text-white">
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="outline-none hover:underline focus:ring-2 focus:ring-emerald-300/40"
+                      >
+                        {post.title}
+                      </Link>
+                    </h3>
+
+                    <p className="mt-2 line-clamp-3 text-sm text-white/75">{post.excerpt}</p>
+                  </article>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-white/75">
+                  Ainda não há artigos suficientes nesta categoria para preencher os destaques.
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Chips (tema claro) */}
+      {/* Chips SSR (links) */}
       <section className="mt-6">
         <div className="flex flex-wrap items-center gap-2">
-          {CATEGORY_CHIPS.map((chip) => (
-            <button
-              key={chip.label}
-              type="button"
-              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
-              aria-label={`Filtrar por ${chip.label}`}
-            >
-              {chip.label}
-            </button>
-          ))}
+          {CATEGORY_CHIPS.map((chip) => {
+            const isActive = chip.value === activeCategory;
+            return (
+              <Link
+                key={chip.label}
+                href={chipHref(chip.value)}
+                className={[
+                  "rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition",
+                  isActive
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50",
+                ].join(" ")}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {chip.label}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -319,9 +385,9 @@ export default function Page() {
           <section>
             <div className="flex items-end justify-between gap-3">
               <h2 className="text-xl font-bold tracking-tight text-slate-900">
-                Últimos artigos
+                Últimos artigos{activeCategory !== "all" ? `: ${activeCategory}` : ""}
               </h2>
-              <span className="text-sm text-slate-500">{POSTS.length} artigos</span>
+              <span className="text-sm text-slate-500">{baseList.length} artigos</span>
             </div>
             <p className="mt-2 text-sm text-slate-600">
               Conteúdos novos e atualizações para aprofundar seu entendimento e evitar erros comuns.
@@ -333,6 +399,7 @@ export default function Page() {
               ))}
             </div>
 
+            {/* Placeholder “Carregar mais” */}
             <div className="mt-6">
               <button
                 type="button"
@@ -368,7 +435,10 @@ export default function Page() {
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-700 hover:underline" href="/blog/o-que-pode-ser-reciclado">
+                    <Link
+                      className="text-slate-700 hover:underline"
+                      href="/blog/o-que-pode-ser-reciclado"
+                    >
                       O que pode ser reciclado
                     </Link>
                   </li>
@@ -389,7 +459,10 @@ export default function Page() {
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-700 hover:underline" href="/blog/cores-da-coleta-seletiva">
+                    <Link
+                      className="text-slate-700 hover:underline"
+                      href="/blog/cores-da-coleta-seletiva"
+                    >
                       Cores da coleta seletiva
                     </Link>
                   </li>
@@ -400,17 +473,26 @@ export default function Page() {
                 <h3 className="text-base font-semibold text-slate-900">Coleta seletiva na prática</h3>
                 <ul className="mt-3 space-y-2 text-sm">
                   <li>
-                    <Link className="text-slate-700 hover:underline" href="/blog/coleta-seletiva-no-brasil">
+                    <Link
+                      className="text-slate-700 hover:underline"
+                      href="/blog/coleta-seletiva-no-brasil"
+                    >
                       Como funciona a coleta seletiva
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-700 hover:underline" href="/blog/lixo-eletronico-descarte">
+                    <Link
+                      className="text-slate-700 hover:underline"
+                      href="/blog/lixo-eletronico-descarte"
+                    >
                       Lixo eletrônico: descarte correto
                     </Link>
                   </li>
                   <li>
-                    <Link className="text-slate-700 hover:underline" href="/blog/reduzir-lixo-na-rotina">
+                    <Link
+                      className="text-slate-700 hover:underline"
+                      href="/blog/reduzir-lixo-na-rotina"
+                    >
                       Reduzir lixo na rotina
                     </Link>
                   </li>
@@ -421,9 +503,7 @@ export default function Page() {
 
           {/* FAQ */}
           <section className="mt-10">
-            <h2 className="text-xl font-bold tracking-tight text-slate-900">
-              Dúvidas rápidas
-            </h2>
+            <h2 className="text-xl font-bold tracking-tight text-slate-900">Dúvidas rápidas</h2>
 
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <Card>
@@ -499,7 +579,7 @@ export default function Page() {
         <aside className="hidden lg:block">
           <div className="sticky top-6 space-y-4">
             <Card>
-              <h3 className="text-sm font-semibold text-slate-900">Links úteis</h3>
+              <h2 className="text-sm font-semibold text-slate-900">Links úteis</h2>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>
                   <Link className="text-emerald-700 hover:underline" href="/reciclagem">
@@ -520,7 +600,9 @@ export default function Page() {
             </Card>
 
             <Card>
-              <h3 className="text-sm font-semibold text-slate-900">Mais lidos</h3>
+              <h2 className="text-sm font-semibold text-slate-900">
+                Mais lidos{activeCategory !== "all" ? `: ${activeCategory}` : ""}
+              </h2>
               <ul className="mt-3 space-y-3 text-sm">
                 {mostRead.map((p) => (
                   <li key={p.slug} className="flex flex-col">
@@ -532,19 +614,23 @@ export default function Page() {
                     </span>
                   </li>
                 ))}
+                {mostRead.length === 0 ? (
+                  <li className="text-sm text-slate-600">Sem artigos nesta categoria.</li>
+                ) : null}
               </ul>
             </Card>
 
             <Card>
-              <h3 className="text-sm font-semibold text-slate-900">Categorias</h3>
+              <h2 className="text-sm font-semibold text-slate-900">Categorias</h2>
               <div className="mt-3 flex flex-wrap gap-2">
                 {CATEGORY_CHIPS.filter((c) => c.value !== "all").map((c) => (
-                  <span
+                  <Link
                     key={c.label}
-                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700"
+                    href={chipHref(c.value as Category)}
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
                   >
                     {c.label}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </Card>
