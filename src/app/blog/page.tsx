@@ -2,12 +2,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Blog | Reciclativa",
-  description:
-    "Atualizações, tendências e conteúdos práticos sobre reciclagem, sustentabilidade, coleta seletiva e economia circular.",
-};
-
 type Category = "Reciclagem" | "Sustentabilidade" | "Guias" | "Economia circular";
 
 type Post = {
@@ -120,6 +114,80 @@ function isCategory(value: string): value is Category {
   );
 }
 
+function getActiveCategory(searchParams?: { [key: string]: string | string[] | undefined }) {
+  const raw = searchParams?.cat;
+  const cat = Array.isArray(raw) ? raw[0] : raw;
+  const active: "all" | Category = cat && isCategory(cat) ? cat : "all";
+  return active;
+}
+
+function categoryMeta(category: "all" | Category) {
+  if (category === "all") {
+    return {
+      title: "Blog | Reciclativa",
+      description:
+        "Artigos e guias práticos sobre reciclagem, sustentabilidade, coleta seletiva e economia circular.",
+      canonicalPath: "/blog",
+    };
+  }
+
+  const byCat: Record<Category, { title: string; description: string }> = {
+    Reciclagem: {
+      title: "Blog de Reciclagem | Reciclativa",
+      description:
+        "Conteúdos práticos sobre reciclagem: o que pode ser reciclado, como separar resíduos e evitar contaminação no descarte.",
+    },
+    Sustentabilidade: {
+      title: "Blog de Sustentabilidade | Reciclativa",
+      description:
+        "Dicas e conceitos de sustentabilidade para reduzir resíduos, melhorar hábitos e entender impactos ambientais no dia a dia.",
+    },
+    Guias: {
+      title: "Guias Práticos | Blog Reciclativa",
+      description:
+        "Guias passo a passo sobre reciclagem e descarte correto: coleta seletiva, preparo de materiais e erros comuns.",
+    },
+    "Economia circular": {
+      title: "Economia Circular | Blog Reciclativa",
+      description:
+        "Artigos sobre economia circular: diferenças para o modelo linear, exemplos e como aplicar reduzir, reutilizar e reciclar.",
+    },
+  };
+
+  return {
+    title: byCat[category].title,
+    description: byCat[category].description,
+    canonicalPath: `/blog?cat=${encodeURIComponent(category)}`,
+  };
+}
+
+/**
+ * Metadata dinâmica por categoria + canonical dinâmico.
+ * Observação: assume que o layout raiz já define metadataBase (URL do site).
+ */
+export function generateMetadata({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}): Metadata {
+  const activeCategory = getActiveCategory(searchParams);
+  const meta = categoryMeta(activeCategory);
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    alternates: {
+      canonical: meta.canonicalPath,
+    },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: meta.canonicalPath,
+      type: "website",
+    },
+  };
+}
+
 function formatDateBR(iso: string) {
   const [y, m, d] = iso.split("-").map(Number);
   return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
@@ -202,7 +270,6 @@ function FeaturedMain({ post }: { post: Post }) {
         </span>
       </div>
 
-      {/* H3 para manter hierarquia (H2 é o título da seção) */}
       <h3 className="mt-3 text-2xl font-bold tracking-tight text-white">
         <Link
           href={`/blog/${post.slug}`}
@@ -237,34 +304,26 @@ export default function Page({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  // categoria ativa via querystring
-  const catParamRaw = searchParams?.cat;
-  const catParam = Array.isArray(catParamRaw) ? catParamRaw[0] : catParamRaw;
-  const activeCategory: "all" | Category = catParam && isCategory(catParam) ? catParam : "all";
+  const activeCategory = getActiveCategory(searchParams);
 
-  // dataset filtrado
   const baseList =
     activeCategory === "all" ? POSTS : POSTS.filter((p) => p.category === activeCategory);
 
-  // ordenação por data desc
   const latest = [...baseList].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
-
-  // destaques: primeiro + próximos 4 (se houver)
   const featuredMain = latest[0] ?? POSTS[0];
   const featuredSecondary = latest.slice(1, 5);
 
-  // sidebar: “Mais lidos” (se filtro ativo, pega os primeiros 4 do filtro; senão lista fixa)
   const mostRead =
     activeCategory === "all"
       ? [POSTS[1], POSTS[3], POSTS[5], POSTS[6]].filter(Boolean)
       : latest.slice(0, 4);
 
-  // helper: link do chip
-  const chipHref = (value: "all" | Category) => (value === "all" ? "/blog" : `/blog?cat=${encodeURIComponent(value)}`);
+  const chipHref = (value: "all" | Category) =>
+    value === "all" ? "/blog" : `/blog?cat=${encodeURIComponent(value)}`;
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
-      {/* HERO escuro */}
+      {/* HERO */}
       <section className="overflow-hidden rounded-3xl bg-slate-950">
         <div className="px-6 py-10 md:px-10 md:py-12">
           <div className="text-sm text-white/70">
@@ -306,7 +365,7 @@ export default function Page({
           </div>
         </div>
 
-        {/* Destaques dentro do hero (evita “vazio”) */}
+        {/* Destaques */}
         <div className="border-t border-white/10 px-6 py-6 md:px-10">
           <div className="flex items-end justify-between gap-3">
             <h2 className="text-lg font-bold tracking-tight text-white">
@@ -354,7 +413,7 @@ export default function Page({
         </div>
       </section>
 
-      {/* Chips SSR (links) */}
+      {/* Chips SSR */}
       <section className="mt-6">
         <div className="flex flex-wrap items-center gap-2">
           {CATEGORY_CHIPS.map((chip) => {
@@ -381,7 +440,6 @@ export default function Page({
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
         {/* Coluna principal */}
         <div className="min-w-0">
-          {/* Últimos posts */}
           <section>
             <div className="flex items-end justify-between gap-3">
               <h2 className="text-xl font-bold tracking-tight text-slate-900">
@@ -399,7 +457,6 @@ export default function Page({
               ))}
             </div>
 
-            {/* Placeholder “Carregar mais” */}
             <div className="mt-6">
               <button
                 type="button"
@@ -575,7 +632,7 @@ export default function Page({
           </section>
         </div>
 
-        {/* Sidebar (desktop) */}
+        {/* Sidebar */}
         <aside className="hidden lg:block">
           <div className="sticky top-6 space-y-4">
             <Card>
@@ -604,19 +661,20 @@ export default function Page({
                 Mais lidos{activeCategory !== "all" ? `: ${activeCategory}` : ""}
               </h2>
               <ul className="mt-3 space-y-3 text-sm">
-                {mostRead.map((p) => (
-                  <li key={p.slug} className="flex flex-col">
-                    <Link className="text-slate-800 hover:underline" href={`/blog/${p.slug}`}>
-                      {p.title}
-                    </Link>
-                    <span className="mt-1 text-xs text-slate-500">
-                      {p.category} • {formatDateBR(p.dateISO)}
-                    </span>
-                  </li>
-                ))}
-                {mostRead.length === 0 ? (
+                {mostRead.length > 0 ? (
+                  mostRead.map((p) => (
+                    <li key={p.slug} className="flex flex-col">
+                      <Link className="text-slate-800 hover:underline" href={`/blog/${p.slug}`}>
+                        {p.title}
+                      </Link>
+                      <span className="mt-1 text-xs text-slate-500">
+                        {p.category} • {formatDateBR(p.dateISO)}
+                      </span>
+                    </li>
+                  ))
+                ) : (
                   <li className="text-sm text-slate-600">Sem artigos nesta categoria.</li>
-                ) : null}
+                )}
               </ul>
             </Card>
 
