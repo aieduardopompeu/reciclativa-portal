@@ -1,7 +1,7 @@
 // src/app/blog/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BLOG_POSTS, BLOG_OG_DEFAULT, type BlogCategory, type BlogPost } from "@/content/blog/posts";
+import { BLOG_POSTS, BLOG_OG_DEFAULT, type BlogCategory, type BlogPost } from "../../content/blog/posts";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
