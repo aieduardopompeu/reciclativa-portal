@@ -6,9 +6,6 @@ type PageProps = {
   params: { slug: string };
 };
 
-// ✅ Blindagem total: não depende de generateStaticParams para o slug existir em produção
-export const dynamic = "force-dynamic";
-
 export default function ReciclagemArticlePage({ params }: PageProps) {
   const { slug } = params;
 
@@ -30,21 +27,6 @@ export default function ReciclagemArticlePage({ params }: PageProps) {
             {p}
           </p>
         ))}
-
-        {article.faq?.length ? (
-          <section className="mt-12 space-y-6">
-            <h2 className="text-2xl font-bold">Perguntas frequentes</h2>
-
-            <div className="space-y-6">
-              {article.faq.map((item, idx) => (
-                <div key={idx} className="space-y-2">
-                  <h3 className="font-semibold">{item.question}</h3>
-                  <p className="text-muted-foreground">{item.answer}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : null}
       </article>
     </main>
   );
