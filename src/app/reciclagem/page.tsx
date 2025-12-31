@@ -3,14 +3,14 @@ import Link from "next/link";
 
 export default function ReciclagemPilarPage() {
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
-      {/* Hero */}
-      <section className="rounded-2xl border bg-white/60 p-6 shadow-sm backdrop-blur sm:p-10">
+    <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-12">
+      {/* Hero (padrão mais próximo do /blog) */}
+      <section className="rounded-3xl border bg-white p-6 shadow-sm sm:p-10">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-          Página pilar
+          Página pilar · Reciclagem
         </p>
 
-        <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">
           Reciclagem: guia prático para reciclar corretamente
         </h1>
 
@@ -19,7 +19,7 @@ export default function ReciclagemPilarPage() {
           símbolos da reciclagem para acertar no descarte.
         </p>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-7 flex flex-wrap gap-3">
           <Link
             href="/guias"
             className="inline-flex items-center justify-center rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
@@ -29,84 +29,133 @@ export default function ReciclagemPilarPage() {
 
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+            className="inline-flex items-center justify-center rounded-md border border-black/10 bg-transparent px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-black/5"
           >
             Voltar para a Home
           </Link>
         </div>
       </section>
 
-      {/* Cards de navegação rápida */}
-      <section className="mt-10">
-        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
-          Começando do zero
-        </h2>
-        <p className="mt-2 max-w-3xl text-sm text-muted-foreground sm:text-base">
-          O básico para separar, higienizar e armazenar recicláveis sem gerar
-          rejeito por contaminação.
-        </p>
+      {/* Grid: trilha (cards) + atalhos (lado direito) */}
+      <section className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start">
+        {/* Coluna principal (2/3): cards */}
+        <div className="lg:col-span-2">
+          <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+            Começando do zero
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm text-muted-foreground sm:text-base">
+            O básico para separar, higienizar e armazenar recicláveis sem gerar
+            rejeito por contaminação.
+          </p>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Link
-            href="/blog/o-que-pode-ser-reciclado"
-            className="group rounded-xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-              Checklist
-            </p>
-            <h3 className="mt-2 text-lg font-semibold">
-              O que pode (e não pode) ser reciclado
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Lista prática por material + regra de ouro para reduzir
-              contaminação.
-            </p>
-            <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
-              Ler guia →
-            </span>
-          </Link>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <Link
+              href="/blog/o-que-pode-ser-reciclado"
+              className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                Checklist
+              </p>
+              <h3 className="mt-2 text-lg font-semibold">
+                O que pode (e não pode) ser reciclado
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Lista prática por material + regra de ouro para reduzir
+                contaminação.
+              </p>
+              <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
+                Ler guia →
+              </span>
+            </Link>
 
-          <Link
-            href="/coleta-seletiva"
-            className="group rounded-xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-              Guia base
-            </p>
-            <h3 className="mt-2 text-lg font-semibold">
-              Coleta seletiva: como separar sem erro
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Cores, organização e dicas simples para separar com consistência.
-            </p>
-            <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
-              Ver página →
-            </span>
-          </Link>
+            <Link
+              href="/coleta-seletiva"
+              className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                Guia base
+              </p>
+              <h3 className="mt-2 text-lg font-semibold">
+                Coleta seletiva: como separar sem erro
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Cores, organização e dicas simples para separar com
+                consistência.
+              </p>
+              <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
+                Ver página →
+              </span>
+            </Link>
 
-          <Link
-            href="/simbolos-da-reciclagem"
-            className="group rounded-xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-              Essencial
-            </p>
-            <h3 className="mt-2 text-lg font-semibold">
-              Símbolos da reciclagem
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Entenda os símbolos nas embalagens e o que eles realmente
-              significam.
-            </p>
-            <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
-              Ver símbolos →
-            </span>
-          </Link>
+            <Link
+              href="/simbolos-da-reciclagem"
+              className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow sm:col-span-2"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                Essencial
+              </p>
+              <h3 className="mt-2 text-lg font-semibold">
+                Símbolos da reciclagem
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Entenda os símbolos nas embalagens e o que eles realmente
+                significam.
+              </p>
+              <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
+                Ver símbolos →
+              </span>
+            </Link>
+          </div>
         </div>
+
+        {/* Coluna lateral (1/3): atalhos no padrão do /blog */}
+        <aside className="rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold tracking-tight">Atalhos da Reciclagem</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Navegação rápida para reforçar SEO interno e facilitar a jornada.
+          </p>
+
+          <div className="mt-5 space-y-3">
+            <Link
+              href="/blog"
+              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+            >
+              Blog da Reciclativa <span aria-hidden>→</span>
+            </Link>
+
+            <Link
+              href="/guias"
+              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+            >
+              Guias práticos <span aria-hidden>→</span>
+            </Link>
+
+            <Link
+              href="/coleta-seletiva"
+              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+            >
+              Coleta seletiva <span aria-hidden>→</span>
+            </Link>
+
+            <Link
+              href="/simbolos-da-reciclagem"
+              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+            >
+              Símbolos da reciclagem <span aria-hidden>→</span>
+            </Link>
+          </div>
+
+          <div className="mt-6 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900">
+            <p className="font-semibold">Dica editorial</p>
+            <p className="mt-1 text-emerald-900/80">
+              Em cada post, linke 3–6 conteúdos relacionados e 1 página pilar.
+            </p>
+          </div>
+        </aside>
       </section>
 
-      {/* Erros comuns + checklist */}
-      <section className="mt-12 grid gap-8 lg:grid-cols-2">
+      {/* Blocos inferiores: erros comuns + checklist */}
+      <section className="mt-10 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border bg-white p-6 shadow-sm">
           <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
             Erros comuns que atrapalham tudo
@@ -121,7 +170,7 @@ export default function ReciclagemPilarPage() {
           <div className="mt-6">
             <Link
               href="/blog/o-que-pode-ser-reciclado"
-              className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+              className="inline-flex items-center justify-center rounded-md border border-black/10 px-4 py-2 text-sm font-semibold hover:bg-black/5"
             >
               Ver a regra de ouro →
             </Link>
@@ -136,8 +185,8 @@ export default function ReciclagemPilarPage() {
             <li>1) Separe recicláveis do orgânico.</li>
             <li>2) Retire excesso de comida e líquidos.</li>
             <li>3) Mantenha seco (não precisa lavar “perfeito”).</li>
-            <li>4) Amasse volumes quando fizer sentido (ex.: garrafa PET).</li>
-            <li>5) Quando tiver dúvida, consulte o guia e a regra local.</li>
+            <li>4) Reduza volume quando fizer sentido (ex.: garrafa PET).</li>
+            <li>5) Em dúvida, consulte o guia e a regra local.</li>
           </ol>
 
           <div className="mt-6 flex flex-wrap gap-3">
@@ -149,38 +198,11 @@ export default function ReciclagemPilarPage() {
             </Link>
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+              className="inline-flex items-center justify-center rounded-md border border-black/10 px-4 py-2 text-sm font-semibold hover:bg-black/5"
             >
               Ir para o Blog
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Links úteis */}
-      <section className="mt-12 rounded-2xl border bg-white p-6 shadow-sm">
-        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
-          Links úteis para continuar
-        </h2>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Link
-            href="/blog/o-que-pode-ser-reciclado"
-            className="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
-          >
-            O que pode ser reciclado
-          </Link>
-          <Link
-            href="/coleta-seletiva"
-            className="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
-          >
-            Coleta seletiva
-          </Link>
-          <Link
-            href="/simbolos-da-reciclagem"
-            className="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
-          >
-            Símbolos da reciclagem
-          </Link>
         </div>
       </section>
     </main>
