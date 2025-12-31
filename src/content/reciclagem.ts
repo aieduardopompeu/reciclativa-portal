@@ -8,7 +8,7 @@ export type ReciclagemArticle = {
   faq?: { question: string; answer: string }[]; // ✅ FAQ conservador (opcional)
 };
 
-export const reciclademArticles: ReciclagemArticle[] = [
+export const reciclagemArticles: ReciclagemArticle[] = [
   {
     slug: "o-que-pode-ser-reciclado",
     title: "O Que Pode e o Que Não Pode Ser Reciclado | Guia Completo",
