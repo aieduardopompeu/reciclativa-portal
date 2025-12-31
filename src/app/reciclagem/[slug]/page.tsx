@@ -1,19 +1,13 @@
 // src/app/reciclagem/[slug]/page.tsx
 import { notFound } from "next/navigation";
-import { getReciclagemArticle, reciclagemArticles } from "@/content/reciclagem";
+import { getReciclagemArticle } from "@/content/reciclagem";
 
 type PageProps = {
   params: { slug: string };
 };
 
-// ✅ Garante que o Next conheça todos os slugs em build (mais estável em produção)
-export function generateStaticParams() {
-  return reciclagemArticles.map((a) => ({ slug: a.slug }));
-}
-
-// ✅ Se em algum momento existiu dynamicParams = false no seu arquivo,
-// isto evita 404 indevido para slugs novos (conservador).
-export const dynamicParams = true;
+// ✅ Blindagem total: não depende de generateStaticParams para o slug existir em produção
+export const dynamic = "force-dynamic";
 
 export default function ReciclagemArticlePage({ params }: PageProps) {
   const { slug } = params;
