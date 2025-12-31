@@ -77,5 +77,5 @@ export const reciclagemArticles: ReciclagemArticle[] = [
 ];
 
 export function getReciclagemArticle(slug: string) {
-  return reciclademArticles.find((a) => a.slug === slug) ?? null;
+  return reciclagemArticles.find((a) => a.slug === slug) ?? null;
 }
