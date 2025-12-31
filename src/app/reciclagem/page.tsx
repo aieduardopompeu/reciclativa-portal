@@ -5,7 +5,7 @@ export default function ReciclagemPilarPage() {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-12">
       {/* Hero (padrão mais próximo do /blog) */}
-      <section className="rounded-3xl border bg-white p-6 shadow-sm sm:p-10">
+      <section className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm sm:p-10">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
           Página pilar · Reciclagem
         </p>
