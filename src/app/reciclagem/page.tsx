@@ -1,173 +1,188 @@
-import type { Metadata } from "next";
+// src/app/reciclagem/page.tsx
 import Link from "next/link";
 
-type PageMeta = {
-  title: string;
-  description: string;
-  canonical: string;
-  h1: string;
-  subtitle: string;
-  breadcrumbs?: Array<{ label: string; href: string }>;
-  sections?: Array<{ title: string; text: string }>;
-};
-
-function PillarPage({ meta }: { meta: PageMeta }) {
+export default function ReciclagemPilarPage() {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-50">
-      <div className="border-b border-slate-900">
-        <div className="mx-auto w-full max-w-6xl px-4 pb-10 pt-16 sm:px-6 sm:pt-20 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
-            Reciclativa
-          </p>
+    <main className="mx-auto w-full max-w-6xl px-4 py-10">
+      {/* Hero */}
+      <section className="rounded-2xl border bg-white/60 p-6 shadow-sm backdrop-blur sm:p-10">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+          Página pilar
+        </p>
 
-          <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-50 sm:text-5xl">
-            {meta.h1}
-          </h1>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+          Reciclagem: guia prático para reciclar corretamente
+        </h1>
 
-          <p className="mt-4 max-w-3xl text-sm text-slate-300 sm:text-base">
-            {meta.subtitle}
-          </p>
+        <p className="mt-4 max-w-3xl text-base text-muted-foreground sm:text-lg">
+          Aprenda como separar resíduos, evitar contaminação e entender os
+          símbolos da reciclagem para acertar no descarte.
+        </p>
 
-          <div className="mt-7 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/guias"
+            className="inline-flex items-center justify-center rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
+          >
+            Ver guias
+          </Link>
+
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+          >
+            Voltar para a Home
+          </Link>
+        </div>
+      </section>
+
+      {/* Cards de navegação rápida */}
+      <section className="mt-10">
+        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+          Começando do zero
+        </h2>
+        <p className="mt-2 max-w-3xl text-sm text-muted-foreground sm:text-base">
+          O básico para separar, higienizar e armazenar recicláveis sem gerar
+          rejeito por contaminação.
+        </p>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Link
+            href="/blog/o-que-pode-ser-reciclado"
+            className="group rounded-xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+              Checklist
+            </p>
+            <h3 className="mt-2 text-lg font-semibold">
+              O que pode (e não pode) ser reciclado
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Lista prática por material + regra de ouro para reduzir
+              contaminação.
+            </p>
+            <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
+              Ler guia →
+            </span>
+          </Link>
+
+          <Link
+            href="/coleta-seletiva"
+            className="group rounded-xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+              Guia base
+            </p>
+            <h3 className="mt-2 text-lg font-semibold">
+              Coleta seletiva: como separar sem erro
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Cores, organização e dicas simples para separar com consistência.
+            </p>
+            <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
+              Ver página →
+            </span>
+          </Link>
+
+          <Link
+            href="/simbolos-da-reciclagem"
+            className="group rounded-xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+              Essencial
+            </p>
+            <h3 className="mt-2 text-lg font-semibold">
+              Símbolos da reciclagem
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Entenda os símbolos nas embalagens e o que eles realmente
+              significam.
+            </p>
+            <span className="mt-4 inline-flex text-sm font-semibold text-emerald-800">
+              Ver símbolos →
+            </span>
+          </Link>
+        </div>
+      </section>
+
+      {/* Erros comuns + checklist */}
+      <section className="mt-12 grid gap-8 lg:grid-cols-2">
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+            Erros comuns que atrapalham tudo
+          </h2>
+          <ul className="mt-4 space-y-3 text-sm text-muted-foreground sm:text-base">
+            <li>• Misturar recicláveis com orgânicos (contaminação).</li>
+            <li>• Enviar embalagens com excesso de líquido ou comida.</li>
+            <li>• Colocar papel engordurado junto do papel limpo.</li>
+            <li>• Achar que “símbolo” garante coleta na sua cidade.</li>
+          </ul>
+
+          <div className="mt-6">
             <Link
-              href="/guias"
-              className="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400"
+              href="/blog/o-que-pode-ser-reciclado"
+              className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
             >
-              Ver guias
-            </Link>
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center rounded-xl border border-slate-800 bg-transparent px-5 py-3 text-sm font-semibold text-slate-100 transition hover:border-slate-700 hover:bg-slate-900"
-            >
-              Voltar para a Home
+              Ver a regra de ouro →
             </Link>
           </div>
-
-          <nav className="mt-8 text-sm text-slate-400">
-            <ol className="flex flex-wrap gap-2">
-              <li>
-                <Link href="/" className="hover:underline">
-                  Home
-                </Link>
-              </li>
-              <li className="flex items-center gap-2">
-                <span aria-hidden className="text-slate-600">
-                  /
-                </span>
-                <Link href="/reciclagem" className="hover:underline">
-                  Reciclagem
-                </Link>
-              </li>
-            </ol>
-          </nav>
         </div>
-      </div>
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid gap-4 lg:grid-cols-3">
-          <section className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 lg:col-span-2">
-            <h2 className="text-xl font-bold text-slate-50">
-              Página pilar: Reciclagem
-            </h2>
-            <p className="mt-2 text-sm text-slate-300">
-              Aqui vamos reunir os conceitos essenciais, passos práticos, lista
-              do que pode/não pode e links internos para artigos e guias.
-            </p>
+        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+            Checklist rápido (30 segundos)
+          </h2>
+          <ol className="mt-4 space-y-3 text-sm text-muted-foreground sm:text-base">
+            <li>1) Separe recicláveis do orgânico.</li>
+            <li>2) Retire excesso de comida e líquidos.</li>
+            <li>3) Mantenha seco (não precisa lavar “perfeito”).</li>
+            <li>4) Amasse volumes quando fizer sentido (ex.: garrafa PET).</li>
+            <li>5) Quando tiver dúvida, consulte o guia e a regra local.</li>
+          </ol>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-sm font-semibold text-slate-50">
-                  Começando do zero
-                </p>
-                <p className="mt-2 text-sm text-slate-300">
-                  O básico para separar, higienizar e armazenar recicláveis.
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-sm font-semibold text-slate-50">
-                  Materiais e símbolos
-                </p>
-                <p className="mt-2 text-sm text-slate-300">
-                  Plásticos, papéis, metais, vidros e seus símbolos.
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-sm font-semibold text-slate-50">
-                  Erros comuns
-                </p>
-                <p className="mt-2 text-sm text-slate-300">
-                  Contaminação, mistura indevida e descarte incorreto.
-                </p>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-sm font-semibold text-slate-50">
-                  Checklist rápido
-                </p>
-                <p className="mt-2 text-sm text-slate-300">
-                  Passo a passo para acertar sempre, sem dúvida.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <aside className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
-            <p className="text-sm font-semibold text-slate-50">Links úteis</p>
-            <ul className="mt-3 space-y-2 text-sm text-slate-300">
-              <li>
-                <Link
-                  href="/simbolos-da-reciclagem"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  Símbolos da reciclagem
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/coleta-seletiva"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  Coleta seletiva
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog/o-que-pode-ser-reciclado"
-                  className="font-semibold text-emerald-400 hover:underline"
-                >
-                  O que pode ser reciclado
-                </Link>
-              </li>
-            </ul>
-          </aside>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/guias"
+              className="inline-flex items-center justify-center rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
+            >
+              Explorar guias
+            </Link>
+            <Link
+              href="/blog"
+              className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+            >
+              Ir para o Blog
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Links úteis */}
+      <section className="mt-12 rounded-2xl border bg-white p-6 shadow-sm">
+        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+          Links úteis para continuar
+        </h2>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link
+            href="/blog/o-que-pode-ser-reciclado"
+            className="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+          >
+            O que pode ser reciclado
+          </Link>
+          <Link
+            href="/coleta-seletiva"
+            className="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+          >
+            Coleta seletiva
+          </Link>
+          <Link
+            href="/simbolos-da-reciclagem"
+            className="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-black/5"
+          >
+            Símbolos da reciclagem
+          </Link>
+        </div>
+      </section>
     </main>
   );
 }
-
-export default function Page() {
-  const title = "Reciclagem | Reciclativa";
-  const description =
-    "Guia pilar de reciclagem: como separar, o que pode ou não pode, símbolos e passos práticos para reciclar corretamente.";
-  const canonical = "/reciclagem";
-
-  return (
-    <PillarPage
-      meta={{
-        title,
-        description,
-        canonical,
-        h1: "Reciclagem: guia prático para reciclar corretamente",
-        subtitle:
-          "Aprenda como separar resíduos, evitar contaminação e entender os símbolos da reciclagem para acertar no descarte.",
-      }}
-    />
-  );
-}
-
-export const metadata: Metadata = {
-  title: "Reciclagem | Reciclativa",
-  description:
-    "Guia pilar de reciclagem: como separar, o que pode ou não pode, símbolos e passos práticos para reciclar corretamente.",
-  alternates: { canonical: "/reciclagem" },
-};
