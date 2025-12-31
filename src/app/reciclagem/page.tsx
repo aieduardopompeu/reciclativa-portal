@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function ReciclagemPilarPage() {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-12">
-      {/* Hero (padrão mais próximo do /blog) */}
+      {/* Hero */}
       <section className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm sm:p-10">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
           Página pilar · Reciclagem
@@ -29,16 +29,16 @@ export default function ReciclagemPilarPage() {
 
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-black/10 bg-transparent px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-black/5"
+            className="inline-flex items-center justify-center rounded-md border border-black/5 bg-transparent px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-black/5"
           >
             Voltar para a Home
           </Link>
         </div>
       </section>
 
-      {/* Grid: trilha (cards) + atalhos (lado direito) */}
+      {/* Grid: trilha + atalhos */}
       <section className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start">
-        {/* Coluna principal (2/3): cards */}
+        {/* Cards */}
         <div className="lg:col-span-2">
           <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
             Começando do zero
@@ -51,7 +51,7 @@ export default function ReciclagemPilarPage() {
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <Link
               href="/blog/o-que-pode-ser-reciclado"
-              className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+              className="group rounded-2xl border border-black/5 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
                 Checklist
@@ -70,7 +70,7 @@ export default function ReciclagemPilarPage() {
 
             <Link
               href="/coleta-seletiva"
-              className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+              className="group rounded-2xl border border-black/5 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
                 Guia base
@@ -89,7 +89,7 @@ export default function ReciclagemPilarPage() {
 
             <Link
               href="/simbolos-da-reciclagem"
-              className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow sm:col-span-2"
+              className="group rounded-2xl border border-black/5 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow sm:col-span-2"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
                 Essencial
@@ -108,9 +108,11 @@ export default function ReciclagemPilarPage() {
           </div>
         </div>
 
-        {/* Coluna lateral (1/3): atalhos no padrão do /blog */}
-        <aside className="rounded-2xl border bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-bold tracking-tight">Atalhos da Reciclagem</h2>
+        {/* Atalhos */}
+        <aside className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold tracking-tight">
+            Atalhos da Reciclagem
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Navegação rápida para reforçar SEO interno e facilitar a jornada.
           </p>
@@ -118,28 +120,28 @@ export default function ReciclagemPilarPage() {
           <div className="mt-5 space-y-3">
             <Link
               href="/blog"
-              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+              className="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-semibold hover:bg-black/5"
             >
               Blog da Reciclativa <span aria-hidden>→</span>
             </Link>
 
             <Link
               href="/guias"
-              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+              className="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-semibold hover:bg-black/5"
             >
               Guias práticos <span aria-hidden>→</span>
             </Link>
 
             <Link
               href="/coleta-seletiva"
-              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+              className="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-semibold hover:bg-black/5"
             >
               Coleta seletiva <span aria-hidden>→</span>
             </Link>
 
             <Link
               href="/simbolos-da-reciclagem"
-              className="flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold hover:bg-black/5"
+              className="flex items-center justify-between rounded-xl border border-black/5 px-4 py-3 text-sm font-semibold hover:bg-black/5"
             >
               Símbolos da reciclagem <span aria-hidden>→</span>
             </Link>
@@ -154,9 +156,9 @@ export default function ReciclagemPilarPage() {
         </aside>
       </section>
 
-      {/* Blocos inferiores: erros comuns + checklist */}
+      {/* Blocos inferiores */}
       <section className="mt-10 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
             Erros comuns que atrapalham tudo
           </h2>
@@ -170,14 +172,14 @@ export default function ReciclagemPilarPage() {
           <div className="mt-6">
             <Link
               href="/blog/o-que-pode-ser-reciclado"
-              className="inline-flex items-center justify-center rounded-md border border-black/10 px-4 py-2 text-sm font-semibold hover:bg-black/5"
+              className="inline-flex items-center justify-center rounded-md border border-black/5 px-4 py-2 text-sm font-semibold hover:bg-black/5"
             >
               Ver a regra de ouro →
             </Link>
           </div>
         </div>
 
-        <div className="rounded-2xl border bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
             Checklist rápido (30 segundos)
           </h2>
@@ -198,7 +200,7 @@ export default function ReciclagemPilarPage() {
             </Link>
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center rounded-md border border-black/10 px-4 py-2 text-sm font-semibold hover:bg-black/5"
+              className="inline-flex items-center justify-center rounded-md border border-black/5 px-4 py-2 text-sm font-semibold hover:bg-black/5"
             >
               Ir para o Blog
             </Link>
