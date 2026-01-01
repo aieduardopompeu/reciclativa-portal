@@ -1,15 +1,28 @@
 // src/app/profissionais/[uf]/[cidade]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getByUFCity, normalizeUF } from "@/content/profissionais";
+import {
+  profissionais,
+  getByUFCity,
+  normalizeUF,
+  normalizeCity,
+} from "@/content/profissionais";
 
 type PageProps = { params: { uf: string; cidade: string } };
+
+// ✅ Essencial para build estático: gera /profissionais/rj/rio-de-janeiro, etc.
+export function generateStaticParams() {
+  return profissionais.map((p) => ({
+    uf: normalizeUF(p.uf).toLowerCase(),
+    cidade: normalizeCity(p.city),
+  }));
+}
 
 export default function ProfissionaisCidadePage({ params }: PageProps) {
   const uf = normalizeUF(params.uf);
   const cidadeSlug = (params.cidade || "").toLowerCase();
-  const list = getByUFCity(uf, cidadeSlug);
 
+  const list = getByUFCity(uf, cidadeSlug);
   if (!list.length) return notFound();
 
   const cidadeNome = list[0]?.city ?? "Cidade";

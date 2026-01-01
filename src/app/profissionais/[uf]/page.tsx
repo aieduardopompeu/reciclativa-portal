@@ -1,9 +1,24 @@
 // src/app/profissionais/[uf]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { citiesByUF, getByUF, normalizeUF, normalizeCity } from "@/content/profissionais";
+import {
+  profissionais,
+  citiesByUF,
+  getByUF,
+  normalizeUF,
+  normalizeCity,
+} from "@/content/profissionais";
 
 type PageProps = { params: { uf: string } };
+
+// ✅ Essencial para build estático: gera /profissionais/rj, /profissionais/sp, etc.
+export function generateStaticParams() {
+  const ufs = Array.from(
+    new Set(profissionais.map((p) => normalizeUF(p.uf)))
+  ).sort();
+
+  return ufs.map((uf) => ({ uf: uf.toLowerCase() }));
+}
 
 export default function ProfissionaisUFPage({ params }: PageProps) {
   const uf = normalizeUF(params.uf);
