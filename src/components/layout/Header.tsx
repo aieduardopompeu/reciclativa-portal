@@ -10,6 +10,10 @@ const nav = [
   { href: "/sustentabilidade", label: "Sustentabilidade" },
   { href: "/guias", label: "Guias" },
   { href: "/blog", label: "Blog" },
+
+  // ✅ NOVO (expor Profissionais no site)
+  { href: "/profissionais", label: "Profissionais" },
+
   { href: "/diretorio", label: "Diretório" },
   { href: "/anuncie", label: "Anuncie" },
 ];
@@ -76,6 +80,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-emerald-200/80 bg-emerald-50/70 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
+          {/* ✅ mantém a logo do public/logo.png */}
           <Image
             src="/logo.png"
             alt="Reciclativa"
@@ -134,7 +139,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu final (como ficou ótimo) */}
+      {/* Mobile menu final */}
       {open ? (
         <>
           <div
