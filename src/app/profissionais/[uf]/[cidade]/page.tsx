@@ -1,17 +1,21 @@
 // src/app/profissionais/[uf]/[cidade]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import AdCtaCard from "@/components/AdCtaCard";
 import { getByUFCity, normalizeUF } from "@/content/profissionais";
 
-type PageProps = { params: { uf: string; cidade: string } };
+type PageProps = {
+  params: Promise<{ uf: string; cidade: string }>;
+};
 
-// ✅ força runtime (não depende de build estático)
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default function ProfissionaisCidadePage({ params }: PageProps) {
-  const uf = normalizeUF(params.uf);
-  const cidadeSlug = (params.cidade || "").toLowerCase();
+export default async function ProfissionaisCidadePage({ params }: PageProps) {
+  const { uf: ufParam, cidade } = await params;
+
+  const uf = normalizeUF(ufParam);
+  const cidadeSlug = (cidade || "").toLowerCase();
 
   const list = getByUFCity(uf, cidadeSlug);
   if (!list.length) return notFound();
@@ -47,6 +51,11 @@ export default function ProfissionaisCidadePage({ params }: PageProps) {
             Trocar estado
           </Link>
         </div>
+      </section>
+
+      {/* ✅ Card “Quer anunciar?” logo após o hero */}
+      <section className="mt-8">
+        <AdCtaCard />
       </section>
 
       <section className="mt-10">

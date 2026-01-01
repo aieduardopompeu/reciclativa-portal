@@ -1,6 +1,7 @@
 // src/app/profissionais/[uf]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import AdCtaCard from "@/components/AdCtaCard";
 import {
   citiesByUF,
   getByUF,
@@ -8,14 +9,17 @@ import {
   normalizeCity,
 } from "@/content/profissionais";
 
-type PageProps = { params: { uf: string } };
+type PageProps = {
+  params: Promise<{ uf: string }>;
+};
 
-// ✅ força runtime (não depende de build estático)
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default function ProfissionaisUFPage({ params }: PageProps) {
-  const uf = normalizeUF(params.uf);
+export default async function ProfissionaisUFPage({ params }: PageProps) {
+  const { uf: ufParam } = await params;
+
+  const uf = normalizeUF(ufParam);
   const list = getByUF(uf);
 
   if (!list.length) return notFound();
@@ -67,6 +71,11 @@ export default function ProfissionaisUFPage({ params }: PageProps) {
                 </Link>
               );
             })}
+          </div>
+
+          {/* ✅ Card “Quer anunciar?” na lateral */}
+          <div className="mt-6">
+            <AdCtaCard />
           </div>
         </aside>
 
