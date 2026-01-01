@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  profissionais,
   citiesByUF,
   getByUF,
   normalizeUF,
@@ -11,14 +10,9 @@ import {
 
 type PageProps = { params: { uf: string } };
 
-// ✅ Essencial para build estático: gera /profissionais/rj, /profissionais/sp, etc.
-export function generateStaticParams() {
-  const ufs = Array.from(
-    new Set(profissionais.map((p) => normalizeUF(p.uf)))
-  ).sort();
-
-  return ufs.map((uf) => ({ uf: uf.toLowerCase() }));
-}
+// ✅ força runtime (não depende de build estático)
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default function ProfissionaisUFPage({ params }: PageProps) {
   const uf = normalizeUF(params.uf);
