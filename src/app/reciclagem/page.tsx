@@ -1,5 +1,6 @@
 // src/app/reciclagem/page.tsx
 import Link from "next/link";
+import AdCtaCard from "@/components/AdCtaCard";
 
 export default function ReciclagemPilarPage() {
   return (
@@ -146,6 +147,10 @@ export default function ReciclagemPilarPage() {
               Símbolos da reciclagem <span aria-hidden>→</span>
             </Link>
           </div>
+          
+            <div className="mt-6">
+              <AdCtaCard />
+            </div>
 
           <div className="mt-6 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900">
             <p className="font-semibold">Dica editorial</p>
@@ -168,6 +173,7 @@ export default function ReciclagemPilarPage() {
             <li>• Colocar papel engordurado junto do papel limpo.</li>
             <li>• Achar que “símbolo” garante coleta na sua cidade.</li>
           </ul>
+
 
           <div className="mt-6">
             <Link

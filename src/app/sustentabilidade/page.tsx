@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
+import AdCtaCard from "@/components/AdCtaCard";
 
 export const metadata: Metadata = {
   title: "Sustentabilidade | Reciclativa",
@@ -143,6 +144,10 @@ export default function Page() {
               <li>• Adicionar links internos para guias e blog</li>
               <li>• Montar checklist “comece hoje”</li>
             </ul>
+        
+          <section className="mt-6">
+            <AdCtaCard />
+          </section>
 
             <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
