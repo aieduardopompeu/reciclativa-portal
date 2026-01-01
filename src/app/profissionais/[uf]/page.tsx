@@ -1,7 +1,7 @@
 // src/app/profissionais/[uf]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import AdCtaCard from "@/components/AdCtaCard";
+import AdCtaProfissionaisCard from "@/components/AdCtaProfissionaisCard";
 import {
   citiesByUF,
   getByUF,
@@ -75,7 +75,7 @@ export default async function ProfissionaisUFPage({ params }: PageProps) {
 
           {/* ✅ Card “Quer anunciar?” na lateral */}
           <div className="mt-6">
-            <AdCtaCard />
+            <AdCtaProfissionaisCard />
           </div>
         </aside>
 

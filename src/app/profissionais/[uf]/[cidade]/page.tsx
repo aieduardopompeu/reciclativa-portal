@@ -1,7 +1,7 @@
 // src/app/profissionais/[uf]/[cidade]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import AdCtaCard from "@/components/AdCtaCard";
+import AdCtaProfissionaisCard from "@/components/AdCtaProfissionaisCard";
 import { getByUFCity, normalizeUF } from "@/content/profissionais";
 
 type PageProps = {
@@ -55,7 +55,7 @@ export default async function ProfissionaisCidadePage({ params }: PageProps) {
 
       {/* ✅ Card “Quer anunciar?” logo após o hero */}
       <section className="mt-8">
-        <AdCtaCard />
+        <AdCtaProfissionaisCard />
       </section>
 
       <section className="mt-10">

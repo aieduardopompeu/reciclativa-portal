@@ -1,6 +1,6 @@
 // src/app/profissionais/page.tsx
 import Link from "next/link";
-import AdCtaCard from "@/components/AdCtaCard";
+import AdCtaProfissionaisCard from "@/components/AdCtaProfissionaisCard";
 import { uniqueUFs } from "@/content/profissionais";
 
 export default function ProfissionaisHubPage() {
@@ -44,7 +44,7 @@ export default function ProfissionaisHubPage() {
 
       {/* ✅ Card “Quer anunciar?” abaixo do hub */}
       <section className="mt-8">
-        <AdCtaCard />
+        <AdCtaProfissionaisCard />
       </section>
     </main>
   );
