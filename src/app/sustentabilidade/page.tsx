@@ -122,7 +122,7 @@ export default function Page() {
 
             {/* CTA Anuncie */}
             <AdCtaCard />
-          </div>
+            </div>
 
           {/* Sidebar */}
           <aside className="space-y-6">
