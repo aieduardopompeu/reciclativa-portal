@@ -4,13 +4,16 @@ import { site } from "@/config/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
+const SITE_URL =
+  (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(/\/$/, "");
+
 export const metadata: Metadata = {
   title: {
     default: `${site.name} | Reciclagem e Sustentabilidade`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({
