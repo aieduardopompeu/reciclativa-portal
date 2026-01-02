@@ -1,10 +1,11 @@
 // src/app/profissionais/page.tsx
 import Link from "next/link";
 import AdCtaProfissionaisCard from "@/components/AdCtaProfissionaisCard";
-import { uniqueUFs } from "@/content/profissionais";
+import { uniqueUFs, uniqueRoles } from "@/content/profissionais";
 
 export default function ProfissionaisHubPage() {
   const ufs = uniqueUFs();
+  const roles = uniqueRoles();
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-12">
@@ -40,11 +41,34 @@ export default function ProfissionaisHubPage() {
             <code>src/content/profissionais.ts</code>.
           </p>
         ) : null}
+
+        {/* ✅ Tipos de profissionais (taxonomia inicial) */}
+        {roles.length ? (
+          <div className="mt-10">
+            <h2 className="text-lg font-bold tracking-tight">
+              Tipos de profissionais
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Exemplos comuns no segmento. Vamos ampliando com o tempo.
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {roles.map((r) => (
+                <span
+                  key={r}
+                  className="rounded-full border border-black/5 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700"
+                >
+                  {r}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </section>
 
       {/* ✅ Card “Quer anunciar?” abaixo do hub */}
       <section className="mt-8">
-        <AdCtaProfissionaisCard />
+        <AdCtaProfissionaisCard signupHref="/anuncie" />
       </section>
     </main>
   );
