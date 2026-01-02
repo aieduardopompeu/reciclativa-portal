@@ -8,7 +8,7 @@ import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(/\/$/, "");
 
-  const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
 
 export const metadata: Metadata = {
   title: {
@@ -30,10 +30,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-white text-slate-900">
+        <GoogleAnalytics measurementId={GA4_ID} />
         <Header />
         {children}
         <Footer />
-          <GoogleAnalytics measurementId={GA4_ID} />
       </body>
     </html>
   );
