@@ -4,10 +4,17 @@ import AdCtaCard from "@/components/AdCtaCard";
 import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 
 export const metadata: Metadata = {
-  title: "Guias práticos",
+  title: "Guias | Reciclativa",
   description:
     "Coleção de guias e checklists para aplicar reciclagem e sustentabilidade no dia a dia.",
   alternates: { canonical: "/guias" },
+  openGraph: {
+    title: "Guias | Reciclativa",
+    description:
+      "Checklists e passo a passo para aplicar reciclagem e sustentabilidade sem complicação.",
+    url: "/guias",
+    type: "website",
+  },
 };
 
 const GUIDES = [
@@ -31,7 +38,7 @@ const GUIDES = [
   },
 ];
 
-function Card({
+function GuideCard({
   title,
   desc,
   href,
@@ -45,18 +52,17 @@ function Card({
   return (
     <Link
       href={href}
-      className="group rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-sm transition hover:bg-white hover:shadow-md"
+      className="group block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-base font-semibold text-slate-950 group-hover:text-emerald-900">
-            {title}
-          </h3>
           {tag ? (
-            <p className="mt-1 inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+            <p className="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
               {tag}
             </p>
           ) : null}
+
+          <p className="mt-2 text-sm font-semibold text-slate-900">{title}</p>
         </div>
 
         <span className="text-slate-300 transition group-hover:text-emerald-400">
@@ -69,7 +75,8 @@ function Card({
         </span>
       </div>
 
-      <p className="mt-3 text-sm text-slate-700">{desc}</p>
+      <p className="mt-2 text-sm text-slate-700">{desc}</p>
+      <p className="mt-3 text-sm font-semibold text-emerald-800">Abrir guia →</p>
     </Link>
   );
 }
@@ -77,83 +84,161 @@ function Card({
 export default function Page() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* HERO (claro, igual o padrão do site) */}
-      <header className="border-b border-slate-200 bg-emerald-50/40">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
-            Guias
+      {/* HERO com imagem (mesmo padrão Sustentabilidade/Reciclagem) */}
+      <header className="relative overflow-hidden border-b border-slate-200">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero.webp')" }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white"
+          aria-hidden
+        />
+
+        <div className="relative mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+            Reciclativa
           </p>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+
+          <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
             Guias práticos para fazer certo
           </h1>
-          <p className="mt-3 max-w-3xl text-sm text-slate-700 sm:text-base">
+
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
             Checklists e passo a passo para aplicar reciclagem e sustentabilidade
             sem complicação.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/"
-              className="rounded-xl border border-slate-300 bg-white/70 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-white"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
               Voltar para a Home
             </Link>
+
             <Link
               href="/reciclagem"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+              className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
             >
               Começar por Reciclagem
             </Link>
           </div>
+
+          {/* Breadcrumb simples */}
+          <nav className="mt-8 text-sm text-slate-600">
+            <ol className="flex flex-wrap gap-2">
+              <li>
+                <Link href="/" className="hover:underline">
+                  Home
+                </Link>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-slate-400">/</span>
+                <span className="font-medium text-slate-700">Guias</span>
+              </li>
+            </ol>
+          </nav>
         </div>
       </header>
 
-      {/* LISTA */}
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-950">Destaques</h2>
-            <p className="mt-2 text-sm text-slate-700">
-              Páginas-base já publicadas (sem 404).
-            </p>
+      {/* Conteúdo */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Coluna principal */}
+          <div className="space-y-6 lg:col-span-2">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+                    Destaques
+                  </h2>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                    Páginas-base já publicadas (sem 404).
+                  </p>
+                </div>
+
+                <Link
+                  href="/blog"
+                  className="inline-flex w-fit items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                  Ir para o Blog
+                </Link>
+              </div>
+
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {GUIDES.map((g) => (
+                  <GuideCard
+                    key={g.href}
+                    title={g.title}
+                    desc={g.desc}
+                    href={g.href}
+                    tag={g.tag}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Anuncie (mesmo padrão das outras páginas) */}
+            <AdCtaCard />
+
+            {/* CTA Profissionais */}
+            <ProfissionaisCta />
+
+            {/* Próximos passos */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Próximos passos
+              </h3>
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                <li>Criar FAQ (SEO) em cada guia</li>
+                <li>Adicionar links internos para pilares e posts relacionados</li>
+                <li>Montar checklists “comece hoje”</li>
+              </ul>
+            </div>
           </div>
 
-          <Link
-            href="/blog"
-            className="hidden rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 sm:inline-flex"
-          >
-            Ir para o Blog
-          </Link>
-        </div>
+          {/* Sidebar */}
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Atalhos
+              </h3>
 
-        <div className="mt-6 grid gap-4 lg:grid-cols-3">
-          {GUIDES.map((g) => (
-            <Card
-              key={g.href}
-              title={g.title}
-              desc={g.desc}
-              href={g.href}
-              tag={g.tag}
-            />
-          ))}
-        </div>
+              <div className="mt-4 space-y-3">
+                <Link
+                  href="/reciclagem"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Página pilar: Reciclagem →
+                </Link>
 
-      <section className="mt-8">
-        <AdCtaCard />
-      </section>
+                <Link
+                  href="/blog"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver blog →
+                </Link>
 
-        <section className="mt-8">
-          <ProfissionaisCta />
-        </section>
+                <Link
+                  href="/sustentabilidade"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Sustentabilidade →
+                </Link>
+              </div>
 
-        {/* Próximos passos (SEO/arquitetura) */}
-        <div className="mt-8 rounded-2xl border border-slate-200 bg-white/70 p-6">
-          <p className="text-sm font-semibold text-slate-950">Próximos passos</p>
-          <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            <li>• Criar FAQ (SEO) em cada guia</li>
-            <li>• Adicionar links internos para pilares e posts relacionados</li>
-            <li>• Montar checklists “comece hoje”</li>
-          </ul>
+              <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                  Dica rápida
+                </p>
+                <p className="mt-2 text-sm text-slate-800">
+                  Em cada guia, linke 1 página pilar e 3–6 conteúdos relacionados.
+                </p>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
     </main>
