@@ -3,9 +3,12 @@ import "./globals.css";
 import { site } from "@/config/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(/\/$/, "");
+
+  const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
 
 export const metadata: Metadata = {
   title: {
@@ -30,6 +33,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+          <GoogleAnalytics measurementId={GA4_ID} />
       </body>
     </html>
   );
