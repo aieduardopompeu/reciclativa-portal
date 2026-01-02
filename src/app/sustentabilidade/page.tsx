@@ -1,17 +1,18 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import AdCtaCard from "@/components/AdCtaCard";
-import ProfissionaisCTA from "@/components/ctas/ProfissionaisCta";
+import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
+
 
 export const metadata: Metadata = {
   title: "Sustentabilidade | Reciclativa",
   description:
-    "Hábitos sustentáveis, consumo consciente e práticas para reduzir impacto ambiental no dia a dia.",
+    "HÃƒÂ¡bitos sustentÃƒÂ¡veis, consumo consciente e prÃƒÂ¡ticas para reduzir impacto ambiental no dia a dia.",
   alternates: { canonical: "/sustentabilidade" },
   openGraph: {
     title: "Sustentabilidade | Reciclativa",
     description:
-      "Ideias práticas para reduzir impacto, reaproveitar recursos e tomar decisões mais conscientes.",
+      "Ideias prÃƒÂ¡ticas para reduzir impacto, reaproveitar recursos e tomar decisÃƒÂµes mais conscientes.",
     url: "/sustentabilidade",
     type: "article",
   },
@@ -39,12 +40,12 @@ export default function Page() {
           </p>
 
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-            Sustentabilidade: hábitos e consumo consciente
+            Sustentabilidade: hÃƒÂ¡bitos e consumo consciente
           </h1>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            Ideias práticas para reduzir impacto, reaproveitar recursos e tomar
-            decisões mais conscientes.
+            Ideias prÃƒÂ¡ticas para reduzir impacto, reaproveitar recursos e tomar
+            decisÃƒÂµes mais conscientes.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -82,28 +83,28 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Conteúdo */}
+      {/* ConteÃƒÂºdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Conteúdo em construção
+                ConteÃƒÂºdo em construÃƒÂ§ÃƒÂ£o
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Esta rota foi criada para remover 404 e servir de base para uma
-                página pilar/guia. Em seguida, vamos incluir seções práticas,
+                pÃƒÂ¡gina pilar/guia. Em seguida, vamos incluir seÃƒÂ§ÃƒÂµes prÃƒÂ¡ticas,
                 checklist, FAQ e links internos.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="text-sm font-semibold text-slate-900">
-                    Hábitos sustentáveis
+                    HÃƒÂ¡bitos sustentÃƒÂ¡veis
                   </p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Redução de desperdício, reuso e escolhas do dia a dia.
+                    ReduÃƒÂ§ÃƒÂ£o de desperdÃƒÂ­cio, reuso e escolhas do dia a dia.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
@@ -118,7 +119,7 @@ export default function Page() {
             </div>
 
             {/* CTA Profissionais */}
-            <ProfissionaisCTA />
+            <ProfissionaisCta />
 
             {/* CTA Anuncie */}
             <AdCtaCard />
@@ -128,46 +129,46 @@ export default function Page() {
           <aside className="space-y-6">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
+                PrÃƒÂ³ximos passos
               </h3>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Criar FAQ (SEO) nesta página</li>
+                <li>Criar FAQ (SEO) nesta pÃƒÂ¡gina</li>
                 <li>Adicionar links internos para guias e blog</li>
-                <li>Montar checklist “comece hoje”</li>
+                <li>Montar checklist Ã¢â‚¬Å“comece hojeÃ¢â‚¬Â</li>
               </ul>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Links úteis
+                Links ÃƒÂºteis
               </h3>
               <div className="mt-4 space-y-3">
                 <Link
                   href="/guias"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Ver guias →
+                  Ver guias Ã¢â€ â€™
                 </Link>
                 <Link
                   href="/blog"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Ver blog →
+                  Ver blog Ã¢â€ â€™
                 </Link>
                 <Link
                   href="/reciclagem"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Página pilar: Reciclagem →
+                  PÃƒÂ¡gina pilar: Reciclagem Ã¢â€ â€™
                 </Link>
               </div>
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Dica rápida
+                  Dica rÃƒÂ¡pida
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Comece reduzindo: menos descarte sempre vence “reciclar mais”.
+                  Comece reduzindo: menos descarte sempre vence Ã¢â‚¬Å“reciclar maisÃ¢â‚¬Â.
                 </p>
               </div>
             </div>
@@ -177,3 +178,5 @@ export default function Page() {
     </main>
   );
 }
+
+
