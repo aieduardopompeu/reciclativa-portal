@@ -1,6 +1,7 @@
 // src/app/reciclagem/page.tsx
 import Link from "next/link";
 import AdCtaCard from "@/components/AdCtaCard";
+import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 
 export default function ReciclagemPilarPage() {
   return (
@@ -151,6 +152,10 @@ export default function ReciclagemPilarPage() {
             <div className="mt-6">
               <AdCtaCard />
             </div>
+            
+            <section className="mt-8">
+              <ProfissionaisCta />
+            </section>
 
           <div className="mt-6 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900">
             <p className="font-semibold">Dica editorial</p>

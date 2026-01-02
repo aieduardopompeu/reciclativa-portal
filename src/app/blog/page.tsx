@@ -146,25 +146,29 @@ function uniqueCategories(posts: PostCard[]) {
   return CATEGORY_ORDER.filter((c) => set.has(c));
 }
 
-export default function BlogPage({
+type SearchParams = Record<string, string | string[] | undefined>;
+
+export default async function BlogPage({
   searchParams,
 }: {
-  searchParams?: { tag?: string };
+  searchParams: Promise<SearchParams>;
 }) {
+  const sp = await searchParams;
+
+  const rawTag = sp?.tag;
+  const tagValue = Array.isArray(rawTag) ? rawTag[0] : rawTag;
+  const tagParam = (tagValue ?? "").toString().trim();
+
+  // ✅ estava faltando no seu arquivo
   const categories = uniqueCategories(POSTS);
-  const tagParam = (searchParams?.tag || "").trim();
 
   const activeTag = categories.includes(tagParam as CategoryUI)
     ? (tagParam as CategoryUI)
     : null;
 
-  const filtered = activeTag
-    ? POSTS.filter((p) => p.category === activeTag)
-    : POSTS;
+  const filtered = activeTag ? POSTS.filter((p) => p.category === activeTag) : POSTS;
 
-  const postsSorted = [...filtered].sort((a, b) =>
-    a.dateISO < b.dateISO ? 1 : -1
-  );
+  const postsSorted = [...filtered].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
 
   // "Comece aqui" (3 cards)
   const startCards = [
@@ -226,7 +230,7 @@ export default function BlogPage({
             Todos
           </Link>
 
-          {categories.map((c) => (
+          {categories.map((c: CategoryUI) => (
             <Link
               key={c}
               href={`/blog?tag=${encodeURIComponent(c)}`}
@@ -261,7 +265,10 @@ export default function BlogPage({
                   Uma trilha curta para entender o básico e separar corretamente.
                 </p>
               </div>
-              <Link href="/blog" className="text-sm font-semibold text-emerald-700 hover:underline">
+              <Link
+                href="/blog"
+                className="text-sm font-semibold text-emerald-700 hover:underline"
+              >
                 Começar →
               </Link>
             </div>
@@ -301,7 +308,9 @@ export default function BlogPage({
                   Conteúdos objetivos, organizados para virar hábito.
                 </p>
               </div>
-              <div className="text-sm text-slate-500">{postsSorted.length} artigos</div>
+              <div className="text-sm text-slate-500">
+                {postsSorted.length} artigos
+              </div>
             </div>
 
             <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -386,7 +395,8 @@ export default function BlogPage({
             </div>
 
             <p className="mt-5 text-xs text-slate-500">
-              Dica editorial: cada post deve linkar 3–6 conteúdos relacionados e 1 página pilar.
+              Dica editorial: cada post deve linkar 3–6 conteúdos relacionados e
+              1 página pilar.
             </p>
           </section>
 
@@ -423,7 +433,8 @@ export default function BlogPage({
               Quer anunciar?
             </h3>
             <p className="mt-2 text-sm text-slate-600">
-              Soluções sustentáveis, coleta, reciclagem, educação ambiental e produtos eco.
+              Soluções sustentáveis, coleta, reciclagem, educação ambiental e
+              produtos eco.
             </p>
             <Link
               href="/anuncie"

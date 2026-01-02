@@ -1,18 +1,17 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import AdCtaCard from "@/components/AdCtaCard";
 import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 
-
 export const metadata: Metadata = {
   title: "Sustentabilidade | Reciclativa",
   description:
-    "HÃƒÂ¡bitos sustentÃƒÂ¡veis, consumo consciente e prÃƒÂ¡ticas para reduzir impacto ambiental no dia a dia.",
+    "HÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡bitos sustentÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡veis, consumo consciente e prÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ticas para reduzir impacto ambiental no dia a dia.",
   alternates: { canonical: "/sustentabilidade" },
   openGraph: {
     title: "Sustentabilidade | Reciclativa",
     description:
-      "Ideias prÃƒÂ¡ticas para reduzir impacto, reaproveitar recursos e tomar decisÃƒÂµes mais conscientes.",
+      "Ideias prÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ticas para reduzir impacto, reaproveitar recursos e tomar decisÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµes mais conscientes.",
     url: "/sustentabilidade",
     type: "article",
   },
@@ -40,12 +39,12 @@ export default function Page() {
           </p>
 
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-            Sustentabilidade: hÃƒÂ¡bitos e consumo consciente
+            Sustentabilidade: hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡bitos e consumo consciente
           </h1>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            Ideias prÃƒÂ¡ticas para reduzir impacto, reaproveitar recursos e tomar
-            decisÃƒÂµes mais conscientes.
+            Ideias prÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ticas para reduzir impacto, reaproveitar recursos e tomar
+            decisÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµes mais conscientes.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -83,28 +82,28 @@ export default function Page() {
         </div>
       </header>
 
-      {/* ConteÃƒÂºdo */}
+      {/* ConteÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                ConteÃƒÂºdo em construÃƒÂ§ÃƒÂ£o
+                ConteÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºdo em construÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£o
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Esta rota foi criada para remover 404 e servir de base para uma
-                pÃƒÂ¡gina pilar/guia. Em seguida, vamos incluir seÃƒÂ§ÃƒÂµes prÃƒÂ¡ticas,
+                pÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡gina pilar/guia. Em seguida, vamos incluir seÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµes prÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ticas,
                 checklist, FAQ e links internos.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="text-sm font-semibold text-slate-900">
-                    HÃƒÂ¡bitos sustentÃƒÂ¡veis
+                    HÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡bitos sustentÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡veis
                   </p>
                   <p className="mt-2 text-sm text-slate-700">
-                    ReduÃƒÂ§ÃƒÂ£o de desperdÃƒÂ­cio, reuso e escolhas do dia a dia.
+                    ReduÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â§ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£o de desperdÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­cio, reuso e escolhas do dia a dia.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
@@ -129,46 +128,46 @@ export default function Page() {
           <aside className="space-y-6">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                PrÃƒÂ³ximos passos
+                PrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ximos passos
               </h3>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Criar FAQ (SEO) nesta pÃƒÂ¡gina</li>
+                <li>Criar FAQ (SEO) nesta pÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡gina</li>
                 <li>Adicionar links internos para guias e blog</li>
-                <li>Montar checklist Ã¢â‚¬Å“comece hojeÃ¢â‚¬Â</li>
+                <li>Montar checklist ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“comece hojeÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â</li>
               </ul>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Links ÃƒÂºteis
+                Links ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºteis
               </h3>
               <div className="mt-4 space-y-3">
                 <Link
                   href="/guias"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Ver guias Ã¢â€ â€™
+                  Ver guias ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢
                 </Link>
                 <Link
                   href="/blog"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Ver blog Ã¢â€ â€™
+                  Ver blog ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢
                 </Link>
                 <Link
                   href="/reciclagem"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  PÃƒÂ¡gina pilar: Reciclagem Ã¢â€ â€™
+                  PÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡gina pilar: Reciclagem ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢
                 </Link>
               </div>
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Dica rÃƒÂ¡pida
+                  Dica rÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡pida
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Comece reduzindo: menos descarte sempre vence Ã¢â‚¬Å“reciclar maisÃ¢â‚¬Â.
+                  Comece reduzindo: menos descarte sempre vence ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“reciclar maisÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â.
                 </p>
               </div>
             </div>
@@ -178,5 +177,6 @@ export default function Page() {
     </main>
   );
 }
+
 
 

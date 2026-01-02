@@ -1,6 +1,7 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import AdCtaCard from "@/components/AdCtaCard";
+import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 
 export const metadata: Metadata = {
   title: "Guias práticos",
@@ -140,6 +141,10 @@ export default function Page() {
       <section className="mt-8">
         <AdCtaCard />
       </section>
+
+        <section className="mt-8">
+          <ProfissionaisCta />
+        </section>
 
         {/* Próximos passos (SEO/arquitetura) */}
         <div className="mt-8 rounded-2xl border border-slate-200 bg-white/70 p-6">
