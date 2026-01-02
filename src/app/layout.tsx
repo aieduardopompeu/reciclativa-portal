@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   },
   description: site.description,
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
 };
 
 export default function RootLayout({
