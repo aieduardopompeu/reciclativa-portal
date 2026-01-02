@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { site } from "@/config/site";
 import { Header } from "@/components/layout/Header";
@@ -9,6 +10,7 @@ const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(/\/$/, "");
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
+const ADSENSE_CLIENT = "ca-pub-4436420746304287";
 
 export const metadata: Metadata = {
   title: {
@@ -22,6 +24,9 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
   },
+  other: {
+    "google-adsense-account": ADSENSE_CLIENT,
+  },
 };
 
 export default function RootLayout({
@@ -30,7 +35,18 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-white text-slate-900">
+        {/* GA4 */}
         <GoogleAnalytics measurementId={GA4_ID} />
+
+        {/* AdSense base script (carregar 1x no site todo) */}
+        <Script
+          id="adsense-base"
+          async
+          strategy="afterInteractive"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+          crossOrigin="anonymous"
+        />
+
         <Header />
         {children}
         <Footer />
