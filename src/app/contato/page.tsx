@@ -1,10 +1,189 @@
-export default function ContatoPage() {
+import type { Metadata } from "next";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Contato | Reciclativa",
+  description:
+    "Fale com a Reciclativa: dúvidas, sugestões, parceria e contato comercial.",
+  alternates: { canonical: "/contato" },
+  openGraph: {
+    title: "Contato | Reciclativa",
+    description: "Dúvidas, sugestões, parceria e contato comercial.",
+    url: "/contato",
+    type: "website",
+  },
+};
+
+export default function Page() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-bold">Contato</h1>
-      <p className="mt-2 text-slate-600">
-        Em breve: formulário de contato. Por enquanto, mantenha esta página publicada.
-      </p>
+    <main className="min-h-screen bg-white text-slate-900">
+      {/* HERO com imagem */}
+      <header className="relative overflow-hidden border-b border-slate-200">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero.webp')" }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white"
+          aria-hidden
+        />
+
+        <div className="relative mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+            Reciclativa
+          </p>
+
+          <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+            Contato
+          </h1>
+
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
+            Dúvidas, sugestões, parceria e contato comercial.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              Voltar para a Home
+            </Link>
+
+            <Link
+              href="/anuncie"
+              className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            >
+              Anunciar no site
+            </Link>
+          </div>
+
+          {/* Breadcrumb */}
+          <nav className="mt-8 text-sm text-slate-600">
+            <ol className="flex flex-wrap gap-2">
+              <li>
+                <Link href="/" className="hover:underline">
+                  Home
+                </Link>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-slate-400">/</span>
+                <span className="font-medium text-slate-700">Contato</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </header>
+
+      {/* Conteúdo */}
+      <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Coluna principal */}
+          <div className="space-y-6 lg:col-span-2">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+                Como falar com a gente
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Estamos organizando um fluxo de atendimento. Por enquanto,
+                centralize seu contato pelo canal abaixo.
+              </p>
+
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">E-mail</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Em breve vamos publicar um e-mail oficial aqui.
+                  </p>
+                  <p className="mt-3 text-xs text-slate-500">
+                    (Você pode substituir este texto pelo e-mail real quando
+                    quiser.)
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">
+                    Comercial / Parcerias
+                  </p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Para mídia kit, anuncie e parcerias: use a página “Anuncie”.
+                  </p>
+                  <p className="mt-3 text-sm font-semibold text-emerald-800">
+                    <Link href="/anuncie" className="hover:underline">
+                      Abrir Anuncie →
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Sugestões de conteúdo
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Se você tem uma sugestão de tema (ex.: descarte de e-lixo, coleta
+                seletiva, reciclagem por material), envie o assunto com o máximo
+                de contexto: cidade/UF, dúvidas e o que você já tentou fazer.
+              </p>
+
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Link
+                  href="/guias"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver guias →
+                </Link>
+                <Link
+                  href="/blog"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver blog →
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Atalhos úteis
+              </h3>
+
+              <div className="mt-4 space-y-3">
+                <Link
+                  href="/profissionais"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Profissionais →
+                </Link>
+                <Link
+                  href="/diretorio"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Diretório →
+                </Link>
+                <Link
+                  href="/sobre"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Sobre →
+                </Link>
+              </div>
+
+              <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                  Frase do projeto
+                </p>
+                <p className="mt-2 text-sm text-slate-800">
+                  Transforme resíduos em recursos!
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
     </main>
   );
 }
