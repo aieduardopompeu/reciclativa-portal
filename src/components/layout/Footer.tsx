@@ -155,6 +155,12 @@ export function Footer() {
           </li>
 
           <li>
+            <Link href="/cookies" className="hover:text-emerald-700">
+              Cookies
+            </Link>
+          </li>
+
+          <li>
             <Link href="/faq" className="hover:text-emerald-700">
               FAQ
             </Link>
