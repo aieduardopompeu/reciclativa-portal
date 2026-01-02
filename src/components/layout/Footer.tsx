@@ -141,7 +141,7 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/politica-de-privacidade" className="hover:text-emerald-700">
+              <Link href="/privacidade" className="hover:text-emerald-700">
                 Política de Privacidade
               </Link>
             </li>
