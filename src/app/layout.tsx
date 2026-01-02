@@ -14,8 +14,10 @@ export const metadata: Metadata = {
   },
   description: site.description,
   metadataBase: new URL(SITE_URL),
-  alternates: {
-    canonical: SITE_URL,
+  alternates: { canonical: SITE_URL },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
   },
 };
 
