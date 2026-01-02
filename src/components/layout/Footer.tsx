@@ -129,28 +129,37 @@ export function Footer() {
         {/* Institucional + Selos (abaixo) */}
         <div className="space-y-2">
           <div className="text-sm font-semibold text-slate-900">Institucional</div>
-          <ul className="space-y-1 text-sm text-slate-700">
-            <li>
-              <Link href="/sobre" className="hover:text-emerald-700">
-                Sobre
-              </Link>
-            </li>
-            <li>
-              <Link href="/contato" className="hover:text-emerald-700">
-                Contato
-              </Link>
-            </li>
-            <li>
-              <Link href="/privacidade" className="hover:text-emerald-700">
-                Política de Privacidade
-              </Link>
-            </li>
-            <li>
-              <Link href="/politica-de-cookies" className="hover:text-emerald-700">
-                Política de Cookies
-              </Link>
-            </li>
-          </ul>
+        <ul className="space-y-1 text-sm text-slate-700">
+          <li>
+            <Link href="/sobre" className="hover:text-emerald-700">
+              Sobre
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/contato" className="hover:text-emerald-700">
+              Contato
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/privacidade" className="hover:text-emerald-700">
+              Privacidade
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/termos" className="hover:text-emerald-700">
+              Termos de Uso
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/faq" className="hover:text-emerald-700">
+              FAQ
+            </Link>
+          </li>
+        </ul>
 
           {/* Selos logo abaixo do institucional */}
           <div className="pt-4">
