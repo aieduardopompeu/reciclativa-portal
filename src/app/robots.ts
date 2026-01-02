@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://reciclativa.com";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://reciclativa.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,7 +10,6 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // Bloqueios úteis (evita indexar rotas internas que não devem ranquear)
         disallow: ["/api/", "/_next/"],
       },
     ],
