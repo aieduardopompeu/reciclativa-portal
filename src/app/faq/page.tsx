@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import AdCtaCard from "@/components/AdCtaCard";
 import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 
@@ -67,9 +68,33 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+function buildFaqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.a,
+      },
+    })),
+  };
+}
+
 export default function Page() {
+  const faqJsonLd = buildFaqJsonLd();
+
   return (
     <main className="min-h-screen bg-white text-slate-900">
+      {/* JSON-LD (FAQPage) */}
+      <Script
+        id="faq-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       {/* HERO padrão */}
       <header className="relative overflow-hidden border-b border-slate-200">
         <div
@@ -159,6 +184,37 @@ export default function Page() {
                 ))}
               </div>
 
+              {/* Micro-CTAs (continuidade) */}
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+                <h3 className="text-sm font-extrabold text-slate-900">
+                  Próximos passos (rápido e útil)
+                </h3>
+                <p className="mt-2 text-sm text-slate-700">
+                  Se você quer uma orientação mais prática, estes atalhos resolvem 80% das dúvidas.
+                </p>
+
+                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <Link
+                    href="/coleta-seletiva"
+                    className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Coleta seletiva →
+                  </Link>
+                  <Link
+                    href="/residuos-solidos"
+                    className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Resíduos sólidos →
+                  </Link>
+                  <Link
+                    href="/guias"
+                    className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Guias práticos →
+                  </Link>
+                </div>
+              </div>
+
               <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5">
                 <h3 className="text-sm font-extrabold text-slate-900">
                   Ainda com dúvida?
@@ -232,6 +288,12 @@ export default function Page() {
                   comida e bem separado.
                 </p>
               </div>
+            </div>
+
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
+              <p className="text-sm font-semibold text-emerald-950">
+                Transforme resíduos em recursos!
+              </p>
             </div>
           </aside>
         </div>
