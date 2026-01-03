@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
@@ -195,21 +196,36 @@ export default function Page() {
           Complemento útil: <Link href="/blog/reduzir-lixo-na-rotina">reduzir lixo na rotina</Link>.
         </p>
 
-        <h2>Links úteis para continuar</h2>
-        <ul>
-          <li>
-            <Link href="/blog/coleta-seletiva-no-brasil">Coleta seletiva no Brasil</Link>
-          </li>
-          <li>
-            <Link href="/blog/o-que-pode-ser-reciclado">O que pode ser reciclado</Link>
-          </li>
-          <li>
-            <Link href="/blog/reciclagem-plastico">Reciclagem de plástico</Link>
-          </li>
-          <li>
-            <Link href="/reciclagem">Página pilar: Reciclagem</Link>
-          </li>
-        </ul>
+        {/* Substitui a lista antiga por componente reutilizável */}
+        <RecommendedLinks
+          links={[
+            {
+              href: "/blog/coleta-seletiva-no-brasil",
+              title: "Coleta seletiva no Brasil",
+              description: "Como funciona e como participar.",
+            },
+            {
+              href: "/blog/o-que-pode-ser-reciclado",
+              title: "O que pode ser reciclado",
+              description: "Guia rápido para acertar no descarte.",
+            },
+            {
+              href: "/blog/reciclagem-plastico",
+              title: "Reciclagem de plástico",
+              description: "Tipos, identificação e boas práticas.",
+            },
+            {
+              href: "/reciclagem",
+              title: "Página pilar: Reciclagem",
+              description: "Conceito e etapas (do básico ao prático).",
+            },
+            {
+              href: "/blog/itad",
+              title: "ITAD (Asset Disposition)",
+              description: "Como empresas fazem destinação de TI com rastreabilidade.",
+            },
+          ]}
+        />
 
         <h2>FAQ: dúvidas comuns sobre lixo eletrônico</h2>
 
@@ -240,7 +256,9 @@ export default function Page() {
 
       {/* CTA final */}
       <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Próximo passo recomendado</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+          Próximo passo recomendado
+        </h2>
         <p className="mt-3 max-w-2xl text-sm text-slate-600">
           Para acertar o básico do descarte no dia a dia, revise o guia do que pode ser reciclado e
           como evitar contaminação na separação.

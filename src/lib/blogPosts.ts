@@ -94,6 +94,15 @@ export const POSTS: Post[] = [
     dateISO: "2025-12-09",
     readingTime: "6 min",
   },
+  {
+    slug: "itad",
+    title: "ITAD: o que é e como funciona (IT Asset Disposition)",
+    excerpt:
+      "Entenda o processo de destinação de ativos de TI com segurança, rastreabilidade e conformidade — do inventário ao descarte final.",
+    category: "Sustentabilidade",
+    dateISO: "2026-01-03",
+    readingTime: "6 min",
+  },
 ];
 
 export function getPostBySlug(slug: string) {
