@@ -44,6 +44,16 @@ export default function Page() {
             Sugestões, correções, dúvidas, parcerias e contato comercial.
           </p>
 
+          {/* Micro-CTA de confiança (acima do “canal”) */}
+          <div className="mt-6 max-w-2xl rounded-2xl border border-slate-200 bg-white/70 p-4 backdrop-blur">
+            <p className="text-sm font-semibold text-slate-900">
+              Tem uma dúvida rápida ou sugestão de conteúdo?
+            </p>
+            <p className="mt-2 text-sm text-slate-700">
+              Responderemos o mais breve possível. Para agilizar, inclua o assunto e a URL da página (se for correção).
+            </p>
+          </div>
+
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/"
@@ -52,11 +62,12 @@ export default function Page() {
               Voltar para a Home
             </Link>
 
+            {/* Ajuste: CTA comercial fica discreto (sem botão “forte”) */}
             <Link
               href="/anuncie"
-              className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
-              Anunciar no site
+              Mídia e parcerias →
             </Link>
           </div>
 
@@ -132,7 +143,10 @@ export default function Page() {
                   </li>
                   <li>
                     Para informações sobre uso de dados, consulte a{" "}
-                    <Link href="/privacidade" className="font-semibold text-emerald-800 hover:underline">
+                    <Link
+                      href="/privacidade"
+                      className="font-semibold text-emerald-800 hover:underline"
+                    >
                       Política de Privacidade
                     </Link>
                     .
@@ -182,6 +196,46 @@ export default function Page() {
                     <strong>[Parceria]</strong> + seu contato
                   </li>
                 </ul>
+              </div>
+
+              {/* Micro-CTA “Enquanto isso” (evitar beco sem saída) */}
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4">
+                <p className="text-sm font-semibold text-slate-900">
+                  Enquanto isso, você pode explorar
+                </p>
+                <p className="mt-2 text-sm text-slate-700">
+                  Conteúdos rápidos para consultar e compartilhar.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Link
+                    href="/simbolos-da-reciclagem"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Símbolos da reciclagem →
+                  </Link>
+                  <Link
+                    href="/coleta-seletiva"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Cores da coleta seletiva →
+                  </Link>
+                  <Link
+                    href="/residuos-solidos"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Tipos de resíduos →
+                  </Link>
+                </div>
+              </div>
+
+              {/* Micro-CTA institucional */}
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <p className="text-sm font-semibold text-slate-900">
+                  O Reciclativa é um portal educativo e informativo
+                </p>
+                <p className="mt-2 text-sm text-slate-700">
+                  Nosso compromisso é transformar resíduos em recursos.
+                </p>
               </div>
             </div>
           </div>

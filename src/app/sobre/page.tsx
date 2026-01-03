@@ -110,6 +110,30 @@ export default function Page() {
                 acessíveis, ajudando a reduzir desperdício e rejeito por meio de
                 informação clara e bem organizada.
               </p>
+
+              {/* Micro-CTA após Missão */}
+              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <p className="text-sm font-semibold text-slate-900">
+                  Quer saber como reciclar corretamente?
+                </p>
+                <p className="mt-2 text-sm text-slate-700">
+                  Veja nossos guias práticos e simples para aplicar no dia a dia.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Link
+                    href="/guias"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Abrir Guias →
+                  </Link>
+                  <Link
+                    href="/coleta-seletiva"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Coleta seletiva →
+                  </Link>
+                </div>
+              </div>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -126,13 +150,38 @@ export default function Page() {
                 Se você encontrar algo que possa ser melhorado, correções e
                 sugestões são bem-vindas.
               </p>
-              <div className="mt-5">
+
+              <div className="mt-5 flex flex-wrap gap-3">
                 <Link
                   href="/contato"
                   className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Enviar sugestão →
                 </Link>
+              </div>
+
+              {/* Micro-CTA após “Conteúdo” */}
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4">
+                <p className="text-sm font-semibold text-slate-900">
+                  Explore conteúdos essenciais
+                </p>
+                <p className="mt-2 text-sm text-slate-700">
+                  Informação clara para decisões conscientes — do básico ao prático.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Link
+                    href="/educacao-ambiental"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Educação ambiental →
+                  </Link>
+                  <Link
+                    href="/residuos-solidos"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    Resíduos sólidos →
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -180,6 +229,25 @@ export default function Page() {
               <p className="mt-2 text-sm text-emerald-950/90">
                 Transforme resíduos em recursos!
               </p>
+            </div>
+
+            {/* Micro-CTA pré-footer (soft monetização) */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Para empresas e iniciativas locais
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Sua empresa atua com reciclagem, coleta, logística reversa ou sustentabilidade?
+                Em breve você poderá divulgar seus serviços aqui, de forma organizada e útil para o público.
+              </p>
+              <div className="mt-5">
+                <Link
+                  href="/anuncie"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver opções em “Anuncie” →
+                </Link>
+              </div>
             </div>
           </div>
 
