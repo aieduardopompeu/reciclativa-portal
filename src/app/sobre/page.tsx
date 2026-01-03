@@ -4,12 +4,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Sobre | Reciclativa",
   description:
-    "Conheça a Reciclativa: propósito, missão e como o portal organiza conteúdos sobre reciclagem e sustentabilidade.",
+    "Conheça a Reciclativa: propósito, missão, transparência e como organizamos conteúdos sobre reciclagem e sustentabilidade.",
   alternates: { canonical: "/sobre" },
   openGraph: {
     title: "Sobre | Reciclativa",
     description:
-      "Propósito, missão e estrutura da Reciclativa — informação prática para transformar resíduos em recursos.",
+      "Propósito, missão e transparência da Reciclativa — informação prática para transformar resíduos em recursos.",
     url: "/sobre",
     type: "website",
   },
@@ -40,8 +40,8 @@ export default function Page() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            Informação prática, organizada e acessível para transformar resíduos
-            em recursos.
+            Informação prática, organizada e acessível sobre reciclagem,
+            sustentabilidade e economia circular — para aplicar no dia a dia.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -106,32 +106,80 @@ export default function Page() {
                 Missão
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Tornar a reciclagem e a sustentabilidade mais simples, práticas
-                e acessíveis, ajudando a reduzir desperdício e rejeito por meio
-                de informação clara e bem organizada.
+                Tornar a reciclagem e a sustentabilidade mais simples, práticas e
+                acessíveis, ajudando a reduzir desperdício e rejeito por meio de
+                informação clara e bem organizada.
               </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Como o portal está organizado
+                Como produzimos nosso conteúdo
               </h2>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>
-                  <strong>Páginas pilar</strong>: Reciclagem, Sustentabilidade,
-                  Economia Circular.
-                </li>
-                <li>
-                  <strong>Guias práticos</strong>: checklists e passo a passo.
-                </li>
-                <li>
-                  <strong>Blog</strong>: artigos educativos e conteúdos de apoio.
-                </li>
-                <li>
-                  <strong>Diretório</strong>: profissionais e serviços ligados à
-                  área ambiental.
-                </li>
-              </ul>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Os conteúdos são desenvolvidos a partir de fontes públicas e
+                institucionais, materiais educativos reconhecidos e boas práticas
+                amplamente adotadas na área ambiental. Organizamos o material de
+                forma didática, com linguagem simples e exemplos práticos.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Se você encontrar algo que possa ser melhorado, correções e
+                sugestões são bem-vindas.
+              </p>
+              <div className="mt-5">
+                <Link
+                  href="/contato"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Enviar sugestão →
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Transparência
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                A Reciclativa é um site independente. Parte da manutenção do portal
+                pode ser financiada por publicidade, como anúncios do Google
+                AdSense, sempre de forma transparente e sem interferir no conteúdo
+                editorial.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Respeitamos a privacidade dos usuários e buscamos manter o site
+                seguro, estável e útil.
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/privacidade"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Privacidade
+                </Link>
+                <Link
+                  href="/termos"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Termos
+                </Link>
+                <Link
+                  href="/cookies"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Cookies
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
+              <h2 className="text-lg font-extrabold tracking-tight text-emerald-950">
+                Frase do projeto
+              </h2>
+              <p className="mt-2 text-sm text-emerald-950/90">
+                Transforme resíduos em recursos!
+              </p>
             </div>
           </div>
 
@@ -167,15 +215,38 @@ export default function Page() {
                 >
                   Diretório →
                 </Link>
+                <Link
+                  href="/contato"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Contato →
+                </Link>
               </div>
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Frase do projeto
+                  Políticas
                 </p>
-                <p className="mt-2 text-sm text-slate-800">
-                  Transforme resíduos em recursos!
-                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Link
+                    href="/privacidade"
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    Privacidade
+                  </Link>
+                  <Link
+                    href="/termos"
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    Termos
+                  </Link>
+                  <Link
+                    href="/cookies"
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    Cookies
+                  </Link>
+                </div>
               </div>
             </div>
           </aside>
