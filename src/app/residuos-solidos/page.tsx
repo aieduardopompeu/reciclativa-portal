@@ -72,9 +72,7 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">
-                  Resíduos sólidos
-                </span>
+                <span className="font-medium text-slate-700">Resíduos sólidos</span>
               </li>
             </ol>
           </nav>
@@ -86,35 +84,101 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
+            {/* Bloco de abertura (prioridade 1) */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Conteúdo em construção
+                O que são resíduos sólidos (em linguagem simples)
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Esta rota foi criada para remover 404 e servir de base para uma
-                página pilar/guia. Em seguida, vamos incluir seções práticas,
-                checklist, FAQ e links internos.
+                Resíduos sólidos são os materiais descartados no dia a dia (em casa,
+                comércio e serviços). Entender a diferença entre recicláveis, orgânicos
+                e rejeitos ajuda a reduzir contaminação, melhorar a destinação e diminuir
+                custos e impacto ambiental.
               </p>
 
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Classificação
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Classificação</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Diferença entre recicláveis, orgânicos e rejeitos (e por que
-                    isso muda a destinação).
+                    Recicláveis, orgânicos e rejeitos — e por que isso importa.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Manejo e destinação
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Manejo</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Boas práticas de separação, armazenamento e descarte para
-                    reduzir contaminação.
+                    Separação e armazenamento para reduzir contaminação.
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Seção base */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Três decisões que melhoram tudo
+              </h2>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                <li>
+                  <strong>Separar por categoria:</strong> reciclável (seco), orgânico e rejeito.
+                </li>
+                <li>
+                  <strong>Reduzir umidade:</strong> papel/papelão molhado perde valor e vira rejeito.
+                </li>
+                <li>
+                  <strong>Evitar mistura:</strong> contaminação aumenta o descarte final.
+                </li>
+              </ul>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/coleta-seletiva"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver coleta seletiva →
+                </Link>
+                <Link
+                  href="/faq"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver FAQ →
+                </Link>
+              </div>
+            </div>
+
+            {/* Leituras recomendadas */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Leituras recomendadas
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Conecte os conceitos com guias práticos e referências do portal.
+              </p>
+
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Link
+                  href="/reciclagem"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Página pilar: Reciclagem →
+                </Link>
+                <Link
+                  href="/simbolos-da-reciclagem"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Símbolos da reciclagem →
+                </Link>
+                <Link
+                  href="/economia-circular"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Economia circular →
+                </Link>
+                <Link
+                  href="/guias"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Guias práticos →
+                </Link>
               </div>
             </div>
 
