@@ -2,106 +2,150 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Política de Cookies",
+  title: "Cookies e Preferências | Reciclativa",
   description:
-    "Entenda como o Reciclativa utiliza cookies e tecnologias similares para melhorar sua experiência e medir audiência.",
+    "Entenda o uso de cookies na Reciclativa e como gerenciar suas preferências de privacidade.",
+  alternates: { canonical: "/cookies" },
+  openGraph: {
+    title: "Cookies e Preferências | Reciclativa",
+    description:
+      "Entenda o uso de cookies na Reciclativa e como gerenciar suas preferências.",
+    url: "/cookies",
+    type: "website",
+  },
 };
 
-export default function CookiesPage() {
+export default function Page() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight">Política de Cookies</h1>
-        <p className="mt-4 text-muted-foreground">
-          Esta Política explica como o <strong>Reciclativa</strong> utiliza cookies
-          e tecnologias similares para funcionamento do site, análise de tráfego e,
-          quando aplicável, publicidade.
-        </p>
+    <main className="min-h-screen bg-white text-slate-900">
+      <header className="border-b border-slate-200 bg-white">
+        <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+            Institucional
+          </p>
+          <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Cookies e Preferências
+          </h1>
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-700">
+            Esta página explica o uso de cookies e como você pode gerenciar
+            preferências de privacidade no navegador.
+          </p>
+
+          <nav className="mt-6 text-sm text-slate-600">
+            <ol className="flex flex-wrap gap-2">
+              <li>
+                <Link href="/" className="hover:underline">
+                  Home
+                </Link>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-slate-400">/</span>
+                <span className="font-medium text-slate-700">Cookies</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
       </header>
 
-      <section className="space-y-8 text-sm leading-relaxed">
-        <section>
-          <h2 className="text-xl font-semibold mb-2">1. O que são cookies</h2>
-          <p>
-            Cookies são pequenos arquivos armazenados no seu navegador para
-            lembrar preferências, melhorar a navegação e coletar informações
-            estatísticas sobre o uso do site.
-          </p>
-        </section>
+      <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <article className="space-y-6 lg:col-span-2">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight">
+                1) O que são cookies
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Cookies são pequenos arquivos salvos no seu navegador para
+                lembrar preferências e apoiar funcionalidades e medições de uso.
+              </p>
+            </div>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-2">2. Por que usamos cookies</h2>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>
-              <strong>Essenciais:</strong> necessários para o funcionamento básico do site.
-            </li>
-            <li>
-              <strong>Desempenho e análise:</strong> ajudam a entender como o site é utilizado
-              e a melhorar conteúdo e experiência.
-            </li>
-            <li>
-              <strong>Funcionalidade:</strong> lembram preferências do usuário quando aplicável.
-            </li>
-            <li>
-              <strong>Publicidade:</strong> quando houver anúncios, podem ser usados para
-              exibir publicidade e medir resultados.
-            </li>
-          </ul>
-        </section>
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight">
+                2) Tipos de cookies que podem ser utilizados
+              </h2>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                <li>
+                  <strong>Essenciais</strong>: necessários para funcionamento do site.
+                </li>
+                <li>
+                  <strong>Preferências</strong>: lembram escolhas do usuário (quando aplicável).
+                </li>
+                <li>
+                  <strong>Medição/Analytics</strong>: ajudam a entender uso do site (métricas agregadas).
+                </li>
+                <li>
+                  <strong>Publicidade</strong>: podem ser usados por provedores de anúncios para medir e exibir publicidade.
+                </li>
+              </ul>
+              <p className="mt-3 text-sm text-slate-700">
+                Detalhes adicionais podem ser vistos em{" "}
+                <Link
+                  href="/privacidade"
+                  className="font-semibold text-emerald-800 hover:underline"
+                >
+                  Privacidade
+                </Link>
+                .
+              </p>
+            </div>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-2">
-            3. Cookies de terceiros
-          </h2>
-          <p>
-            Podemos utilizar serviços de terceiros (por exemplo, ferramentas de
-            análise e redes de publicidade) que também podem definir cookies.
-            Esses cookies são gerenciados pelos próprios terceiros, conforme suas
-            políticas.
-          </p>
-        </section>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+              <h2 className="text-lg font-extrabold tracking-tight">
+                3) Como gerenciar preferências
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Você pode controlar cookies nas configurações do seu navegador
+                (bloquear, permitir, remover). Ao desativar cookies, algumas
+                funcionalidades podem não operar como esperado.
+              </p>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-2">
-            4. Como gerenciar cookies
-          </h2>
-          <p>
-            Você pode controlar e/ou excluir cookies nas configurações do seu
-            navegador. Ao desativar cookies, algumas funcionalidades podem não
-            operar corretamente.
-          </p>
-        </section>
+              <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+                <p className="text-sm font-semibold text-slate-900">
+                  Preferências de cookies
+                </p>
+                <p className="mt-2 text-sm text-slate-700">
+                  Se o seu site já tiver um banner/controle de consentimento, o
+                  link de “Preferências” deve apontar para esta página ou abrir o
+                  gerenciador. Caso ainda não tenha, manter esta página já ajuda
+                  na transparência.
+                </p>
+              </div>
+            </div>
+          </article>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-2">
-            5. Alterações nesta política
-          </h2>
-          <p>
-            Podemos atualizar esta Política de Cookies periodicamente. Recomendamos
-            revisar esta página para se manter informado.
-          </p>
-        </section>
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight">Atalhos</h3>
+              <div className="mt-4 space-y-3">
+                <Link
+                  href="/privacidade"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                >
+                  Privacidade →
+                </Link>
+                <Link
+                  href="/termos"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                >
+                  Termos →
+                </Link>
+                <Link
+                  href="/contato"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                >
+                  Contato →
+                </Link>
+              </div>
+            </div>
 
-        <section>
-          <h2 className="text-xl font-semibold mb-2">6. Contato</h2>
-          <p>
-            Em caso de dúvidas, fale com a gente pela página de{" "}
-            <Link
-              href="/contato"
-              className="text-primary underline underline-offset-4"
-            >
-              contato
-            </Link>
-            . Veja também nossa{" "}
-            <Link
-              href="/privacidade"
-              className="text-primary underline underline-offset-4"
-            >
-              Política de Privacidade
-            </Link>
-            .
-          </p>
-        </section>
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
+              <p className="text-sm font-semibold text-emerald-950">
+                Transforme resíduos em recursos!
+              </p>
+            </div>
+          </aside>
+        </div>
       </section>
     </main>
   );
