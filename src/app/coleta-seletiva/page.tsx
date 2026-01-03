@@ -71,9 +71,7 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">
-                  Coleta seletiva
-                </span>
+                <span className="font-medium text-slate-700">Coleta seletiva</span>
               </li>
             </ol>
           </nav>
@@ -85,34 +83,107 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
+            {/* Bloco de abertura (prioridade 1) */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Conteúdo em construção
+                O que você vai aprender aqui
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Esta rota foi criada para remover 404 e servir de base para uma
-                página pilar/guia.
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-slate-700">
-                Próximo passo: adicionar seções práticas, FAQ, links internos e
-                artigos relacionados.
+                A coleta seletiva funciona melhor quando a separação é simples e consistente:
+                manter recicláveis secos, evitar contaminação e seguir as regras locais (que
+                podem variar por cidade/operador). Este guia organiza o básico para você
+                separar com segurança e reduzir rejeito.
               </p>
 
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">Separação</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Seco x orgânico x rejeito, sem complicar.
+                  </p>
+                </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="text-sm font-semibold text-slate-900">Cores</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Padrão por material e variações por cidade/operador.
+                    Padrão por material e variações locais.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Boas práticas
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Boas práticas</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Como reduzir contaminação e evitar rejeito na triagem.
+                    Como evitar contaminação na triagem.
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Seção base (mantendo estrutura do site) */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Comece pelo essencial (rápido)
+              </h2>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                <li>
+                  <strong>Seco e sem resto de comida:</strong> reciclável contaminado tende a virar rejeito.
+                </li>
+                <li>
+                  <strong>Não precisa lavar perfeito:</strong> remover excesso e manter seco já ajuda muito.
+                </li>
+                <li>
+                  <strong>Regra local manda:</strong> aceitação de materiais pode variar por cidade/cooperativa.
+                </li>
+              </ul>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/simbolos-da-reciclagem"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver símbolos da reciclagem →
+                </Link>
+                <Link
+                  href="/faq"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver FAQ →
+                </Link>
+              </div>
+            </div>
+
+            {/* Leituras recomendadas (prioridade 2) */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Leituras recomendadas
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Para aprofundar com segurança, comece por estes atalhos internos.
+              </p>
+
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Link
+                  href="/reciclagem"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Página pilar: Reciclagem →
+                </Link>
+                <Link
+                  href="/residuos-solidos"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Resíduos sólidos (classificação) →
+                </Link>
+                <Link
+                  href="/economia-circular"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Economia circular →
+                </Link>
+                <Link
+                  href="/guias"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Guias práticos →
+                </Link>
               </div>
             </div>
 
