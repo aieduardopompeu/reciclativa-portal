@@ -73,9 +73,7 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">
-                  Sustentabilidade
-                </span>
+                <span className="font-medium text-slate-700">Sustentabilidade</span>
               </li>
             </ol>
           </nav>
@@ -87,33 +85,101 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
+            {/* Bloco de abertura (prioridade 1) */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Conteúdo em construção
+                Sustentabilidade na prática (sem complicar)
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Esta rota foi criada para remover 404 e servir de base para uma
-                página pilar/guia. Em seguida, vamos incluir seções práticas,
-                checklist, FAQ e links internos.
+                Sustentabilidade é tomar decisões melhores no dia a dia: reduzir desperdício,
+                reusar antes de descartar e consumir com mais intenção. Nesta página você
+                encontra um mapa simples do que realmente muda resultado — em casa, na escola
+                e no trabalho.
               </p>
 
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Hábitos sustentáveis
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Hábitos</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Redução de desperdício, reuso e escolhas do dia a dia.
+                    Redução de desperdício, reuso e escolhas do cotidiano.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Consumo consciente
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Consumo</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Como comprar melhor, descartar certo e evitar rejeito.
+                    Comprar melhor, descartar certo e evitar rejeito.
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Seção base */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Onde começar (3 passos)
+              </h2>
+              <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-slate-700">
+                <li>
+                  <strong>Reduzir:</strong> compre menos, planeje, evite descartáveis quando possível.
+                </li>
+                <li>
+                  <strong>Reusar e reparar:</strong> estenda a vida útil antes de pensar em reciclar.
+                </li>
+                <li>
+                  <strong>Separar certo:</strong> reciclável seco, orgânico separado e rejeito minimizado.
+                </li>
+              </ol>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/economia-circular"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Entender economia circular →
+                </Link>
+                <Link
+                  href="/coleta-seletiva"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver coleta seletiva →
+                </Link>
+              </div>
+            </div>
+
+            {/* Leituras recomendadas */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Leituras recomendadas
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Páginas internas que se conectam diretamente com sustentabilidade.
+              </p>
+
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Link
+                  href="/residuos-solidos"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Resíduos sólidos →
+                </Link>
+                <Link
+                  href="/reciclagem"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Página pilar: Reciclagem →
+                </Link>
+                <Link
+                  href="/guias"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Guias práticos →
+                </Link>
+                <Link
+                  href="/faq"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  FAQ →
+                </Link>
               </div>
             </div>
 
@@ -122,7 +188,7 @@ export default function Page() {
 
             {/* CTA Anuncie */}
             <AdCtaCard />
-            </div>
+          </div>
 
           {/* Sidebar */}
           <aside className="space-y-6">
