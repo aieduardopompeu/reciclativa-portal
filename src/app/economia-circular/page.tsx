@@ -42,8 +42,7 @@ export default function Page() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            Como produtos e materiais podem circular mais tempo, reduzindo lixo e
-            custo.
+            Como produtos e materiais podem circular mais tempo, reduzindo lixo e custo.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -72,9 +71,7 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">
-                  Economia circular
-                </span>
+                <span className="font-medium text-slate-700">Economia circular</span>
               </li>
             </ol>
           </nav>
@@ -86,39 +83,101 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
+            {/* Bloco de abertura (prioridade 1) */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Conteúdo em construção
+                O que é economia circular (de verdade)
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Esta rota foi criada para remover 404 e servir de base para uma
-                página pilar/guia.
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-slate-700">
-                Próximo passo: adicionar seções, FAQ, links internos e artigos
-                relacionados.
+                Economia circular é reduzir desperdício mantendo materiais em uso por mais tempo:
+                reduzir, reusar, reparar e remanufaturar antes de reciclar. Aqui você entende o
+                conceito com exemplos práticos e como aplicar no dia a dia e em negócios.
               </p>
 
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Reuso e reparo
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Reuso e reparo</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Estender a vida útil antes de reciclar: manutenção, conserto e
-                    reaproveitamento.
+                    Estender a vida útil antes de reciclar: manutenção e conserto.
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Modelos circulares
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Modelos circulares</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Logística reversa, remanufatura e serviços que reduzem
-                    desperdício.
+                    Logística reversa, remanufatura e serviços que reduzem desperdício.
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Seção base */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Circular x linear (resumo rápido)
+              </h2>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                <li>
+                  <strong>Modelo linear:</strong> extrair → produzir → consumir → descartar.
+                </li>
+                <li>
+                  <strong>Modelo circular:</strong> desenhar para durar, reusar, reparar e reinserir materiais no ciclo.
+                </li>
+                <li>
+                  <strong>Reciclagem é parte do ciclo:</strong> mas não substitui reduzir e reusar.
+                </li>
+              </ul>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/sustentabilidade"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver sustentabilidade →
+                </Link>
+                <Link
+                  href="/residuos-solidos"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver resíduos sólidos →
+                </Link>
+              </div>
+            </div>
+
+            {/* Leituras recomendadas */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Leituras recomendadas
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Continue por estas páginas internas (melhor sequência de aprendizado).
+              </p>
+
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Link
+                  href="/reciclagem"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Página pilar: Reciclagem →
+                </Link>
+                <Link
+                  href="/coleta-seletiva"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Coleta seletiva →
+                </Link>
+                <Link
+                  href="/guias"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Guias práticos →
+                </Link>
+                <Link
+                  href="/blog"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver blog →
+                </Link>
               </div>
             </div>
 
