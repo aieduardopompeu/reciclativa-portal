@@ -11,7 +11,7 @@ const SLUG = "lixo-eletronico-descarte";
 const URL = `${SITE_URL}/blog/${SLUG}`;
 
 export const metadata: Metadata = {
-  title: "Lixo eletrônico: como descartar corretamente sem poluir | Reciclativa",
+  title: "Lixo eletrônico: como descartarsrüiar corretamente sem poluir | Reciclativa",
   description:
     "Guia prático de descarte de lixo eletrônico (e-lixo): o que é, riscos ambientais, como separar por tipo e onde levar com segurança.",
   alternates: { canonical: `/blog/${SLUG}` },
@@ -83,9 +83,30 @@ export default function Page() {
       {/* Corpo editorial — PADRÃO ITAD */}
       <section className="mt-10">
         <article className="mx-auto max-w-3xl">
+          {/* BOX “EM 30 SEGUNDOS” — igual ao ITAD */}
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              Em 30 segundos
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+              <li>
+                <strong className="text-slate-900">E-lixo</strong> inclui eletrônicos e acessórios
+                (celulares, cabos, carregadores, pilhas e baterias).
+              </li>
+              <li>
+                O descarte correto evita <strong className="text-slate-900">contaminação</strong> e
+                reduz riscos com <strong className="text-slate-900">baterias</strong>.
+              </li>
+              <li>
+                O caminho padrão é <strong className="text-slate-900">ecoponto</strong> + logística
+                reversa (lojas/campanhas).
+              </li>
+            </ul>
+          </div>
+
           <div
             className={[
-              "text-slate-800 leading-relaxed space-y-5",
+              "mt-10 text-slate-800 leading-relaxed space-y-5",
               "[&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:tracking-tight [&_h2]:text-slate-900",
               "[&_h3]:mt-7 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:tracking-tight [&_h3]:text-slate-900",
               "[&_p]:text-base [&_p]:leading-relaxed",
@@ -155,6 +176,7 @@ export default function Page() {
             </ul>
           </div>
 
+          {/* Links úteis */}
           <div className="mt-10">
             <RecommendedLinks
               links={[
@@ -176,32 +198,71 @@ export default function Page() {
               ]}
             />
           </div>
+
+          {/* FAQ — para bater o padrão do ITAD */}
+          <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+              FAQ rápido
+            </h2>
+
+            <div className="mt-5 space-y-5 text-sm leading-relaxed text-slate-700">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Pilhas e baterias podem ir no lixo comum?
+                </h3>
+                <p className="mt-2">
+                  Não. Leve a pontos de coleta específicos (ecopontos/lojas/campanhas). Se possível,
+                  isole os polos com fita.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Posso descartar cabos e carregadores na coleta seletiva?
+                </h3>
+                <p className="mt-2">
+                  Em geral, não. Eles devem ir para e-lixo (ecoponto/logística reversa), porque exigem
+                  triagem e destinação específica.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  E se na minha cidade não tiver ecoponto?
+                </h3>
+                <p className="mt-2">
+                  Procure campanhas de coleta, cooperativas e lojas com logística reversa. Se não houver
+                  opção, evite quebrar/desmontar e guarde até encontrar um ponto seguro.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA final — AGORA dentro do max-w-3xl (padrão ITAD) */}
+          <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              Próximo passo recomendado
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm text-slate-600">
+              Para acertar o básico do descarte no dia a dia, revise o guia do que pode ser reciclado.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/blog/o-que-pode-ser-reciclado"
+                className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+              >
+                Ver guia: o que pode ser reciclado
+              </Link>
+              <Link
+                href="/blog"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                Voltar ao Blog
+              </Link>
+            </div>
+          </section>
         </article>
-      </section>
-
-      {/* CTA final (inalterado) */}
-      <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-          Próximo passo recomendado
-        </h2>
-        <p className="mt-3 max-w-2xl text-sm text-slate-600">
-          Para acertar o básico do descarte no dia a dia, revise o guia do que pode ser reciclado.
-        </p>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href="/blog/o-que-pode-ser-reciclado"
-            className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
-          >
-            Ver guia: o que pode ser reciclado
-          </Link>
-          <Link
-            href="/blog"
-            className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-          >
-            Voltar ao Blog
-          </Link>
-        </div>
       </section>
     </main>
   );
