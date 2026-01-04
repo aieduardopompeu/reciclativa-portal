@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
@@ -242,22 +243,6 @@ export default function Page() {
               Complemento: <Link href="/blog/reduzir-lixo-na-rotina">reduzir lixo na rotina</Link>.
             </p>
 
-            <h2>Links úteis para continuar</h2>
-            <ul>
-              <li>
-                <Link href="/reciclagem">Página pilar: Reciclagem</Link>
-              </li>
-              <li>
-                <Link href="/blog/reciclagem-plastico">Reciclagem de plástico</Link>
-              </li>
-              <li>
-                <Link href="/blog/tipos-de-reciclagem">Tipos de reciclagem</Link>
-              </li>
-              <li>
-                <Link href="/blog/economia-circular-e-linear">Economia circular vs. linear</Link>
-              </li>
-            </ul>
-
             <h2>FAQ: dúvidas comuns sobre coleta seletiva</h2>
 
             <h3>Preciso lavar embalagens para reciclar?</h3>
@@ -281,6 +266,79 @@ export default function Page() {
               Use pontos de coleta específicos (logística reversa, ecopontos, campanhas). Veja:{" "}
               <Link href="/blog/lixo-eletronico-descarte">lixo eletrônico: descarte correto</Link>.
             </p>
+          </div>
+
+          {/* Links úteis (card) — padrão ITAD */}
+          <div className="mt-10">
+            <RecommendedLinks
+              links={[
+                {
+                  href: "/blog/o-que-pode-ser-reciclado",
+                  title: "O que pode ser reciclado →",
+                  description: "Lista prática para acertar no descarte.",
+                },
+                {
+                  href: "/blog/cores-da-coleta-seletiva",
+                  title: "Cores da coleta seletiva →",
+                  description: "Atalho visual para não errar na separação.",
+                },
+                {
+                  href: "/blog/lixo-eletronico-descarte",
+                  title: "Lixo eletrônico: descarte correto →",
+                  description: "E-lixo, pilhas, baterias e pontos de coleta.",
+                },
+                {
+                  href: "/blog/economia-circular-e-linear",
+                  title: "Economia circular vs. linear →",
+                  description: "Entenda o conceito e por que importa.",
+                },
+              ]}
+            />
+          </div>
+
+          {/* FAQ rápido — em card (padrão ITAD) */}
+          <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+            <h2 className="text-xl font-extrabold tracking-tight text-slate-900">FAQ rápido</h2>
+
+            <div className="mt-5 space-y-5 text-sm leading-relaxed text-slate-700">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Preciso lavar embalagens para reciclar?
+                </h3>
+                <p className="mt-2">
+                  Normalmente não. Retire excesso de alimento e líquidos e mantenha seco. Evitar contaminação
+                  é o que mais importa para a triagem.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Se eu misturar recicláveis com orgânico, o que acontece?
+                </h3>
+                <p className="mt-2">
+                  A contaminação pode inviabilizar materiais recicláveis. Muitas vezes, o saco inteiro vira rejeito.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Vidro vai sempre na coleta seletiva?
+                </h3>
+                <p className="mt-2">
+                  Depende da cidade e do sistema local. Quando aceito, separe com cuidado. Se quebrado, embale e identifique.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  O que faço com lixo eletrônico e baterias?
+                </h3>
+                <p className="mt-2">
+                  Use pontos de coleta específicos (logística reversa, ecopontos, campanhas). Veja{" "}
+                  <Link href="/blog/lixo-eletronico-descarte">lixo eletrônico: descarte correto</Link>.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* CTA final — dentro do max-w-3xl (padrão ITAD) */}
