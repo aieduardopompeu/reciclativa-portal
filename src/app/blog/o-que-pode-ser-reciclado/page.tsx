@@ -245,22 +245,6 @@ export default function Page() {
               Se você quiser usar as cores, veja:{" "}
               <Link href="/blog/cores-da-coleta-seletiva">cores da coleta seletiva</Link>.
             </p>
-
-            <h2>Links úteis para continuar</h2>
-            <ul>
-              <li>
-                <Link href="/reciclagem">Página pilar: Reciclagem</Link>
-              </li>
-              <li>
-                <Link href="/blog/o-que-e-reciclagem">O que é reciclagem</Link>
-              </li>
-              <li>
-                <Link href="/blog/tipos-de-reciclagem">Tipos de reciclagem</Link>
-              </li>
-              <li>
-                <Link href="/blog/coleta-seletiva-no-brasil">Coleta seletiva no Brasil</Link>
-              </li>
-            </ul>
           </div>
 
           {/* RecommendedLinks — padrão ITAD */}
