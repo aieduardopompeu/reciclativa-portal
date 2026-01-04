@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
@@ -84,7 +85,7 @@ export default function Page() {
       {/* Corpo editorial — PADRÃO ITAD */}
       <section className="mt-10">
         <article className="mx-auto max-w-3xl">
-          {/* Box “Em 30 segundos” */}
+          {/* Em 30 segundos */}
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
               Em 30 segundos
@@ -105,7 +106,7 @@ export default function Page() {
             </ul>
           </div>
 
-          {/* Texto com tipografia editorial (sem prose) */}
+          {/* Texto editorial (sem prose) */}
           <div
             className={[
               "mt-10 text-slate-800 leading-relaxed space-y-5",
@@ -151,30 +152,20 @@ export default function Page() {
             <ul>
               <li>Papel higiênico, guardanapo sujo, papel toalha sujo</li>
               <li>Papel muito engordurado (ex.: caixa de pizza com gordura)</li>
-              <li>
-                Papel plastificado/metalizado (depende da composição e da coleta local)
-              </li>
+              <li>Papel plastificado/metalizado (depende da composição e da coleta local)</li>
             </ul>
 
             <h3>Plástico (geralmente no “vermelho”)</h3>
             <h4>Pode (comumente aceito)</h4>
             <ul>
               <li>Garrafas PET (água, refrigerante)</li>
-              <li>
-                Frascos rígidos de limpeza e higiene (quando vazios e com pouco resíduo)
-              </li>
-              <li>
-                Potes rígidos (alguns tipos) e tampas (varia por cidade/cooperativa)
-              </li>
+              <li>Frascos rígidos de limpeza e higiene (quando vazios e com pouco resíduo)</li>
+              <li>Potes rígidos (alguns tipos) e tampas (varia por cidade/cooperativa)</li>
             </ul>
             <h4>Depende / costuma dar problema</h4>
             <ul>
-              <li>
-                Plástico filme (sacolinha, embalagem flexível) — varia muito por cidade
-              </li>
-              <li>
-                Embalagens metalizadas/multicamadas (sachês) — aceitação geralmente menor
-              </li>
+              <li>Plástico filme (sacolinha, embalagem flexível) — varia muito por cidade</li>
+              <li>Embalagens metalizadas/multicamadas (sachês) — aceitação geralmente menor</li>
               <li>Isopor (EPS) — depende da coleta local e se está limpo</li>
             </ul>
 
@@ -209,12 +200,9 @@ export default function Page() {
             </ul>
 
             <h2>Orgânico vs rejeito: o que fazer com o que NÃO recicla</h2>
-
             <h3>Orgânico</h3>
             <ul>
-              <li>
-                Restos de alimentos, cascas, borra de café (quando há compostagem/coleta orgânica)
-              </li>
+              <li>Restos de alimentos, cascas, borra de café (quando há compostagem/coleta orgânica)</li>
             </ul>
 
             <h3>Rejeito</h3>
@@ -273,41 +261,90 @@ export default function Page() {
                 <Link href="/blog/coleta-seletiva-no-brasil">Coleta seletiva no Brasil</Link>
               </li>
             </ul>
-
-            <h2>FAQ: dúvidas comuns sobre o que pode ser reciclado</h2>
-
-            <h3>Preciso lavar tudo antes de reciclar?</h3>
-            <p>
-              Não precisa lavar “perfeito”. O essencial é retirar excesso de comida e líquidos e manter
-              recicláveis secos para evitar contaminação.
-            </p>
-
-            <h3>Plástico filme é reciclável?</h3>
-            <p>
-              Depende da estrutura local. Quando aceito, precisa estar limpo e seco. Se estiver
-              engordurado, tende a virar rejeito.
-            </p>
-
-            <h3>Isopor entra na coleta seletiva?</h3>
-            <p>
-              Depende da cidade e do sistema local. Se sua coleta não aceita, procure PEVs/ecopontos
-              específicos.
-            </p>
-
-            <h3>Vidro quebrado pode ir para reciclagem?</h3>
-            <p>
-              Pode, mas precisa ser embalado com segurança e identificado para não ferir quem faz a triagem.
-            </p>
           </div>
 
-          {/* CTA final — dentro do max-w-3xl (padrão ITAD) */}
+          {/* RecommendedLinks — padrão ITAD */}
+          <div className="mt-10">
+            <RecommendedLinks
+              links={[
+                {
+                  href: "/blog/coleta-seletiva-no-brasil",
+                  title: "Coleta seletiva no Brasil →",
+                  description: "Como separar e o que fazer quando não há coleta.",
+                },
+                {
+                  href: "/blog/cores-da-coleta-seletiva",
+                  title: "Cores da coleta seletiva →",
+                  description: "Atalho visual para não errar na separação.",
+                },
+                {
+                  href: "/blog/lixo-eletronico-descarte",
+                  title: "Lixo eletrônico: descarte correto →",
+                  description: "E-lixo, pilhas, baterias e pontos de coleta.",
+                },
+                {
+                  href: "/blog/reduzir-lixo-na-rotina",
+                  title: "Reduzir lixo na rotina →",
+                  description: "Menos rejeito, mais eficiência no dia a dia.",
+                },
+              ]}
+            />
+          </div>
+
+          {/* FAQ rápido — padrão ITAD (mesmo conteúdo, só em card) */}
+          <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+            <h2 className="text-xl font-extrabold tracking-tight text-slate-900">FAQ rápido</h2>
+
+            <div className="mt-5 space-y-5 text-sm leading-relaxed text-slate-700">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Preciso lavar tudo antes de reciclar?
+                </h3>
+                <p className="mt-2">
+                  Não precisa lavar “perfeito”. O essencial é retirar excesso de comida e líquidos e manter
+                  recicláveis secos para evitar contaminação.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Plástico filme é reciclável?
+                </h3>
+                <p className="mt-2">
+                  Depende da estrutura local. Quando aceito, precisa estar limpo e seco. Se estiver
+                  engordurado, tende a virar rejeito.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Isopor entra na coleta seletiva?
+                </h3>
+                <p className="mt-2">
+                  Depende da cidade e do sistema local. Se sua coleta não aceita, procure PEVs/ecopontos
+                  específicos.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Vidro quebrado pode ir para reciclagem?
+                </h3>
+                <p className="mt-2">
+                  Pode, mas precisa ser embalado com segurança e identificado para não ferir quem faz a triagem.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Próximo passo — padrão ITAD */}
           <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
             <h2 className="text-2xl font-bold tracking-tight text-slate-900">
               Próximo passo recomendado
             </h2>
             <p className="mt-3 max-w-2xl text-sm text-slate-600">
-              Para consolidar o básico, veja como a coleta seletiva funciona na prática e o que fazer
-              quando não existe coleta no seu bairro.
+              Para consolidar o básico, veja como a coleta seletiva funciona na prática e o que fazer quando
+              não existe coleta no seu bairro.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
