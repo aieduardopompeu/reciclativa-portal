@@ -59,10 +59,10 @@ export default function Page() {
         </h1>
 
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 md:text-base">
-          Se você já ficou na dúvida na hora de separar o lixo, este guia resolve o essencial.
-          A regra número 1 é simples: recicláveis devem estar <strong>secos</strong> e com
-          <strong> pouca contaminação</strong>. Abaixo, você encontra listas práticas por material
-          e os erros mais comuns.
+          Se você já ficou na dúvida na hora de separar o lixo, este guia resolve o essencial. A
+          regra número 1 é simples: recicláveis devem estar <strong>secos</strong> e com{" "}
+          <strong>pouca contaminação</strong>. Abaixo, você encontra listas práticas por material e
+          os erros mais comuns.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -81,194 +81,251 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Conteúdo */}
-      <article className="prose prose-slate mt-10 max-w-none">
-        <h2>A regra de ouro (antes da lista)</h2>
-        <p>
-          A maioria dos recicláveis é perdida por <strong>contaminação</strong>. Por isso, antes de
-          pensar no “material”, pense no estado:
-        </p>
-        <ul>
-          <li>
-            <strong>Seco:</strong> sem excesso de líquido.
-          </li>
-          <li>
-            <strong>Sem comida:</strong> retire restos e sujeira evidente.
-          </li>
-          <li>
-            <strong>Sem gordura:</strong> gordura é uma das maiores vilãs (especialmente para papel).
-          </li>
-        </ul>
+      {/* Corpo editorial — PADRÃO ITAD */}
+      <section className="mt-10">
+        <article className="mx-auto max-w-3xl">
+          {/* Box “Em 30 segundos” */}
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              Em 30 segundos
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+              <li>
+                Recicláveis devem estar <strong className="text-slate-900">secos</strong> e com{" "}
+                <strong className="text-slate-900">pouca contaminação</strong>.
+              </li>
+              <li>
+                Papel engordurado e resíduos de higiene quase sempre viram{" "}
+                <strong className="text-slate-900">rejeito</strong>.
+              </li>
+              <li>
+                Itens “especiais” (e-lixo, pilhas, lâmpadas) vão para{" "}
+                <strong className="text-slate-900">pontos de coleta</strong>.
+              </li>
+            </ul>
+          </div>
 
-        <h2>O que normalmente PODE ser reciclado (por material)</h2>
-
-        <h3>Papel e papelão (geralmente no “azul”)</h3>
-        <h4>Pode</h4>
-        <ul>
-          <li>Caixas de papelão (limpas e secas)</li>
-          <li>Jornais, revistas, folhas, cadernos</li>
-          <li>Embalagens de papel (secas)</li>
-        </ul>
-        <h4>Geralmente não pode</h4>
-        <ul>
-          <li>Papel higiênico, guardanapo sujo, papel toalha sujo</li>
-          <li>Papel muito engordurado (ex.: caixa de pizza com gordura)</li>
-          <li>Papel plastificado/metalizado (depende da composição e da coleta local)</li>
-        </ul>
-
-        <h3>Plástico (geralmente no “vermelho”)</h3>
-        <h4>Pode (comumente aceito)</h4>
-        <ul>
-          <li>Garrafas PET (água, refrigerante)</li>
-          <li>Frascos rígidos de limpeza e higiene (quando vazios e com pouco resíduo)</li>
-          <li>Potes rígidos (alguns tipos) e tampas (varia por cidade/cooperativa)</li>
-        </ul>
-        <h4>Depende / costuma dar problema</h4>
-        <ul>
-          <li>Plástico filme (sacolinha, embalagem flexível) — varia muito por cidade</li>
-          <li>Embalagens metalizadas/multicamadas (sachês) — aceitação geralmente menor</li>
-          <li>Isopor (EPS) — depende da coleta local e se está limpo</li>
-        </ul>
-
-        <p>
-          Guia aprofundado: <Link href="/blog/reciclagem-plastico">reciclagem de plástico</Link>.
-        </p>
-
-        <h3>Metal (geralmente no “amarelo”)</h3>
-        <h4>Pode</h4>
-        <ul>
-          <li>Latas de alumínio e aço (vazias e com pouco resíduo)</li>
-          <li>Tampas metálicas e pequenas sucatas (quando aceitas localmente)</li>
-        </ul>
-        <h4>Depende</h4>
-        <ul>
-          <li>Aerossóis e embalagens pressurizadas — siga orientação local</li>
-          <li>Objetos com produto perigoso — preferir pontos específicos</li>
-        </ul>
-
-        <h3>Vidro (geralmente no “verde”)</h3>
-        <h4>Pode</h4>
-        <ul>
-          <li>Garrafas e potes de vidro</li>
-          <li>Frascos (perfume, alimentos) quando vazios</li>
-        </ul>
-        <h4>Geralmente não vai no “vidro comum”</h4>
-        <ul>
-          <li>Lâmpadas (descarte específico)</li>
-          <li>Espelhos e vidros temperados (fluxo diferente)</li>
-          <li>Vidro quebrado sem embalagem segura (risco na triagem)</li>
-        </ul>
-
-        <h2>Orgânico vs rejeito: o que fazer com o que NÃO recicla</h2>
-        <h3>Orgânico</h3>
-        <ul>
-          <li>Restos de alimentos, cascas, borra de café (quando há compostagem/coleta orgânica)</li>
-        </ul>
-
-        <h3>Rejeito</h3>
-        <ul>
-          <li>Itens contaminados (muita comida/gordura)</li>
-          <li>Materiais sem reciclagem local</li>
-          <li>Resíduos de higiene (ex.: papel higiênico, fraldas)</li>
-        </ul>
-
-        <p>
-          Para reduzir rejeito, veja: <Link href="/blog/reduzir-lixo-na-rotina">reduzir lixo na rotina</Link>.
-        </p>
-
-        <h2>Itens especiais: descarte separado (não vai na coleta comum)</h2>
-        <ul>
-          <li>
-            <strong>Lixo eletrônico:</strong> celulares, cabos, carregadores, eletrônicos —{" "}
-            <Link href="/blog/lixo-eletronico-descarte">veja o guia completo</Link>.
-          </li>
-          <li>
-            <strong>Pilhas e baterias:</strong> pontos de coleta específicos (logística reversa).
-          </li>
-          <li>
-            <strong>Lâmpadas:</strong> descarte específico em PEVs/ecopontos.
-          </li>
-        </ul>
-
-        <h2>Como separar em casa (modelo simples e eficiente)</h2>
-        <ol>
-          <li>
-            <strong>Recicláveis secos</strong> (papel/plástico/metal/vidro quando aceito).
-          </li>
-          <li>
-            <strong>Orgânico + rejeito</strong> (se não houver compostagem/coleta orgânica, vai junto).
-          </li>
-        </ol>
-
-        <p>
-          Se você quiser usar as cores, veja:{" "}
-          <Link href="/blog/cores-da-coleta-seletiva">cores da coleta seletiva</Link>.
-        </p>
-
-        <h2>Links úteis para continuar</h2>
-        <ul>
-          <li>
-            <Link href="/reciclagem">Página pilar: Reciclagem</Link>
-          </li>
-          <li>
-            <Link href="/blog/o-que-e-reciclagem">O que é reciclagem</Link>
-          </li>
-          <li>
-            <Link href="/blog/tipos-de-reciclagem">Tipos de reciclagem</Link>
-          </li>
-          <li>
-            <Link href="/blog/coleta-seletiva-no-brasil">Coleta seletiva no Brasil</Link>
-          </li>
-        </ul>
-
-        <h2>FAQ: dúvidas comuns sobre o que pode ser reciclado</h2>
-
-        <h3>Preciso lavar tudo antes de reciclar?</h3>
-        <p>
-          Não precisa lavar “perfeito”. O essencial é retirar excesso de comida e líquidos e manter
-          recicláveis secos para evitar contaminação.
-        </p>
-
-        <h3>Plástico filme é reciclável?</h3>
-        <p>
-          Depende da estrutura local. Quando aceito, precisa estar limpo e seco. Se estiver
-          engordurado, tende a virar rejeito.
-        </p>
-
-        <h3>Isopor entra na coleta seletiva?</h3>
-        <p>
-          Depende da cidade e do sistema local. Se sua coleta não aceita, procure PEVs/ecopontos
-          específicos.
-        </p>
-
-        <h3>Vidro quebrado pode ir para reciclagem?</h3>
-        <p>
-          Pode, mas precisa ser embalado com segurança e identificado para não ferir quem faz a triagem.
-        </p>
-      </article>
-
-      {/* CTA final */}
-      <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Próximo passo recomendado</h2>
-        <p className="mt-3 max-w-2xl text-sm text-slate-600">
-          Para consolidar o básico, veja como a coleta seletiva funciona na prática e o que fazer
-          quando não existe coleta no seu bairro.
-        </p>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href="/blog/coleta-seletiva-no-brasil"
-            className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+          {/* Texto com tipografia editorial (sem prose) */}
+          <div
+            className={[
+              "mt-10 text-slate-800 leading-relaxed space-y-5",
+              "[&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:tracking-tight [&_h2]:text-slate-900",
+              "[&_h3]:mt-7 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:tracking-tight [&_h3]:text-slate-900",
+              "[&_h4]:mt-5 [&_h4]:text-base [&_h4]:font-bold [&_h4]:text-slate-900",
+              "[&_p]:text-base [&_p]:leading-relaxed",
+              "[&_strong]:font-semibold [&_strong]:text-slate-900",
+              "[&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6",
+              "[&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-6",
+              "[&_li]:mt-2",
+              "[&_a]:font-semibold [&_a]:text-emerald-700 hover:[&_a]:underline",
+            ].join(" ")}
           >
-            Ver: coleta seletiva no Brasil
-          </Link>
-          <Link
-            href="/blog"
-            className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-          >
-            Voltar ao Blog
-          </Link>
-        </div>
+            <h2>A regra de ouro (antes da lista)</h2>
+            <p>
+              A maioria dos recicláveis é perdida por <strong>contaminação</strong>. Por isso, antes
+              de pensar no “material”, pense no estado:
+            </p>
+            <ul>
+              <li>
+                <strong>Seco:</strong> sem excesso de líquido.
+              </li>
+              <li>
+                <strong>Sem comida:</strong> retire restos e sujeira evidente.
+              </li>
+              <li>
+                <strong>Sem gordura:</strong> gordura é uma das maiores vilãs (especialmente para
+                papel).
+              </li>
+            </ul>
+
+            <h2>O que normalmente PODE ser reciclado (por material)</h2>
+
+            <h3>Papel e papelão (geralmente no “azul”)</h3>
+            <h4>Pode</h4>
+            <ul>
+              <li>Caixas de papelão (limpas e secas)</li>
+              <li>Jornais, revistas, folhas, cadernos</li>
+              <li>Embalagens de papel (secas)</li>
+            </ul>
+            <h4>Geralmente não pode</h4>
+            <ul>
+              <li>Papel higiênico, guardanapo sujo, papel toalha sujo</li>
+              <li>Papel muito engordurado (ex.: caixa de pizza com gordura)</li>
+              <li>
+                Papel plastificado/metalizado (depende da composição e da coleta local)
+              </li>
+            </ul>
+
+            <h3>Plástico (geralmente no “vermelho”)</h3>
+            <h4>Pode (comumente aceito)</h4>
+            <ul>
+              <li>Garrafas PET (água, refrigerante)</li>
+              <li>
+                Frascos rígidos de limpeza e higiene (quando vazios e com pouco resíduo)
+              </li>
+              <li>
+                Potes rígidos (alguns tipos) e tampas (varia por cidade/cooperativa)
+              </li>
+            </ul>
+            <h4>Depende / costuma dar problema</h4>
+            <ul>
+              <li>
+                Plástico filme (sacolinha, embalagem flexível) — varia muito por cidade
+              </li>
+              <li>
+                Embalagens metalizadas/multicamadas (sachês) — aceitação geralmente menor
+              </li>
+              <li>Isopor (EPS) — depende da coleta local e se está limpo</li>
+            </ul>
+
+            <p>
+              Guia aprofundado:{" "}
+              <Link href="/blog/reciclagem-plastico">reciclagem de plástico</Link>.
+            </p>
+
+            <h3>Metal (geralmente no “amarelo”)</h3>
+            <h4>Pode</h4>
+            <ul>
+              <li>Latas de alumínio e aço (vazias e com pouco resíduo)</li>
+              <li>Tampas metálicas e pequenas sucatas (quando aceitas localmente)</li>
+            </ul>
+            <h4>Depende</h4>
+            <ul>
+              <li>Aerossóis e embalagens pressurizadas — siga orientação local</li>
+              <li>Objetos com produto perigoso — preferir pontos específicos</li>
+            </ul>
+
+            <h3>Vidro (geralmente no “verde”)</h3>
+            <h4>Pode</h4>
+            <ul>
+              <li>Garrafas e potes de vidro</li>
+              <li>Frascos (perfume, alimentos) quando vazios</li>
+            </ul>
+            <h4>Geralmente não vai no “vidro comum”</h4>
+            <ul>
+              <li>Lâmpadas (descarte específico)</li>
+              <li>Espelhos e vidros temperados (fluxo diferente)</li>
+              <li>Vidro quebrado sem embalagem segura (risco na triagem)</li>
+            </ul>
+
+            <h2>Orgânico vs rejeito: o que fazer com o que NÃO recicla</h2>
+
+            <h3>Orgânico</h3>
+            <ul>
+              <li>
+                Restos de alimentos, cascas, borra de café (quando há compostagem/coleta orgânica)
+              </li>
+            </ul>
+
+            <h3>Rejeito</h3>
+            <ul>
+              <li>Itens contaminados (muita comida/gordura)</li>
+              <li>Materiais sem reciclagem local</li>
+              <li>Resíduos de higiene (ex.: papel higiênico, fraldas)</li>
+            </ul>
+
+            <p>
+              Para reduzir rejeito, veja:{" "}
+              <Link href="/blog/reduzir-lixo-na-rotina">reduzir lixo na rotina</Link>.
+            </p>
+
+            <h2>Itens especiais: descarte separado (não vai na coleta comum)</h2>
+            <ul>
+              <li>
+                <strong>Lixo eletrônico:</strong> celulares, cabos, carregadores, eletrônicos —{" "}
+                <Link href="/blog/lixo-eletronico-descarte">veja o guia completo</Link>.
+              </li>
+              <li>
+                <strong>Pilhas e baterias:</strong> pontos de coleta específicos (logística reversa).
+              </li>
+              <li>
+                <strong>Lâmpadas:</strong> descarte específico em PEVs/ecopontos.
+              </li>
+            </ul>
+
+            <h2>Como separar em casa (modelo simples e eficiente)</h2>
+            <ol>
+              <li>
+                <strong>Recicláveis secos</strong> (papel/plástico/metal/vidro quando aceito).
+              </li>
+              <li>
+                <strong>Orgânico + rejeito</strong> (se não houver compostagem/coleta orgânica, vai junto).
+              </li>
+            </ol>
+
+            <p>
+              Se você quiser usar as cores, veja:{" "}
+              <Link href="/blog/cores-da-coleta-seletiva">cores da coleta seletiva</Link>.
+            </p>
+
+            <h2>Links úteis para continuar</h2>
+            <ul>
+              <li>
+                <Link href="/reciclagem">Página pilar: Reciclagem</Link>
+              </li>
+              <li>
+                <Link href="/blog/o-que-e-reciclagem">O que é reciclagem</Link>
+              </li>
+              <li>
+                <Link href="/blog/tipos-de-reciclagem">Tipos de reciclagem</Link>
+              </li>
+              <li>
+                <Link href="/blog/coleta-seletiva-no-brasil">Coleta seletiva no Brasil</Link>
+              </li>
+            </ul>
+
+            <h2>FAQ: dúvidas comuns sobre o que pode ser reciclado</h2>
+
+            <h3>Preciso lavar tudo antes de reciclar?</h3>
+            <p>
+              Não precisa lavar “perfeito”. O essencial é retirar excesso de comida e líquidos e manter
+              recicláveis secos para evitar contaminação.
+            </p>
+
+            <h3>Plástico filme é reciclável?</h3>
+            <p>
+              Depende da estrutura local. Quando aceito, precisa estar limpo e seco. Se estiver
+              engordurado, tende a virar rejeito.
+            </p>
+
+            <h3>Isopor entra na coleta seletiva?</h3>
+            <p>
+              Depende da cidade e do sistema local. Se sua coleta não aceita, procure PEVs/ecopontos
+              específicos.
+            </p>
+
+            <h3>Vidro quebrado pode ir para reciclagem?</h3>
+            <p>
+              Pode, mas precisa ser embalado com segurança e identificado para não ferir quem faz a triagem.
+            </p>
+          </div>
+
+          {/* CTA final — dentro do max-w-3xl (padrão ITAD) */}
+          <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+              Próximo passo recomendado
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm text-slate-600">
+              Para consolidar o básico, veja como a coleta seletiva funciona na prática e o que fazer
+              quando não existe coleta no seu bairro.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/blog/coleta-seletiva-no-brasil"
+                className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+              >
+                Ver: coleta seletiva no Brasil
+              </Link>
+              <Link
+                href="/blog"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              >
+                Voltar ao Blog
+              </Link>
+            </div>
+          </section>
+        </article>
       </section>
     </main>
   );
