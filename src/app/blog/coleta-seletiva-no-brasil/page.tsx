@@ -243,29 +243,6 @@ export default function Page() {
               Complemento: <Link href="/blog/reduzir-lixo-na-rotina">reduzir lixo na rotina</Link>.
             </p>
 
-            <h2>FAQ: dúvidas comuns sobre coleta seletiva</h2>
-
-            <h3>Preciso lavar embalagens para reciclar?</h3>
-            <p>
-              Normalmente não. Retire excesso de alimento e líquidos e mantenha seco. Evitar contaminação
-              é o que mais importa para a triagem.
-            </p>
-
-            <h3>Se eu misturar recicláveis com orgânico, o que acontece?</h3>
-            <p>
-              A contaminação pode inviabilizar materiais recicláveis. Muitas vezes, o saco inteiro vira rejeito.
-            </p>
-
-            <h3>Vidro vai sempre na coleta seletiva?</h3>
-            <p>
-              Depende da cidade e do sistema local. Quando aceito, separe com cuidado. Se quebrado, embale e identifique.
-            </p>
-
-            <h3>O que faço com lixo eletrônico e baterias?</h3>
-            <p>
-              Use pontos de coleta específicos (logística reversa, ecopontos, campanhas). Veja:{" "}
-              <Link href="/blog/lixo-eletronico-descarte">lixo eletrônico: descarte correto</Link>.
-            </p>
           </div>
 
           {/* Links úteis (card) — padrão ITAD */}
