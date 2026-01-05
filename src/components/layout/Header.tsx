@@ -5,19 +5,6 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
-const nav = [
-  { href: "/reciclagem", label: "Reciclagem" },
-  { href: "/sustentabilidade", label: "Sustentabilidade" },
-  { href: "/guias", label: "Guias" },
-  { href: "/blog", label: "Blog" },
-
-  // ✅ NOVO (expor Profissionais no site)
-  { href: "/profissionais", label: "Profissionais" },
-
-  { href: "/diretorio", label: "Diretório" },
-  { href: "/anuncie", label: "Anuncie" },
-];
-
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
@@ -50,6 +37,145 @@ function CloseIcon() {
   );
 }
 
+/* Ícones outline (minimalistas, consistentes) */
+function IconRecycleOutline() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        d="M12 3.5l2.2 3.8M9.8 4.6l-2.9 5h5.3M18.8 12.2l2 3.4-2.6 4.5H12.5M18.1 12.2h-5.6l1.6 2.7M6 11.7l-2 3.5 2.6 4.5h5.2M5.9 12.4l5.4-1-1.5 2.6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconLeafOutline() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        d="M20 4c-7 .5-11.8 3.6-14.3 7.6-1.5 2.4-2 5.1-1.6 7.8 2.7.4 5.4-.1 7.8-1.6C14.9 15.8 18 11 18.5 4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8 16l7-7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function IconBookOutline() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        d="M7 4.5h10a2 2 0 0 1 2 2V20H8a3 3 0 0 0-3 3V6.5a2 2 0 0 1 2-2Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8 20h11"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function IconBlogOutline() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        d="M7 4.5h10a2 2 0 0 1 2 2V18l-4 4H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15 22v-4h4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.5 10h7M8.5 13.5H14"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function IconUsersOutline() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        d="M9 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm0 0c-3 0-5.5 1.7-5.5 3.8V19h11v-3.2C14.5 13.7 12 12 9 12Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.5 11.5a2.6 2.6 0 1 0-2.6-2.6 2.6 2.6 0 0 0 2.6 2.6Zm0 0c2.4 0 4.5 1.2 4.5 2.8V19h-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconFolderOutline() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        d="M4.5 6.5h5l2 2H19.5a2 2 0 0 1 2 2V18a2.5 2.5 0 0 1-2.5 2.5H6.5A2.5 2.5 0 0 1 4 18V8.5a2 2 0 0 1 2-2Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+type NavItem = { href: string; label: string; icon: React.ReactNode };
+
+const nav: NavItem[] = [
+  { href: "/reciclagem", label: "Reciclagem", icon: <IconRecycleOutline /> },
+  { href: "/sustentabilidade", label: "Sustentabilidade", icon: <IconLeafOutline /> },
+  { href: "/guias", label: "Guias", icon: <IconBookOutline /> },
+  { href: "/blog", label: "Blog", icon: <IconBlogOutline /> },
+  { href: "/profissionais", label: "Profissionais", icon: <IconUsersOutline /> },
+  { href: "/diretorio", label: "Diretório", icon: <IconFolderOutline /> },
+];
+
 export function Header() {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
@@ -78,20 +204,17 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-emerald-200/80 bg-emerald-50/70 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center gap-3">
-          {/* ✅ mantém a logo do public/logo.png */}
-          <Image
-            src="/logo.png"
-            alt="Reciclativa"
-            width={140}
-            height={36}
-            priority
-          />
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          aria-label="Reciclativa — página inicial"
+          className="flex items-center gap-3"
+        >
+          <Image src="/logo.png" alt="Reciclativa" width={140} height={36} priority />
         </Link>
 
-        {/* Desktop nav + ativo */}
-        <nav className="hidden gap-2 md:flex">
+        {/* Desktop nav (limpo; sem ícones) */}
+        <nav aria-label="Navegação principal" className="hidden gap-2 md:flex">
           {nav.map((i) => {
             const active = isActiveRoute(pathname, i.href);
             return (
@@ -113,14 +236,17 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Botão destacado (desktop) */}
           <Link
-            href="/guias"
+            href="/anuncie"
             className={cn(
-              "hidden md:inline-flex rounded-md border border-slate-300 bg-white/70 px-3 py-1.5",
-              "text-sm font-medium text-slate-900 transition hover:bg-white"
+              "hidden md:inline-flex items-center justify-center rounded-full px-4 py-2",
+              "text-sm font-semibold text-white",
+              "bg-emerald-700 shadow-sm transition hover:bg-emerald-800 hover:shadow",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
             )}
           >
-            Ver guias
+            Anuncie
           </Link>
 
           <button
@@ -139,7 +265,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu final */}
+      {/* Mobile menu */}
       {open ? (
         <>
           <div
@@ -151,7 +277,7 @@ export function Header() {
           <div className="md:hidden">
             <div
               ref={panelRef}
-              className="fixed left-4 right-4 top-[84px] z-50 overflow-hidden rounded-2xl border border-emerald-200/80 bg-white/95 shadow-lg backdrop-blur"
+              className="fixed left-4 right-4 top-[84px] z-50 overflow-hidden rounded-2xl border border-emerald-200/80 bg-white/95 shadow-lg backdrop-blur sm:left-6 sm:right-6"
             >
               <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
                 <p className="text-sm font-semibold text-slate-900">Menu</p>
@@ -173,23 +299,50 @@ export function Header() {
                       key={i.href}
                       href={i.href}
                       className={cn(
-                        "flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition",
+                        "relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition",
                         active
                           ? "bg-emerald-50 text-emerald-900"
                           : "text-slate-800 hover:bg-slate-50"
                       )}
                     >
-                      <span className="flex-1">{i.label}</span>
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-4 w-4 text-slate-400"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M9 6l6 6-6 6-1.4-1.4L12.2 12 7.6 7.4 9 6Z"
+                      {/* Filete vertical do item ativo */}
+                      {active ? (
+                        <span
+                          className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-emerald-600"
+                          aria-hidden="true"
                         />
-                      </svg>
+                      ) : null}
+
+                      {/* Ícone outline à esquerda */}
+                      <span
+                        className={cn(
+                          "shrink-0",
+                          active ? "text-emerald-700" : "text-slate-500"
+                        )}
+                      >
+                        {i.icon}
+                      </span>
+
+                      <span className="flex-1">{i.label}</span>
+
+                      {/* Badge do item ativo */}
+                      {active ? (
+                        <span
+                          className="h-2 w-2 rounded-full bg-emerald-600"
+                          aria-label="Página atual"
+                        />
+                      ) : (
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="h-4 w-4 text-slate-400"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M9 6l6 6-6 6-1.4-1.4L12.2 12 7.6 7.4 9 6Z"
+                          />
+                        </svg>
+                      )}
                     </Link>
                   );
                 })}
@@ -197,10 +350,10 @@ export function Header() {
 
               <div className="border-t border-slate-200 p-3">
                 <Link
-                  href="/guias"
-                  className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
+                  href="/anuncie"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800"
                 >
-                  Ver guias
+                  Anuncie
                   <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
                     <path
                       fill="currentColor"

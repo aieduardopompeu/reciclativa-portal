@@ -83,10 +83,10 @@ export default function Page() {
               <p className="mt-3 text-sm text-slate-700">
                 Detalhes adicionais podem ser vistos em{" "}
                 <Link
-                  href="/politica-de-privacidade"
+                  href="/termos-de-uso"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  Política de Privacidade
+                  Termos de uso
                 </Link>
                 .
               </p>
