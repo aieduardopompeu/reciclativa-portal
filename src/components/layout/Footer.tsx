@@ -1,75 +1,97 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { ReactNode } from "react";
+
+import {
+  FaYoutube,
+  FaInstagram,
+  FaXTwitter,
+  FaTiktok,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaPinterestP,
+} from "react-icons/fa6";
 
 type Seal = {
   src: string;
   alt: string;
-  className?: string; // controla tamanho individual
+  className?: string;
+  href?: string;
+  ariaLabel?: string;
 };
 
 const SEALS: Seal[] = [
-  { src: "/seals/ssl-secure.svg", alt: "SSL Seguro", className: "h-8" },
-  { src: "/seals/google-safe.svg", alt: "Site Seguro", className: "h-8" },
-
-  // Ajustes individuais:
-  { src: "/seals/lgpd.png", alt: "LGPD", className: "h-10" },
-  { src: "/seals/altacloud.png", alt: "Developed by Alta Cloud", className: "h-10" },
+  {
+    src: "/seals/ssl-secure.svg",
+    alt: "SSL Seguro",
+    className: "h-8",
+    href: "https://www.ssllabs.com/ssltest/analyze.html?d=reciclativa.com",
+    ariaLabel: "Ver teste SSL no SSL Labs",
+  },
+  {
+    src: "/seals/google-safe.svg",
+    alt: "Site Seguro",
+    className: "h-8",
+    href: "https://transparencyreport.google.com/safe-browsing/search?url=reciclativa.com",
+    ariaLabel: "Ver status no Google Safe Browsing",
+  },
+  {
+    src: "/seals/lgpd.png",
+    alt: "LGPD",
+    className: "h-12",
+    href: "/lgpd",
+    ariaLabel: "Ver informações LGPD",
+  },
+  {
+    src: "/seals/altacloud.png",
+    alt: "Developed by Alta Cloud",
+    className: "h-12",
+    href: "https://www.altacloud.com.br/",
+    ariaLabel: "Acessar Alta Cloud",
+  },
 ];
 
 type Social = {
   href: string;
   label: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
 };
 
 const socials: Social[] = [
   {
-    href: "https://instagram.com/",
-    label: "Instagram",
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.75-.75a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "https://facebook.com/",
-    label: "Facebook",
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.2-1.6 1.6-1.6H16.8V5.1c-.3 0-1.5-.1-2.8-.1-2.8 0-4.7 1.7-4.7 4.8V11H6.5v3h2.8v8h4.2Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "https://x.com/",
-    label: "X",
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M18.9 2H22l-6.8 7.8L23 22h-6.5l-5.1-6.6L5.7 22H2l7.4-8.5L1 2h6.6l4.6 6L18.9 2Zm-1.1 18h1.7L7.7 4H5.9l11.9 16Z"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "https://youtube.com/",
+    href: "https://www.youtube.com/@Reciclativa",
     label: "YouTube",
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.8 4.6 12 4.6 12 4.6s-5.8 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.7.5 7.5.5 7.5.5s5.8 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"
-        />
-      </svg>
-    ),
+    icon: <FaYoutube className="h-5 w-5" aria-hidden="true" />,
+  },
+  {
+    href: "https://www.instagram.com/reciclativa/",
+    label: "Instagram",
+    icon: <FaInstagram className="h-5 w-5" aria-hidden="true" />,
+  },
+  {
+    href: "https://x.com/ReciclativaBR",
+    label: "X",
+    icon: <FaXTwitter className="h-5 w-5" aria-hidden="true" />,
+  },
+  {
+    href: "https://www.tiktok.com/@reciclativa",
+    label: "TikTok",
+    icon: <FaTiktok className="h-5 w-5" aria-hidden="true" />,
+  },
+  {
+    href: "https://www.facebook.com/profile.php?id=61559420823914",
+    label: "Facebook",
+    icon: <FaFacebookF className="h-5 w-5" aria-hidden="true" />,
+  },
+  {
+    href: "https://www.linkedin.com/in/reciclativa/",
+    label: "LinkedIn",
+    icon: <FaLinkedinIn className="h-5 w-5" aria-hidden="true" />,
+  },
+  {
+    href: "https://br.pinterest.com/brreciclativa/",
+    label: "Pinterest",
+    icon: <FaPinterestP className="h-5 w-5" aria-hidden="true" />,
   },
 ];
 
@@ -85,13 +107,16 @@ export function Footer() {
           </p>
 
           {/* Redes sociais */}
-          <div className="flex items-center gap-4 pt-1 text-slate-600">
+          <div className="flex flex-wrap items-center gap-2 pt-1 text-slate-600">
             {socials.map((s) => (
               <Link
                 key={s.label}
                 href={s.href}
                 aria-label={s.label}
-                className="transition hover:text-emerald-700"
+                title={s.label}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-emerald-100 hover:text-emerald-700"
               >
                 {s.icon}
               </Link>
@@ -126,68 +151,76 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Institucional + Selos (abaixo) */}
+        {/* Institucional + Selos */}
         <div className="space-y-2">
           <div className="text-sm font-semibold text-slate-900">Institucional</div>
-        <ul className="space-y-1 text-sm text-slate-700">
-          <li>
-            <Link href="/sobre" className="hover:text-emerald-700">
-              Sobre
-            </Link>
-          </li>
+          <ul className="space-y-1 text-sm text-slate-700">
+            <li>
+              <Link href="/sobre" className="hover:text-emerald-700">
+                Sobre
+              </Link>
+            </li>
+            <li>
+              <Link href="/contato" className="hover:text-emerald-700">
+                Contato
+              </Link>
+            </li>
+            <li>
+              <Link href="/politica-de-privacidade" className="hover:text-emerald-700">
+                Privacidade
+              </Link>
+            </li>
+            <li>
+              <Link href="/termos-de-uso" className="hover:text-emerald-700">
+                Termos de Uso
+              </Link>
+            </li>
+            <li>
+              <Link href="/politica-de-cookies" className="hover:text-emerald-700">
+                Cookies
+              </Link>
+            </li>
+            <li>
+              <Link href="/faq" className="hover:text-emerald-700">
+                FAQ
+              </Link>
+            </li>
+          </ul>
 
-          <li>
-            <Link href="/contato" className="hover:text-emerald-700">
-              Contato
-            </Link>
-          </li>
-
-          <li>
-            <Link href="/privacidade" className="hover:text-emerald-700">
-              Privacidade
-            </Link>
-          </li>
-
-          <li>
-            <Link href="/termos" className="hover:text-emerald-700">
-              Termos de Uso
-            </Link>
-          </li>
-
-          <li>
-            <Link href="/cookies" className="hover:text-emerald-700">
-              Cookies
-            </Link>
-          </li>
-
-          <li>
-            <Link href="/faq" className="hover:text-emerald-700">
-              FAQ
-            </Link>
-          </li>
-        </ul>
-
-          {/* Selos logo abaixo do institucional */}
+          {/* Selos */}
           <div className="pt-4">
             <div className="text-sm font-semibold text-slate-900">Selos</div>
 
             <div className="mt-3 flex flex-wrap items-center gap-5">
-              {SEALS.map((s) => (
-                <Image
-                  key={s.src}
-                  src={s.src}
-                  alt={s.alt}
-                  width={120}
-                  height={60}
-                  className={`${s.className ?? "h-9"} w-auto object-contain opacity-90`}
-                  title={s.alt}
-                />
-              ))}
-            </div>
+              {SEALS.map((s) => {
+                const img = (
+                  <Image
+                    src={s.src}
+                    alt={s.alt}
+                    width={120}
+                    height={60}
+                    className={`${s.className ?? "h-9"} w-auto object-contain opacity-90`}
+                    title={s.alt}
+                  />
+                );
 
-            <p className="mt-2 text-xs text-slate-600">
-              Selos ilustrativos e informativos no rodapé.
-            </p>
+                if (!s.href) return <span key={s.src}>{img}</span>;
+
+                return (
+                  <Link
+                    key={s.src}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.ariaLabel ?? s.alt}
+                    title={s.ariaLabel ?? s.alt}
+                    className="inline-flex items-center"
+                  >
+                    {img}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
