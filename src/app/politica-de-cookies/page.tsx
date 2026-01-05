@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "Cookies e Preferências | Reciclativa",
   description:
     "Entenda o uso de cookies na Reciclativa e como gerenciar suas preferências de privacidade.",
-  alternates: { canonical: "/cookies" },
+  alternates: { canonical: "/politica-de-cookies" },
   openGraph: {
     title: "Cookies e Preferências | Reciclativa",
     description:
       "Entenda o uso de cookies na Reciclativa e como gerenciar suas preferências.",
-    url: "/cookies",
+    url: "/politica-de-cookies",
     type: "website",
   },
 };
@@ -40,7 +40,9 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">Cookies</span>
+                <span className="font-medium text-slate-700">
+                  Política de Cookies
+                </span>
               </li>
             </ol>
           </nav>
@@ -81,10 +83,10 @@ export default function Page() {
               <p className="mt-3 text-sm text-slate-700">
                 Detalhes adicionais podem ser vistos em{" "}
                 <Link
-                  href="/privacidade"
+                  href="/politica-de-privacidade"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  Privacidade
+                  Política de Privacidade
                 </Link>
                 .
               </p>
@@ -119,16 +121,16 @@ export default function Page() {
               <h3 className="text-lg font-extrabold tracking-tight">Atalhos</h3>
               <div className="mt-4 space-y-3">
                 <Link
-                  href="/privacidade"
+                  href="/politica-de-privacidade"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
-                  Privacidade →
+                  Política de Privacidade →
                 </Link>
                 <Link
-                  href="/termos"
+                  href="/termos-de-uso"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
-                  Termos →
+                  Termos de uso →
                 </Link>
                 <Link
                   href="/contato"

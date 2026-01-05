@@ -5,6 +5,7 @@ import { site } from "@/config/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import CookieBanner from "@/components/cookies/CookieBanner";
 
 const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(/\/$/, "");
@@ -50,6 +51,9 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+
+        {/* Banner de cookies/consentimento */}
+        <CookieBanner />
       </body>
     </html>
   );

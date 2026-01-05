@@ -137,17 +137,17 @@ export default function Page() {
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Detalhes práticos sobre cookies e preferências estão em{" "}
                 <Link
-                  href="/cookies"
+                  href="/politica-de-cookies"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  /cookies
+                  /politica-de-cookies
                 </Link>{" "}
                 e sobre privacidade geral em{" "}
                 <Link
-                  href="/privacidade"
+                  href="/politica-de-privacidade"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  /privacidade
+                  /politica-de-privacidade
                 </Link>
                 .
               </p>
@@ -165,10 +165,10 @@ export default function Page() {
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Para entender e ajustar preferências:{" "}
                 <Link
-                  href="/cookies"
+                  href="/politica-de-cookies"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  /cookies
+                  /politica-de-cookies
                 </Link>
                 .
               </p>
@@ -232,19 +232,19 @@ export default function Page() {
               <h3 className="text-lg font-extrabold tracking-tight">Atalhos</h3>
               <div className="mt-4 space-y-3">
                 <Link
-                  href="/privacidade"
+                  href="/politica-de-privacidade"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
                   Política de Privacidade →
                 </Link>
                 <Link
-                  href="/cookies"
+                  href="/politica-de-cookies"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
-                  Cookies →
+                  Política de Cookies →
                 </Link>
                 <Link
-                  href="/termos"
+                  href="/termos-de-uso"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
                   Termos de uso →

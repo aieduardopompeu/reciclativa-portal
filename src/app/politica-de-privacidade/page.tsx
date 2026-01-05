@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: "Política de Privacidade | Reciclativa",
   description:
     "Entenda como a Reciclativa trata dados, cookies, publicidade e métricas de uso. Transparência e respeito à privacidade.",
-  alternates: { canonical: "/privacidade" },
+  alternates: { canonical: "/politica-de-privacidade" },
   openGraph: {
     title: "Política de Privacidade | Reciclativa",
     description:
       "Como tratamos dados, cookies, publicidade e métricas de uso na Reciclativa.",
-    url: "/privacidade",
+    url: "/politica-de-privacidade",
     type: "website",
   },
 };
@@ -43,7 +43,9 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">Privacidade</span>
+                <span className="font-medium text-slate-700">
+                  Política de Privacidade
+                </span>
               </li>
             </ol>
           </nav>
@@ -117,10 +119,10 @@ export default function Page() {
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Você pode gerenciar cookies a qualquer momento em{" "}
                 <Link
-                  href="/cookies"
+                  href="/politica-de-cookies"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  /cookies
+                  /politica-de-cookies
                 </Link>
                 .
               </p>
@@ -138,10 +140,10 @@ export default function Page() {
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Você pode revisar preferências e entender melhor em{" "}
                 <Link
-                  href="/cookies"
+                  href="/politica-de-cookies"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  /cookies
+                  /politica-de-cookies
                 </Link>
                 .
               </p>
@@ -183,16 +185,16 @@ export default function Page() {
               <h3 className="text-lg font-extrabold tracking-tight">Atalhos</h3>
               <div className="mt-4 space-y-3">
                 <Link
-                  href="/termos"
+                  href="/termos-de-uso"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
                   Termos de uso →
                 </Link>
                 <Link
-                  href="/cookies"
+                  href="/politica-de-cookies"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
-                  Cookies →
+                  Política de Cookies →
                 </Link>
                 <Link
                   href="/contato"
