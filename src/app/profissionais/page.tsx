@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AdCtaProfissionaisCard from "@/components/AdCtaProfissionaisCard";
+import ProfissionaisStatePicker from "@/components/profissionais/ProfissionaisStatePicker";
 import { uniqueUFs, uniqueRoles } from "@/content/profissionais";
 
 export const metadata: Metadata = {
@@ -100,17 +101,8 @@ export default function ProfissionaisHubPage() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {ufs.map((uf) => (
-                  <Link
-                    key={uf}
-                    href={`/profissionais/${uf.toLowerCase()}`}
-                    className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
-                  >
-                    {uf}
-                  </Link>
-                ))}
-              </div>
+              {/* MAPA + fallback de UFs */}
+              <ProfissionaisStatePicker ufs={ufs} />
 
               {ufs.length === 0 ? (
                 <p className="mt-6 text-sm text-slate-700">
