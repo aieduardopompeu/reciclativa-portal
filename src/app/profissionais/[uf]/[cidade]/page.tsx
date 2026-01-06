@@ -78,6 +78,15 @@ function readQueryQ(v: string | string[] | undefined) {
   return v.toString();
 }
 
+function compareCityByRelevanceThenAlpha(
+  a: { city: string; count: number },
+  b: { city: string; count: number }
+) {
+  const diff = (b.count ?? 0) - (a.count ?? 0);
+  if (diff !== 0) return diff;
+  return a.city.localeCompare(b.city, "pt-BR", { sensitivity: "base" });
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { uf: ufParam, cidade: cidadeParam } = await params;
 
@@ -106,7 +115,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProfissionaisCidadePage({ params, searchParams }: PageProps) {
+export default async function ProfissionaisCidadePage({
+  params,
+  searchParams,
+}: PageProps) {
   const { uf: ufParam, cidade: cidadeParam } = await params;
   const sp = searchParams ? await searchParams : undefined;
 
@@ -124,7 +136,7 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
   const list = isValidUF ? getByUFCity(uf, cidadeSlug) : [];
   const cidadeNome = (list[0]?.city ?? titleFromSlug(cidadeSlug)).toString();
 
-  // Dados do estado (para sidebar e contexto)
+  // Dados do estado
   const listUF = isValidUF ? getByUF(uf) : [];
 
   // Contagem por cidade no estado
@@ -141,25 +153,34 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
 
   const baseCities = (citiesFromConfig.length ? citiesFromConfig : citiesFallback)
     .map((c: any) => (c ?? "").toString().trim())
-    .filter(Boolean)
-    .sort((a, b) => a.localeCompare(b, "pt-BR", { sensitivity: "base" }));
+    .filter(Boolean);
 
   const currentCityNorm = normalizeText(cidadeNome);
 
+  // Lista de cidades (remove cidade atual), aplica contagem e ordena por relevância
   const citiesWithCount = baseCities
     .map((city) => ({
       city,
       count: cityCount.get(city) ?? 0,
       slug: normalizeCity(city),
     }))
-    // Remove a cidade atual (por nome ou slug)
-    .filter(({ city, slug }) => normalizeText(city) !== currentCityNorm && slug !== cidadeSlug);
+    .filter(
+      ({ city, slug }) => normalizeText(city) !== currentCityNorm && slug !== cidadeSlug
+    )
+    .sort(compareCityByRelevanceThenAlpha);
 
   const filteredCities = hasSearch
     ? citiesWithCount.filter(({ city }) => normalizeText(city).includes(qNorm))
     : citiesWithCount;
 
+  // Separação TOP vs ZERO (para o colapsável)
+  const topCities = filteredCities.filter((c) => c.count > 0);
+  const zeroCities = filteredCities.filter((c) => c.count === 0);
+
   const canSearchCities = isValidUF && citiesWithCount.length > 0;
+
+  const totalCities = citiesWithCount.length;
+  const totalCitiesWithAny = citiesWithCount.filter((c) => c.count > 0).length;
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
@@ -173,7 +194,8 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
         </h1>
 
         <p className="mt-4 max-w-3xl text-base text-slate-700 sm:text-lg">
-          Profissionais e serviços ligados à reciclagem, sustentabilidade e economia circular na cidade.
+          Profissionais e serviços ligados à reciclagem, sustentabilidade e economia circular
+          na cidade.
         </p>
 
         <div className="mt-7 flex flex-wrap gap-3">
@@ -238,7 +260,8 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
 
             <div className="mt-5 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
               Em {stateName}, já existem{" "}
-              <span className="font-semibold text-slate-900">{listUF.length}</span> cadastros no total.
+              <span className="font-semibold text-slate-900">{listUF.length}</span> cadastros no
+              total.
               <div className="mt-2 text-slate-600">
                 Quer aparecer primeiro em {cidadeNome}? Cadastre seu serviço.
               </div>
@@ -261,10 +284,11 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
                 <p className="mt-2 text-sm text-slate-600">
                   {hasSearch ? (
                     <>
-                      Resultados para <span className="font-semibold text-slate-900">“{q}”</span>.
+                      Resultados para{" "}
+                      <span className="font-semibold text-slate-900">“{q}”</span>.
                     </>
                   ) : (
-                    <>Explore outras cidades do estado.</>
+                    <>Ordenadas por relevância (mais cadastros primeiro).</>
                   )}
                 </p>
               </div>
@@ -272,12 +296,10 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
               {isValidUF ? (
                 <div className="text-right text-xs text-slate-600">
                   <div>
-                    <span className="font-semibold text-slate-900">{citiesWithCount.length}</span> cidades
+                    <span className="font-semibold text-slate-900">{totalCities}</span> cidades
                   </div>
                   <div>
-                    <span className="font-semibold text-slate-900">
-                      {citiesWithCount.filter((c) => c.count > 0).length}
-                    </span>{" "}
+                    <span className="font-semibold text-slate-900">{totalCitiesWithAny}</span>{" "}
                     com cadastro
                   </div>
                 </div>
@@ -296,7 +318,7 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
                     name="q"
                     placeholder={
                       canSearchCities
-                        ? "Buscar cidade (ex.: Salvador, Feira de Santana)…"
+                        ? "Buscar cidade (ex.: Salvador, Campinas)…"
                         : "Busca disponível quando houver cidades cadastradas"
                     }
                     className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600 disabled:cursor-not-allowed disabled:bg-slate-50"
@@ -336,28 +358,26 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
                       <span>
                         {hasSearch ? (
                           <>
-                            <span className="font-semibold text-slate-900">{filteredCities.length}</span>{" "}
+                            <span className="font-semibold text-slate-900">
+                              {filteredCities.length}
+                            </span>{" "}
                             resultados
                           </>
                         ) : (
                           <>
-                            <span className="font-semibold text-slate-900">{citiesWithCount.length}</span>{" "}
+                            <span className="font-semibold text-slate-900">
+                              {citiesWithCount.length}
+                            </span>{" "}
                             cidades listadas
                           </>
                         )}
                       </span>
                     </div>
 
-                    {hasSearch && filteredCities.length === 0 ? (
-                      <div className="mt-4 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
-                        Nenhuma cidade encontrada para <strong>“{q}”</strong>.
-                        <div className="mt-2 text-slate-600">
-                          Dica: tente apenas uma parte do nome (ex.: “rio”, “são”, “fort”).
-                        </div>
-                      </div>
-                    ) : (
+                    {hasSearch ? (
+                      // Com busca: mostra filtradas (sem colapsar)
                       <div className="mt-3 space-y-2">
-                        {filteredCities.slice(0, 18).map(({ city, count, slug }) => (
+                        {filteredCities.slice(0, 24).map(({ city, count, slug }) => (
                           <Link
                             key={slug}
                             href={`/profissionais/${uf}/${slug}`}
@@ -370,12 +390,66 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
                           </Link>
                         ))}
 
-                        {filteredCities.length > 18 ? (
+                        {filteredCities.length > 24 ? (
                           <div className="pt-1 text-xs text-slate-500">
-                            Mostrando 18 de {filteredCities.length} cidades.
+                            Mostrando 24 de {filteredCities.length} cidades.
                           </div>
                         ) : null}
                       </div>
+                    ) : (
+                      <>
+                        {/* TOP cidades (com cadastro) */}
+                        {topCities.length ? (
+                          <div className="mt-3 space-y-2">
+                            {topCities.slice(0, 10).map(({ city, count, slug }) => (
+                              <Link
+                                key={slug}
+                                href={`/profissionais/${uf}/${slug}`}
+                                className="flex items-center justify-between rounded-xl border border-black/5 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                              >
+                                <span className="min-w-0 truncate">{city}</span>
+                                <span className="ml-3 rounded-full border border-black/5 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                                  {count}
+                                </span>
+                              </Link>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="mt-4 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
+                            Ainda não há cidades com cadastro neste estado.
+                          </div>
+                        )}
+
+                        {/* Colapsável: cidades sem cadastro */}
+                        {zeroCities.length ? (
+                          <details className="mt-4">
+                            <summary className="cursor-pointer select-none text-sm font-semibold text-emerald-700 hover:underline">
+                              Ver mais cidades ({zeroCities.length})
+                            </summary>
+
+                            <div className="mt-3 space-y-2">
+                              {zeroCities.slice(0, 24).map(({ city, count, slug }) => (
+                                <Link
+                                  key={slug}
+                                  href={`/profissionais/${uf}/${slug}`}
+                                  className="flex items-center justify-between rounded-xl border border-black/5 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                                >
+                                  <span className="min-w-0 truncate">{city}</span>
+                                  <span className="ml-3 rounded-full border border-black/5 bg-slate-50 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                                    {count}
+                                  </span>
+                                </Link>
+                              ))}
+
+                              {zeroCities.length > 24 ? (
+                                <div className="pt-1 text-xs text-slate-500">
+                                  Mostrando 24 de {zeroCities.length} cidades sem cadastro.
+                                </div>
+                              ) : null}
+                            </div>
+                          </details>
+                        ) : null}
+                      </>
                     )}
                   </>
                 ) : (
@@ -410,11 +484,7 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
 
               {isValidUF ? (
                 <div className="text-sm text-slate-600">
-                  {list.length ? (
-                    <>Listagens verificadas por estado e cidade</>
-                  ) : (
-                    <>Seja o primeiro a cadastrar</>
-                  )}
+                  {list.length ? <>Cadastros verificados por localização</> : <>Seja o primeiro a cadastrar</>}
                 </div>
               ) : null}
             </div>
@@ -482,7 +552,8 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
                   <>
                     Ainda não há profissionais cadastrados para <strong>{cidadeNome}</strong>.
                     <div className="mt-2 text-slate-600">
-                      Clique em <strong>Cadastrar meu serviço</strong> para aparecer nas buscas desta cidade.
+                      Clique em <strong>Cadastrar meu serviço</strong> para aparecer nas buscas desta
+                      cidade.
                     </div>
                     <div className="mt-3">
                       <Link
@@ -502,7 +573,9 @@ export default async function ProfissionaisCidadePage({ params, searchParams }: 
             )}
 
             <div className="mt-8 border-t border-black/5 pt-6">
-              <p className="text-sm text-slate-600">Prefere ver todos os profissionais do estado?</p>
+              <p className="text-sm text-slate-600">
+                Prefere ver todos os profissionais do estado?
+              </p>
               <div className="mt-3">
                 <Link
                   href={`/profissionais/${uf}`}
