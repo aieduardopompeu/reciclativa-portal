@@ -210,7 +210,8 @@ export function Header() {
           aria-label="Reciclativa — página inicial"
           className="flex items-center gap-3"
         >
-          <Image src="/logo.png" alt="Reciclativa" width={140} height={36} priority />
+          {/* Removido priority para não competir com o preload do HERO (LCP). */}
+          <Image src="/logo.png" alt="Reciclativa" width={140} height={36} />
         </Link>
 
         {/* Desktop nav (limpo; sem ícones) */}
@@ -305,7 +306,6 @@ export function Header() {
                           : "text-slate-800 hover:bg-slate-50"
                       )}
                     >
-                      {/* Filete vertical do item ativo */}
                       {active ? (
                         <span
                           className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-emerald-600"
@@ -313,7 +313,6 @@ export function Header() {
                         />
                       ) : null}
 
-                      {/* Ícone outline à esquerda */}
                       <span
                         className={cn(
                           "shrink-0",
@@ -325,7 +324,6 @@ export function Header() {
 
                       <span className="flex-1">{i.label}</span>
 
-                      {/* Badge do item ativo */}
                       {active ? (
                         <span
                           className="h-2 w-2 rounded-full bg-emerald-600"

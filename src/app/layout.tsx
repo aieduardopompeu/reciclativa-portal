@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import { site } from "@/config/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import CookieBanner from "@/components/cookies/CookieBanner";
+
+const CookieBanner = dynamic(() => import("@/components/cookies/CookieBanner"), {
+  ssr: false,
+});
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(
   /\/$/,
@@ -13,10 +17,7 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.c
 );
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
-
-// AdSense: script usa "ca-pub-...", meta usa "pub-..."
-const ADSENSE_CLIENT_CA = "ca-pub-4436420746304287";
-const ADSENSE_PUB = "pub-4436420746304287";
+const ADSENSE_CLIENT = "ca-pub-4436420746304287";
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
   },
   other: {
-    "google-adsense-account": ADSENSE_PUB,
+    "google-adsense-account": ADSENSE_CLIENT,
   },
 };
 
@@ -41,19 +42,24 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-white text-slate-900">
+        {/* GA4 */}
         <GoogleAnalytics measurementId={GA4_ID} />
 
+        {/* AdSense base script (carregar 1x no site todo) */}
         <Script
           id="adsense-base"
           async
-          strategy="afterInteractive"
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_CA}`}
+          // Importante para LCP: não precisa competir com o carregamento inicial.
+          strategy="lazyOnload"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
           crossOrigin="anonymous"
         />
 
         <Header />
         {children}
         <Footer />
+
+        {/* Banner de cookies/consentimento (lazy, sem SSR) */}
         <CookieBanner />
       </body>
     </html>

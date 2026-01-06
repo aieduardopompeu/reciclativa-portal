@@ -68,12 +68,6 @@ const GUIDES: Guide[] = [
     href: "/guias/o-que-pode-reciclar",
     tag: "Checklist",
   },
-  {
-    title: "Compostagem: guia prático para começar",
-    desc: "Aprenda o que pode e não pode, métodos, passo a passo e como evitar erros comuns.",
-    href: "/guias/compostagem",
-    tag: "Orgânicos",
-  },
 ];
 
 const POSTS: Post[] = [
@@ -143,10 +137,20 @@ function Card({
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* HERO */}
+      {/* HERO (LCP) */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0" aria-hidden>
-          <Image src="/hero.webp" alt="" fill priority className="object-cover" />
+          <Image
+            src="/hero.webp"
+            alt=""
+            fill
+            priority
+            // CRÍTICO para LCP: informa ao browser como esse "fill" será exibido.
+            sizes="100vw"
+            // Ajuste conservador para reduzir bytes sem impacto visual relevante.
+            quality={70}
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white" />
         </div>
 
@@ -325,7 +329,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* DIRETÓRIO + ANUNCIE (Monetização) */}
+      {/* DIRETÓRIO + ANUNCIE */}
       <section className="border-y border-slate-200 bg-white">
         <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-4 lg:grid-cols-2">
@@ -376,7 +380,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ curto (SEO) */}
+      {/* FAQ curto */}
       <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold text-slate-950">Perguntas frequentes</h2>
         <p className="mt-2 text-sm text-slate-700">
