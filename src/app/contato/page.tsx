@@ -50,7 +50,8 @@ export default function Page() {
               Tem uma dúvida rápida ou sugestão de conteúdo?
             </p>
             <p className="mt-2 text-sm text-slate-700">
-              Responderemos o mais breve possível. Para agilizar, inclua o assunto e a URL da página (se for correção).
+              Responderemos o mais breve possível. Para agilizar, inclua o assunto e a URL da
+              página (se for correção).
             </p>
           </div>
 
@@ -62,7 +63,7 @@ export default function Page() {
               Voltar para a Home
             </Link>
 
-            {/* Ajuste: CTA comercial fica discreto (sem botão “forte”) */}
+            {/* CTA comercial discreto */}
             <Link
               href="/anuncie"
               className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
@@ -98,8 +99,8 @@ export default function Page() {
                 Como falar com a gente
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                O Reciclativa está aberto ao diálogo, sugestões e parcerias. Para
-                agilizar o retorno, centralize o contato pelo canal abaixo.
+                O Reciclativa está aberto ao diálogo, sugestões e parcerias. Para agilizar o
+                retorno, centralize o contato pelo canal abaixo.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -114,15 +115,13 @@ export default function Page() {
                     </a>
                   </p>
                   <p className="mt-3 text-xs text-slate-500">
-                    Evite enviar dados sensíveis (documentos, informações
-                    bancárias ou dados pessoais desnecessários).
+                    Evite enviar dados sensíveis (documentos, informações bancárias ou dados
+                    pessoais desnecessários).
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Comercial / Parcerias
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Comercial / Parcerias</p>
                   <p className="mt-2 text-sm text-slate-700">
                     Para mídia kit, anuncie e parcerias, use a página “Anuncie”.
                   </p>
@@ -137,14 +136,11 @@ export default function Page() {
               <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4">
                 <p className="text-sm font-semibold text-slate-900">Importante</p>
                 <ul className="mt-2 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>
-                    O Reciclativa não presta suporte técnico a serviços de
-                    terceiros.
-                  </li>
+                  <li>O Reciclativa não presta suporte técnico a serviços de terceiros.</li>
                   <li>
                     Para informações sobre uso de dados, consulte a{" "}
                     <Link
-                      href="/privacidade"
+                      href="/politica-de-privacidade"
                       className="font-semibold text-emerald-800 hover:underline"
                     >
                       Política de Privacidade
@@ -160,10 +156,9 @@ export default function Page() {
                 Sugestões e correções (ajudam muito)
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Se você tiver uma sugestão de tema (ex.: descarte de e-lixo,
-                coleta seletiva, reciclagem por material) ou encontrou algo para
-                corrigir, envie o assunto com o máximo de contexto: cidade/UF,
-                dúvidas e o que você já tentou fazer.
+                Se você tiver uma sugestão de tema (ex.: descarte de e-lixo, coleta seletiva,
+                reciclagem por material) ou encontrou algo para corrigir, envie o assunto com o
+                máximo de contexto: cidade/UF, dúvidas e o que você já tentou fazer.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -182,9 +177,7 @@ export default function Page() {
               </div>
 
               <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-                <p className="text-sm font-semibold text-emerald-950">
-                  Sugestão rápida
-                </p>
+                <p className="text-sm font-semibold text-emerald-950">Sugestão rápida</p>
                 <ul className="mt-2 list-disc space-y-2 pl-5 text-sm text-emerald-950/90">
                   <li>
                     <strong>[Correção]</strong> + URL da página
@@ -198,7 +191,7 @@ export default function Page() {
                 </ul>
               </div>
 
-              {/* Micro-CTA “Enquanto isso” (evitar beco sem saída) */}
+              {/* Micro-CTA “Enquanto isso” */}
               <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4">
                 <p className="text-sm font-semibold text-slate-900">
                   Enquanto isso, você pode explorar
@@ -214,7 +207,7 @@ export default function Page() {
                     Símbolos da reciclagem →
                   </Link>
                   <Link
-                    href="/coleta-seletiva"
+                    href="/guias/coleta-seletiva"
                     className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
                   >
                     Cores da coleta seletiva →
@@ -266,6 +259,12 @@ export default function Page() {
                 >
                   Sobre →
                 </Link>
+                <Link
+                  href="/lgpd"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  LGPD →
+                </Link>
               </div>
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -283,19 +282,19 @@ export default function Page() {
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Link
-                    href="/privacidade"
+                    href="/politica-de-privacidade"
                     className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                   >
                     Privacidade
                   </Link>
                   <Link
-                    href="/termos"
+                    href="/termos-de-uso"
                     className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                   >
                     Termos
                   </Link>
                   <Link
-                    href="/cookies"
+                    href="/politica-de-cookies"
                     className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                   >
                     Cookies

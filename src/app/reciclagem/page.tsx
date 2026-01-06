@@ -84,14 +84,61 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
+            {/* Pilar: contexto + valor (novo) */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+                O que é reciclagem (sem enrolação)
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Reciclar é transformar um material usado em matéria-prima para
+                produzir algo novo. Para isso acontecer, a separação precisa
+                reduzir <strong>contaminação</strong> (resto de comida, gordura e
+                mistura de materiais) e seguir as regras de coleta/triagem da sua
+                região. Quando o “reciclável” chega sujo ou misturado, ele perde
+                valor e pode virar <strong>rejeito</strong>.
+              </p>
+
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">1) Separe</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Seco x orgânico (e rejeito quando necessário).
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">2) Mantenha seco</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Remova excesso de resíduos; não precisa “lavar perfeito”.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">3) Confirme a regra local</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Alguns itens são aceitos em um lugar e recusados em outro.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-800">
+                  Nota
+                </p>
+                <p className="mt-2 text-sm text-slate-800">
+                  Este conteúdo é educativo e prático. Para dias/rotas e itens
+                  específicos, confirme as orientações do seu município, cooperativa
+                  ou operadora local.
+                </p>
+              </div>
+            </div>
+
             {/* Começando do zero (reaproveita conteúdo e links) */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
                 Começando do zero
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                O básico para separar, higienizar e armazenar recicláveis sem
-                gerar rejeito por contaminação.
+                Atalhos práticos para separar, higienizar e armazenar recicláveis
+                sem gerar rejeito por contaminação.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -106,8 +153,7 @@ export default function Page() {
                     O que pode (e não pode) ser reciclado
                   </p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Lista prática por material + regra de ouro para reduzir
-                    contaminação.
+                    Lista prática por material + regra de ouro para reduzir contaminação.
                   </p>
                   <p className="mt-3 text-sm font-semibold text-emerald-800">
                     Ler guia →
@@ -115,7 +161,7 @@ export default function Page() {
                 </Link>
 
                 <Link
-                  href="/coleta-seletiva"
+                  href="/guias/coleta-seletiva"
                   className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
@@ -125,8 +171,7 @@ export default function Page() {
                     Coleta seletiva: como separar sem erro
                   </p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Cores, organização e dicas simples para separar com
-                    consistência.
+                    Cores, organização e dicas simples para separar com consistência.
                   </p>
                   <p className="mt-3 text-sm font-semibold text-emerald-800">
                     Ver página →
@@ -144,8 +189,7 @@ export default function Page() {
                     Símbolos da reciclagem
                   </p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Entenda os símbolos nas embalagens e o que eles realmente
-                    significam.
+                    Entenda os símbolos nas embalagens e o que eles realmente significam.
                   </p>
                   <p className="mt-3 text-sm font-semibold text-emerald-800">
                     Ver símbolos →
@@ -160,14 +204,14 @@ export default function Page() {
             {/* CTA Anuncie */}
             <AdCtaCard />
 
-            {/* Blocos inferiores (mantidos, só no padrão visual) */}
+            {/* Blocos inferiores */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                 <h2 className="text-lg font-extrabold tracking-tight text-slate-900 sm:text-xl">
                   Erros comuns que atrapalham tudo
                 </h2>
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Mixar recicláveis com orgânicos (contaminação).</li>
+                  <li>Misturar recicláveis com orgânicos (contaminação).</li>
                   <li>Enviar embalagens com excesso de líquido ou comida.</li>
                   <li>Colocar papel engordurado junto do papel limpo.</li>
                   <li>Achar que “símbolo” garante coleta na sua cidade.</li>
@@ -213,14 +257,14 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Sidebar (mesmo padrão: cards + dica) */}
+          {/* Sidebar */}
           <aside className="space-y-6">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
                 Atalhos da Reciclagem
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Navegação rápida para reforçar SEO interno e facilitar a jornada.
+                Links rápidos para aprofundar e aplicar na prática.
               </p>
 
               <div className="mt-4 space-y-3">
@@ -239,7 +283,7 @@ export default function Page() {
                 </Link>
 
                 <Link
-                  href="/coleta-seletiva"
+                  href="/guias/coleta-seletiva"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Coleta seletiva →
@@ -255,12 +299,29 @@ export default function Page() {
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Dica editorial
+                  Dica rápida
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Em cada post, linke 3–6 conteúdos relacionados e 1 página
-                  pilar.
+                  Se você só conseguir fazer uma coisa hoje: separe <strong>orgânico</strong> do <strong>seco</strong> e
+                  mantenha o seco sem restos de comida.
                 </p>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-800">
+                Próximo passo recomendado
+              </p>
+              <p className="mt-2 text-sm text-slate-800">
+                Abra o guia de coleta seletiva e aplique o checklist. É o caminho mais curto para reduzir rejeito.
+              </p>
+              <div className="mt-4">
+                <Link
+                  href="/guias/coleta-seletiva"
+                  className="inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
+                >
+                  Ir para Coleta seletiva →
+                </Link>
               </div>
             </div>
           </aside>

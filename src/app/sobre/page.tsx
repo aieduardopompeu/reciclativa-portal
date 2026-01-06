@@ -127,7 +127,7 @@ export default function Page() {
                     Abrir Guias →
                   </Link>
                   <Link
-                    href="/coleta-seletiva"
+                    href="/guias/coleta-seletiva"
                     className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
                   >
                     Coleta seletiva →
@@ -181,6 +181,12 @@ export default function Page() {
                   >
                     Resíduos sólidos →
                   </Link>
+                  <Link
+                    href="/lgpd"
+                    className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                  >
+                    LGPD →
+                  </Link>
                 </div>
               </div>
             </div>
@@ -191,9 +197,8 @@ export default function Page() {
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 A Reciclativa é um site independente. Parte da manutenção do portal
-                pode ser financiada por publicidade, como anúncios do Google
-                AdSense, sempre de forma transparente e sem interferir no conteúdo
-                editorial.
+                pode ser financiada por publicidade (como anúncios do Google AdSense),
+                sempre de forma transparente e sem interferir no conteúdo editorial.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Respeitamos a privacidade dos usuários e buscamos manter o site
@@ -202,22 +207,28 @@ export default function Page() {
 
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
-                  href="/privacidade"
+                  href="/politica-de-privacidade"
                   className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Privacidade
+                  Política de Privacidade
                 </Link>
                 <Link
-                  href="/termos"
+                  href="/termos-de-uso"
                   className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Termos
+                  Termos de Uso
                 </Link>
                 <Link
-                  href="/cookies"
+                  href="/politica-de-cookies"
                   className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
-                  Cookies
+                  Política de Cookies
+                </Link>
+                <Link
+                  href="/lgpd"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  LGPD
                 </Link>
               </div>
             </div>
@@ -231,14 +242,14 @@ export default function Page() {
               </p>
             </div>
 
-            {/* Micro-CTA pré-footer (soft monetização) */}
+            {/* Micro-CTA pré-footer (monetização discreta, sem "em breve") */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
                 Para empresas e iniciativas locais
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Sua empresa atua com reciclagem, coleta, logística reversa ou sustentabilidade?
-                Em breve você poderá divulgar seus serviços aqui, de forma organizada e útil para o público.
+                Se sua empresa atua com reciclagem, coleta, logística reversa ou sustentabilidade,
+                a Reciclativa oferece espaços de mídia e divulgação com foco em utilidade para o público.
               </p>
               <div className="mt-5">
                 <Link
@@ -297,22 +308,28 @@ export default function Page() {
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Link
-                    href="/privacidade"
+                    href="/politica-de-privacidade"
                     className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                   >
                     Privacidade
                   </Link>
                   <Link
-                    href="/termos"
+                    href="/termos-de-uso"
                     className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                   >
                     Termos
                   </Link>
                   <Link
-                    href="/cookies"
+                    href="/politica-de-cookies"
                     className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                   >
                     Cookies
+                  </Link>
+                  <Link
+                    href="/lgpd"
+                    className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    LGPD
                   </Link>
                 </div>
               </div>

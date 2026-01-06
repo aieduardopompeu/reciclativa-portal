@@ -48,8 +48,7 @@ const POSTS: PostCard[] = [
   {
     slug: "o-que-pode-ser-reciclado",
     title: "O que pode ser reciclado: guia rápido para acertar no descarte",
-    excerpt:
-      "Um mapa simples por material e o que costuma dar errado na separação.",
+    excerpt: "Um mapa simples por material e o que costuma dar errado na separação.",
     category: "Guias",
     dateISO: "2025-12-02",
     readMin: 8,
@@ -120,8 +119,7 @@ const POSTS: PostCard[] = [
   {
     slug: "economia-circular-exemplos",
     title: "Economia circular no Brasil: exemplos práticos e como aplicar",
-    excerpt:
-      "Circularidade na prática: o que já funciona, onde falha e como aplicar.",
+    excerpt: "Circularidade na prática: o que já funciona, onde falha e como aplicar.",
     category: "Economia circular",
     dateISO: "2025-12-10",
     readMin: 8,
@@ -245,7 +243,7 @@ export default async function BlogPage({
 
       {/* Conteúdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        {/* CHIPS (no mesmo padrão de cards) */}
+        {/* CHIPS */}
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex flex-wrap items-center gap-2">
             <Link
@@ -394,7 +392,7 @@ export default async function BlogPage({
                 Pilares e atalhos
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                Navegação rápida para reforçar SEO interno e facilitar a jornada.
+                Navegação rápida para facilitar sua jornada e aprofundar o tema.
               </p>
 
               <div className="mt-4 space-y-3">
@@ -410,17 +408,21 @@ export default async function BlogPage({
                 >
                   Guias práticos →
                 </Link>
-                <div className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-500">
-                  Diretório (em breve) →
-                </div>
+                <Link
+                  href="/diretorio"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Diretório de soluções →
+                </Link>
               </div>
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Dica editorial
+                  Como aproveitar melhor
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Cada post deve linkar 3–6 conteúdos relacionados e 1 página pilar.
+                  Se você está começando, leia a trilha “Comece aqui”. Depois,
+                  vá para os guias e aplique o checklist na sua rotina.
                 </p>
               </div>
             </section>

@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Cookies e Preferências | Reciclativa",
+  title: "Política de Cookies | Reciclativa",
   description:
-    "Entenda o uso de cookies na Reciclativa e como gerenciar suas preferências de privacidade.",
+    "Entenda o uso de cookies na Reciclativa e como gerenciar preferências de privacidade, medição e publicidade.",
   alternates: { canonical: "/politica-de-cookies" },
   openGraph: {
-    title: "Cookies e Preferências | Reciclativa",
+    title: "Política de Cookies | Reciclativa",
     description:
-      "Entenda o uso de cookies na Reciclativa e como gerenciar suas preferências.",
+      "Como usamos cookies e como você pode gerenciar preferências de privacidade, medição e publicidade.",
     url: "/politica-de-cookies",
     type: "website",
   },
@@ -24,11 +24,11 @@ export default function Page() {
             Institucional
           </p>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Cookies e Preferências
+            Política de Cookies
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-700">
-            Esta página explica o uso de cookies e como você pode gerenciar
-            preferências de privacidade no navegador.
+            Esta página explica o uso de cookies e como você pode gerenciar preferências
+            de privacidade no navegador e/ou no banner de consentimento (quando disponível).
           </p>
 
           <nav className="mt-6 text-sm text-slate-600">
@@ -40,9 +40,7 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">
-                  Política de Cookies
-                </span>
+                <span className="font-medium text-slate-700">Política de Cookies</span>
               </li>
             </ol>
           </nav>
@@ -53,12 +51,10 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <article className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                1) O que são cookies
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">1) O que são cookies</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Cookies são pequenos arquivos salvos no seu navegador para
-                lembrar preferências e apoiar funcionalidades e medições de uso.
+                Cookies são pequenos arquivos salvos no seu navegador para lembrar preferências
+                e apoiar funcionalidades, medições de uso e, quando aplicável, publicidade.
               </p>
             </div>
 
@@ -81,38 +77,42 @@ export default function Page() {
                 </li>
               </ul>
               <p className="mt-3 text-sm text-slate-700">
-                Detalhes adicionais podem ser vistos em{" "}
+                Para contexto geral de privacidade, consulte{" "}
                 <Link
-                  href="/termos-de-uso"
+                  href="/politica-de-privacidade"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  Termos de uso
+                  Política de Privacidade
                 </Link>
                 .
               </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                3) Como gerenciar preferências
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">3) Como gerenciar preferências</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Você pode controlar cookies nas configurações do seu navegador
-                (bloquear, permitir, remover). Ao desativar cookies, algumas
-                funcionalidades podem não operar como esperado.
+                Você pode controlar cookies nas configurações do seu navegador (bloquear, permitir, remover).
+                Ao desativar cookies, algumas funcionalidades podem não operar como esperado.
               </p>
 
               <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-                <p className="text-sm font-semibold text-slate-900">
-                  Preferências de cookies
-                </p>
+                <p className="text-sm font-semibold text-slate-900">Preferências de cookies</p>
                 <p className="mt-2 text-sm text-slate-700">
-                  Se o seu site já tiver um banner/controle de consentimento, o
-                  link de “Preferências” deve apontar para esta página ou abrir o
-                  gerenciador. Caso ainda não tenha, manter esta página já ajuda
-                  na transparência.
+                  Se o site exibir um banner de consentimento, você pode ajustar preferências por lá
+                  (quando disponível) e também revisar esta política para transparência.
                 </p>
               </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight">4) LGPD</h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Para uma visão geral de direitos do titular e bases legais, consulte{" "}
+                <Link href="/lgpd" className="font-semibold text-emerald-800 hover:underline">
+                  LGPD
+                </Link>
+                .
+              </p>
             </div>
           </article>
 
@@ -130,7 +130,13 @@ export default function Page() {
                   href="/termos-de-uso"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
-                  Termos de uso →
+                  Termos de Uso →
+                </Link>
+                <Link
+                  href="/lgpd"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                >
+                  LGPD →
                 </Link>
                 <Link
                   href="/contato"

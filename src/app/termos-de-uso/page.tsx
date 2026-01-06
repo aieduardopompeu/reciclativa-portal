@@ -29,8 +29,8 @@ export default function Page() {
             Termos de Uso
           </h1>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-700">
-            Ao acessar a Reciclativa, você concorda com estes termos. Eles
-            existem para proteger usuários, o portal e a integridade do conteúdo.
+            Ao acessar a Reciclativa, você concorda com estes termos. Eles existem para
+            proteger usuários, o portal e a integridade do conteúdo.
           </p>
 
           <nav className="mt-6 text-sm text-slate-600">
@@ -42,7 +42,7 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">Termos de uso</span>
+                <span className="font-medium text-slate-700">Termos de Uso</span>
               </li>
             </ol>
           </nav>
@@ -53,46 +53,36 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <article className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                1) Uso do conteúdo
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">1) Uso do conteúdo</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                O conteúdo da Reciclativa é educativo e informativo. Você pode
-                compartilhar links e trechos curtos com atribuição, sem copiar
-                integralmente páginas, nem republicar como se fosse seu.
+                O conteúdo da Reciclativa é educativo e informativo. Você pode compartilhar links e
+                trechos curtos com atribuição, sem copiar integralmente páginas, nem republicar
+                como se fosse seu.
               </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                2) Responsabilidade e precisão
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">2) Responsabilidade e precisão</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Trabalhamos para manter informações corretas e atualizadas, mas
-                reciclagem pode variar por cidade, coleta local, regras de
-                condomínio e operadores de resíduos. Sempre valide com fontes e
-                serviços da sua região quando necessário.
+                Trabalhamos para manter informações corretas e atualizadas, mas reciclagem pode variar
+                por cidade, coleta local, regras de condomínio e operadores de resíduos. Sempre valide
+                com fontes e serviços da sua região quando necessário.
               </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                3) Links externos
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">3) Links externos</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Podemos indicar sites e serviços de terceiros. Não controlamos
-                conteúdo, políticas e disponibilidade desses sites.
+                Podemos indicar sites e serviços de terceiros. Não controlamos conteúdo, políticas e
+                disponibilidade desses sites.
               </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                4) Comentários e contato
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">4) Comentários e contato</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Ao nos enviar mensagens, você concorda em não compartilhar dados
-                sensíveis desnecessários. Podemos responder e, se aplicável,
-                usar sua sugestão para melhorar páginas.
+                Ao nos enviar mensagens, você concorda em não compartilhar dados sensíveis desnecessários.
+                Podemos responder e, se aplicável, usar sua sugestão para melhorar páginas.
               </p>
               <p className="mt-3 text-sm text-slate-700">
                 Contato:{" "}
@@ -110,9 +100,8 @@ export default function Page() {
                 5) Publicidade e sustentabilidade do projeto
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Para ajudar a manter o portal, podemos exibir publicidade (ex.:
-                AdSense) e futuramente oferecer planos de divulgação. Isso não
-                altera nossa intenção editorial de informar com clareza.
+                Para ajudar a manter o portal, podemos exibir publicidade (ex.: AdSense).
+                Isso não altera nossa intenção editorial de informar com clareza.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Saiba mais em{" "}
@@ -134,12 +123,9 @@ export default function Page() {
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-              <p className="text-sm font-semibold text-slate-900">
-                Atualizações dos termos
-              </p>
+              <p className="text-sm font-semibold text-slate-900">Atualizações dos termos</p>
               <p className="mt-2 text-sm text-slate-700">
-                Podemos revisar estes termos conforme evoluções do site e
-                exigências de conformidade.
+                Podemos revisar estes termos conforme evoluções do site e exigências de conformidade.
               </p>
             </div>
           </article>
@@ -159,6 +145,12 @@ export default function Page() {
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
                   Política de Cookies →
+                </Link>
+                <Link
+                  href="/lgpd"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                >
+                  LGPD →
                 </Link>
                 <Link
                   href="/contato"

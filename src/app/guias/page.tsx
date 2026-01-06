@@ -148,6 +148,7 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
+            {/* Destaques */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
@@ -155,7 +156,10 @@ export default function Page() {
                     Destaques
                   </h2>
                   <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                    Páginas-base já publicadas (sem 404).
+                    Se você está começando agora, siga esta ordem:{" "}
+                    <strong>Coleta seletiva</strong> →{" "}
+                    <strong>o que pode reciclar</strong> →{" "}
+                    <strong>símbolos</strong>. Isso reduz erros e aumenta a chance de reaproveitamento.
                   </p>
                 </div>
 
@@ -180,23 +184,60 @@ export default function Page() {
               </div>
             </div>
 
-            {/* CTA Anuncie (mesmo padrão das outras páginas) */}
+            {/* Como usar os guias (valor percebido) */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Como usar estes guias (sem complicação)
+              </h3>
+
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">1) Separe</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Comece por seco x orgânico e mantenha o seco sem restos de comida.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">2) Confira</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Use checklists para evitar os erros mais comuns (contaminação).
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">3) Ajuste</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Regras podem variar por cidade/cooperativa: confirme materiais “duvidosos”.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/sustentabilidade"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver Sustentabilidade →
+                </Link>
+                <Link
+                  href="/reciclagem"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver Reciclagem →
+                </Link>
+                <Link
+                  href="/faq"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver FAQ →
+                </Link>
+              </div>
+            </div>
+
+            {/* CTA Anuncie (mantido) */}
             <AdCtaCard />
 
             {/* CTA Profissionais */}
             <ProfissionaisCta />
-
-            {/* Próximos passos */}
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
-              </h3>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Criar FAQ (SEO) em cada guia</li>
-                <li>Adicionar links internos para pilares e posts relacionados</li>
-                <li>Montar checklists “comece hoje”</li>
-              </ul>
-            </div>
           </div>
 
           {/* Sidebar */}
@@ -234,9 +275,21 @@ export default function Page() {
                   Dica rápida
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Em cada guia, linke 1 página pilar e 3–6 conteúdos relacionados.
+                  Se ficar na dúvida, priorize separar <strong>orgânico</strong> do <strong>seco</strong> e manter o seco
+                  sem restos de comida.
                 </p>
               </div>
+            </div>
+
+            {/* Bloco de confiança (sem bastidor) */}
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-800">
+                Nota
+              </p>
+              <p className="mt-2 text-sm text-slate-800">
+                Alguns materiais são aceitos em um lugar e recusados em outro. Para descarte por rota/dia e itens específicos,
+                confirme as regras do seu município, cooperativa ou operadora local.
+              </p>
             </div>
           </aside>
         </div>

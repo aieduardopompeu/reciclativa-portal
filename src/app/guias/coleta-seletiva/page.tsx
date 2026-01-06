@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "Coleta Seletiva | Reciclativa",
     description:
       "Cores, dicas e organização para tornar a separação eficiente e correta.",
-    url: "/coleta-seletiva",
+    url: "/guias/coleta-seletiva",
     type: "article",
   },
 };
@@ -66,9 +66,11 @@ export default function Page() {
           <nav className="mt-8 text-sm text-slate-600">
             <ol className="flex flex-wrap gap-2">
               <li>
-                <Link href="/" className="hover:underline">
-                  Home
-                </Link>
+                <Link href="/" className="hover:underline">Home</Link>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-slate-400">/</span>
+                <Link href="/guias" className="hover:underline">Guias</Link>
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>

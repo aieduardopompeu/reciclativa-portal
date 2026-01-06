@@ -43,9 +43,7 @@ export default function Page() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">
-                  Política de Privacidade
-                </span>
+                <span className="font-medium text-slate-700">Política de Privacidade</span>
               </li>
             </ol>
           </nav>
@@ -56,12 +54,10 @@ export default function Page() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <article className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                1) Quem somos
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">1) Quem somos</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                A Reciclativa é um portal educativo e informativo sobre
-                reciclagem, sustentabilidade e economia circular.
+                A Reciclativa é um portal educativo e informativo sobre reciclagem,
+                sustentabilidade e economia circular.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Contato:{" "}
@@ -75,18 +71,15 @@ export default function Page() {
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                2) Quais dados coletamos
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">2) Quais dados coletamos</h2>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
                 <li>
-                  <strong>Dados de navegação</strong> (ex.: páginas visitadas,
-                  tempo de permanência, tipo de dispositivo e navegador), usados
-                  para melhorar o site.
+                  <strong>Dados de navegação</strong> (ex.: páginas visitadas, tempo de
+                  permanência, tipo de dispositivo e navegador), usados para melhorar o site.
                 </li>
                 <li>
-                  <strong>Dados fornecidos por você</strong> (ex.: e-mail e
-                  mensagem enviados no contato), apenas quando você decide enviar.
+                  <strong>Dados fornecidos por você</strong> (ex.: e-mail e mensagem enviados no contato),
+                  apenas quando você decide enviar.
                 </li>
                 <li>
                   <strong>Cookies</strong> (ver seção específica abaixo).
@@ -95,26 +88,20 @@ export default function Page() {
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                3) Como usamos as informações
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">3) Como usamos as informações</h2>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
                 <li>Melhorar conteúdo, estrutura e experiência de navegação.</li>
                 <li>Mensurar desempenho do site (métricas agregadas).</li>
                 <li>Responder contatos e solicitações enviadas por você.</li>
-                <li>
-                  Exibir publicidade (quando aplicável) para apoiar a manutenção do portal.
-                </li>
+                <li>Exibir publicidade (quando aplicável) para apoiar a manutenção do portal.</li>
               </ul>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                4) Cookies e tecnologias semelhantes
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">4) Cookies e tecnologias semelhantes</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Cookies são pequenos arquivos armazenados no seu navegador. Eles
-                ajudam a lembrar preferências e entender como o site é utilizado.
+                Cookies são pequenos arquivos armazenados no seu navegador. Eles ajudam a lembrar
+                preferências e entender como o site é utilizado.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Você pode gerenciar cookies a qualquer momento em{" "}
@@ -122,37 +109,32 @@ export default function Page() {
                   href="/politica-de-cookies"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  /politica-de-cookies
+                  Política de Cookies
                 </Link>
                 .
               </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                5) Publicidade (ex.: Google AdSense)
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">5) Publicidade (ex.: Google AdSense)</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Podemos exibir anúncios para ajudar a manter o portal. Alguns
-                provedores de publicidade podem utilizar cookies para exibir
-                anúncios mais relevantes e medir resultados.
+                Podemos exibir anúncios para ajudar a manter o portal. Alguns provedores de publicidade
+                podem utilizar cookies/identificadores para exibir anúncios e medir resultados.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Você pode revisar preferências e entender melhor em{" "}
+                Para entender e ajustar preferências, consulte{" "}
                 <Link
                   href="/politica-de-cookies"
                   className="font-semibold text-emerald-800 hover:underline"
                 >
-                  /politica-de-cookies
+                  Política de Cookies
                 </Link>
                 .
               </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight">
-                6) Seus direitos e escolhas
-              </h2>
+              <h2 className="text-lg font-extrabold tracking-tight">6) Seus direitos e escolhas</h2>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
                 <li>Você pode solicitar informações sobre seu contato enviado.</li>
                 <li>Você pode pedir correção/remoção de dados que tenha fornecido.</li>
@@ -167,15 +149,20 @@ export default function Page() {
                   {CONTACT_EMAIL}
                 </a>
               </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Para informações completas sobre a LGPD, consulte{" "}
+                <Link href="/lgpd" className="font-semibold text-emerald-800 hover:underline">
+                  LGPD
+                </Link>
+                .
+              </p>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-              <p className="text-sm font-semibold text-slate-900">
-                Atualizações desta política
-              </p>
+              <p className="text-sm font-semibold text-slate-900">Atualizações desta política</p>
               <p className="mt-2 text-sm text-slate-700">
-                Podemos atualizar este texto para refletir melhorias do site e
-                requisitos de conformidade. Recomendamos revisá-lo periodicamente.
+                Podemos atualizar este texto para refletir melhorias do site e requisitos de conformidade.
+                Recomendamos revisá-lo periodicamente.
               </p>
             </div>
           </article>
@@ -188,13 +175,19 @@ export default function Page() {
                   href="/termos-de-uso"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
-                  Termos de uso →
+                  Termos de Uso →
                 </Link>
                 <Link
                   href="/politica-de-cookies"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
                 >
                   Política de Cookies →
+                </Link>
+                <Link
+                  href="/lgpd"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold hover:bg-slate-50"
+                >
+                  LGPD →
                 </Link>
                 <Link
                   href="/contato"

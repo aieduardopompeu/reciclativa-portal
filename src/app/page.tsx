@@ -84,9 +84,9 @@ const POSTS: Post[] = [
     meta: "Leitura: 7 min",
   },
   {
-    title: "Reciclagem de plástico: erros que atrapalham tudo",
+    title: "Reciclagem de plástico: tipos, símbolos e como separar",
     desc: "Principais motivos de rejeição e como melhorar a separação em casa.",
-    href: "/blog/reciclagem-plastico-erros",
+    href: "/blog/reciclagem-plastico",
     meta: "Leitura: 5 min",
   },
 ];
@@ -337,10 +337,10 @@ export default function HomePage() {
                   Acessar diretório
                 </Link>
                 <Link
-                  href="/diretorio/cadastrar"
+                  href="/contato"
                   className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
                 >
-                  Cadastrar empresa
+                  Solicitar cadastro
                 </Link>
               </div>
               <p className="mt-4 text-xs text-slate-600">
