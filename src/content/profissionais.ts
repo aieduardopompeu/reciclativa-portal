@@ -58,7 +58,11 @@ export const profissionais: Profissional[] = [
 ];
 
 export function normalizeUF(uf: string) {
-  return (uf || "").trim().toUpperCase();
+  return (uf || "")
+    .trim()
+    .replace(/[^a-zA-Z]/g, "")
+    .slice(0, 2)
+    .toLowerCase();
 }
 
 export function normalizeCity(city: string) {
