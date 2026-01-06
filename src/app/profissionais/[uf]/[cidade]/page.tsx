@@ -193,9 +193,12 @@ export default async function ProfissionaisCidadePage({
           Serviços em {cidadeNome} <span className="text-slate-500">({UF})</span>
         </h1>
 
-        <p className="mt-4 max-w-3xl text-base text-slate-700 sm:text-lg">
-          Profissionais e serviços ligados à reciclagem, sustentabilidade e economia circular
-          na cidade.
+        <p className="mt-4 max-w-3xl text-sm text-slate-600 leading-relaxed">
+          Em <strong>{cidadeNome}</strong>, no estado de <strong>{stateName}</strong>, é possível
+          encontrar profissionais especializados em reciclagem, gestão de resíduos,
+          sustentabilidade e economia circular. Esta página reúne serviços disponíveis na
+          região para empresas, condomínios e pessoas físicas que buscam soluções ambientais
+          locais, com foco em boas práticas e conformidade ambiental.
         </p>
 
         <div className="mt-7 flex flex-wrap gap-3">

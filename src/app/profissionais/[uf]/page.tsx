@@ -33,6 +33,63 @@ const STATES: Record<string, string> = {
   se: "Sergipe",
   to: "Tocantins",
 };
+const STATE_BLURBS: Record<string, string> = {
+  ac: "No Acre, iniciativas locais e negócios regionais buscam soluções práticas para reciclagem e gestão de resíduos com logística eficiente.",
+  al: "Em Alagoas, serviços ambientais ganham força com foco em descarte correto, educação ambiental e soluções para cidades e empresas.",
+  ap: "No Amapá, a demanda por sustentabilidade cresce com atenção à coleta, triagem e práticas responsáveis de destinação.",
+  am: "No Amazonas, soluções de reciclagem e economia circular se destacam quando combinam impacto local e eficiência operacional.",
+  ba: "Na Bahia, projetos e serviços de sustentabilidade avançam com foco em gestão de resíduos, compliance e soluções para comunidades e negócios.",
+  ce: "No Ceará, reciclagem e economia circular ganham espaço com soluções para condomínios, comércios e operações locais.",
+  df: "No Distrito Federal, cresce a busca por consultoria e serviços ambientais com foco em conformidade, redução de resíduos e boas práticas.",
+  es: "No Espírito Santo, empresas e iniciativas locais buscam parceiros para reciclagem, logística reversa e gestão responsável de resíduos.",
+  go: "Em Goiás, a sustentabilidade se fortalece com serviços voltados a resíduos, educação ambiental e suporte para negócios regionais.",
+  ma: "No Maranhão, soluções ambientais locais se destacam quando conectam coleta, triagem e destinação com eficiência e transparência.",
+  mt: "No Mato Grosso, cresce a procura por serviços ambientais que unam gestão de resíduos, eficiência e apoio a operações em diferentes cidades.",
+  ms: "No Mato Grosso do Sul, serviços de reciclagem e sustentabilidade ganham relevância com foco em descarte correto e soluções sob medida.",
+  mg: "Em Minas Gerais, a busca por reciclagem e economia circular aumenta com soluções para empresas, condomínios e iniciativas comunitárias.",
+  pa: "No Pará, soluções ambientais locais ganham espaço com foco em reciclagem, destinação correta e fortalecimento de cadeias regionais.",
+  pb: "Na Paraíba, práticas sustentáveis avançam com serviços voltados à gestão de resíduos e suporte a negócios e comunidades.",
+  pr: "No Paraná, a economia circular se consolida com serviços especializados em reciclagem, logística reversa e boas práticas operacionais.",
+  pe: "Em Pernambuco, soluções ambientais ganham tração com foco em reciclagem, educação ambiental e apoio a empresas e condomínios.",
+  pi: "No Piauí, cresce a demanda por serviços que facilitem descarte correto, reciclagem e organização de rotinas sustentáveis.",
+  rj: "No Rio de Janeiro, soluções de sustentabilidade se destacam quando combinam eficiência, conformidade e atendimento local por cidade.",
+  rn: "No Rio Grande do Norte, reciclagem e gestão de resíduos avançam com serviços locais e apoio a iniciativas comunitárias e empresariais.",
+  rs: "No Rio Grande do Sul, cresce a procura por serviços ambientais estruturados, com foco em reciclagem, redução de resíduos e conformidade.",
+  ro: "Em Rondônia, soluções ambientais locais se fortalecem com foco em coleta, triagem e destinação responsável.",
+  rr: "Em Roraima, cresce a necessidade de serviços que organizem o descarte correto e incentivem práticas sustentáveis no dia a dia.",
+  sc: "Em Santa Catarina, reciclagem e economia circular avançam com serviços especializados e operação eficiente em diferentes cidades.",
+  sp: "Em São Paulo, a demanda por soluções ambientais é alta, com foco em reciclagem, gestão de resíduos e serviços por cidade e segmento.",
+  se: "Em Sergipe, serviços ambientais ganham relevância com foco em descarte correto, reciclagem e apoio a iniciativas locais.",
+  to: "No Tocantins, cresce a busca por serviços sustentáveis que apoiem coleta, reciclagem e destinação responsável em escala regional.",
+};
+
+function faqJsonLd(uf: string, name: string, UF: string) {
+  const safeName = name || "o estado";
+  const safeUF = UF || uf.toUpperCase();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `Como encontrar profissionais de reciclagem e sustentabilidade em ${safeName} (${safeUF})?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Use a lista de cidades para filtrar por região e encontre profissionais e serviços ligados à reciclagem, gestão de resíduos e sustentabilidade em ${safeName} (${safeUF}).`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Como cadastrar meu serviço para aparecer nas buscas em ${safeName} (${safeUF})?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Acesse a página de cadastro e envie seus dados. Após o cadastro, seu serviço pode aparecer nas listagens por estado e cidade no Reciclativa.`,
+        },
+      },
+    ],
+  };
+}
 
 type PageProps = {
   params: Promise<{ uf: string }>;
@@ -127,6 +184,12 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(faqJsonLd(uf, name, UF)),
+      }}
+    />
       <section className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
           Profissionais
@@ -136,9 +199,17 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
           Serviços em {name} <span className="text-slate-500">({UF})</span>
         </h1>
 
-        <p className="mt-4 max-w-3xl text-base text-slate-700 sm:text-lg">
-          Selecione uma cidade para filtrar ou veja todos os profissionais do estado.
-        </p>
+      <p className="mt-4 max-w-3xl text-sm text-slate-600 leading-relaxed">
+        No estado de <strong>{name}</strong> (<strong>{UF}</strong>), você encontra profissionais e
+        serviços ligados à reciclagem, gestão de resíduos, sustentabilidade e economia circular.
+        Navegue pelas cidades para localizar soluções ambientais na sua região — de consultoria e
+        coleta a apoio para empresas, condomínios e iniciativas locais — e cadastre seu serviço
+        para aparecer nas buscas do Reciclativa.
+      </p>
+         
+         <p className="mt-3 max-w-3xl text-sm text-slate-600">
+           {STATE_BLURBS[uf] ?? `Em ${name} (${UF}), serviços ambientais locais ajudam a conectar reciclagem e gestão de resíduos com soluções práticas para o dia a dia.`}
+          </p>
 
         <div className="mt-7 flex flex-wrap gap-3">
           <Link
@@ -175,8 +246,44 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
             </li>
           </ol>
         </nav>
-      </section>
 
+        <div className="mt-6 max-w-3xl">
+  <h2 className="text-base font-bold tracking-tight text-slate-900">
+    Perguntas frequentes em {name} ({UF})
+  </h2>
+
+    <div className="mt-3 space-y-3">
+      <details className="rounded-xl border border-black/5 bg-white p-4">
+        <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
+          Como encontrar profissionais de reciclagem e sustentabilidade em {name} ({UF})?
+        </summary>
+        <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+          Use a lista de cidades para filtrar por região e encontre profissionais e serviços ligados
+          à reciclagem, gestão de resíduos e sustentabilidade em {name} ({UF}).
+        </p>
+      </details>
+
+      <details className="rounded-xl border border-black/5 bg-white p-4">
+        <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
+          Como cadastrar meu serviço para aparecer nas buscas em {name} ({UF})?
+        </summary>
+        <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+          Acesse a página de cadastro e envie seus dados. Após o cadastro, seu serviço pode aparecer
+          nas listagens por estado e cidade no Reciclativa.
+        </p>
+
+        <div className="mt-3">
+          <Link
+            href="/anuncie"
+            className="inline-flex rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+          >
+            Cadastrar meu serviço
+          </Link>
+        </div>
+      </details>
+    </div>
+  </div>
+      </section>
       <section className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start">
         <aside className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between gap-4">
