@@ -68,6 +68,12 @@ const GUIDES: Guide[] = [
     href: "/guias/o-que-pode-reciclar",
     tag: "Checklist",
   },
+  {
+    title: "Compostagem: guia prático para começar",
+    desc: "Aprenda o que pode e não pode, métodos, passo a passo e como evitar erros comuns.",
+    href: "/guias/compostagem",
+    tag: "Orgânicos",
+  },
 ];
 
 const POSTS: Post[] = [

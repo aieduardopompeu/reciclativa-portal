@@ -165,7 +165,8 @@ export default function Page() {
                     Se você está começando agora, siga esta ordem:{" "}
                     <strong>Coleta seletiva</strong> →{" "}
                     <strong>o que pode reciclar</strong> →{" "}
-                    <strong>símbolos</strong>. Isso reduz erros e aumenta a chance de reaproveitamento.
+                    <strong>compostagem</strong> (orgânicos) →{" "}
+                    <strong>símbolos</strong>.
                   </p>
                 </div>
 
