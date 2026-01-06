@@ -1,22 +1,15 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import dynamic from "next/dynamic";
+
 import "./globals.css";
 import { site } from "@/config/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import CookieBanner from "@/components/cookies/CookieBanner";
 
-const CookieBanner = dynamic(() => import("@/components/cookies/CookieBanner"), {
-  ssr: false,
-});
-
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(
-  /\/$/,
-  ""
-);
-
-const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.reciclativa.com";
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID ?? "";
 const ADSENSE_CLIENT = "ca-pub-4436420746304287";
 
 export const metadata: Metadata = {
@@ -45,11 +38,10 @@ export default function RootLayout({
         {/* GA4 */}
         <GoogleAnalytics measurementId={GA4_ID} />
 
-        {/* AdSense base script (carregar 1x no site todo) */}
+        {/* AdSense fora do caminho crítico do LCP */}
         <Script
           id="adsense-base"
           async
-          // Importante para LCP: não precisa competir com o carregamento inicial.
           strategy="lazyOnload"
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
           crossOrigin="anonymous"
@@ -59,7 +51,7 @@ export default function RootLayout({
         {children}
         <Footer />
 
-        {/* Banner de cookies/consentimento (lazy, sem SSR) */}
+        {/* Banner de cookies (Client Component) */}
         <CookieBanner />
       </body>
     </html>
