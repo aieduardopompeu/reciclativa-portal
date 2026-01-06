@@ -192,14 +192,76 @@ export default function Page() {
 
           {/* Sidebar */}
           <aside className="space-y-6">
+            {/* FAQ rápido (substitui “Próximos passos”) */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
+                FAQ rápido
+              </h3>
+
+              <div className="mt-4 space-y-4 text-sm text-slate-700">
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Sustentabilidade é só reciclar?
+                  </p>
+                  <p className="mt-1">
+                    Reciclar ajuda, mas a ordem mais eficiente é: reduzir, reusar/reparar e,
+                    por fim, separar corretamente para reciclagem.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    O que mais dá resultado no dia a dia?
+                  </p>
+                  <p className="mt-1">
+                    Evitar descartáveis, planejar compras e reduzir desperdício de alimentos
+                    costuma ter impacto maior do que pequenas trocas.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Como evitar “contaminar” a reciclagem?
+                  </p>
+                  <p className="mt-1">
+                    Remova excesso de sujeira, mantenha recicláveis secos e não misture com
+                    orgânicos. Use a coleta seletiva local como referência.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                <Link
+                  href="/guias/coleta-seletiva"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Coleta seletiva →
+                </Link>
+                <Link
+                  href="/residuos-solidos"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Resíduos sólidos →
+                </Link>
+                <Link
+                  href="/simbolos-da-reciclagem"
+                  className="inline-flex rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Símbolos →
+                </Link>
+              </div>
+            </div>
+
+            {/* Checklist “comece hoje” */}
+            <div className="rounded-3xl border border-slate-200 bg-emerald-50/50 p-6">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Comece hoje (checklist)
               </h3>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Criar FAQ (SEO) nesta página</li>
-                <li>Adicionar links internos para guias e blog</li>
-                <li>Montar checklist “comece hoje”</li>
+                <li>Leve ecobag e evite descartáveis (copos/talheres/canudos).</li>
+                <li>Planeje compras e reduza desperdício de alimentos.</li>
+                <li>Separe recicláveis secos e mantenha orgânicos à parte.</li>
+                <li>Repare e doe antes de descartar (roupas, eletrônicos, móveis).</li>
               </ul>
             </div>
 
