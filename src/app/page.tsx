@@ -140,17 +140,16 @@ export default function HomePage() {
       {/* HERO (LCP) */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0" aria-hidden>
-          <Image
-            src="/hero.webp"
-            alt=""
-            fill
-            priority
-            // CRÍTICO para LCP: informa ao browser como esse "fill" será exibido.
-            sizes="100vw"
-            // Ajuste conservador para reduzir bytes sem impacto visual relevante.
-            quality={70}
-            className="object-cover"
-          />
+            <Image
+              src="/hero.webp"
+              alt=""
+              fill
+              priority
+              fetchPriority="high"
+              sizes="100vw"
+              quality={70}
+              className="object-cover"
+            />
           <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white" />
         </div>
 
