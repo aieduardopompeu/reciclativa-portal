@@ -139,7 +139,6 @@ export default function HomePage() {
     <main className="min-h-screen bg-white text-slate-900">
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-slate-200">
-        {/* background image */}
         <div className="absolute inset-0" aria-hidden>
           <Image src="/hero.webp" alt="" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white" />
@@ -419,33 +418,6 @@ export default function HomePage() {
               className="mt-4 inline-block text-sm font-semibold text-emerald-700"
             >
               Ver símbolos →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Rodapé de links internos */}
-      <section className="border-t border-slate-200 bg-emerald-50/30">
-        <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-700">
-            <span className="font-semibold text-slate-900">Atalhos:</span>
-            <Link href="/reciclagem" className="hover:text-emerald-700">
-              Reciclagem
-            </Link>
-            <Link href="/sustentabilidade" className="hover:text-emerald-700">
-              Sustentabilidade
-            </Link>
-            <Link href="/guias" className="hover:text-emerald-700">
-              Guias
-            </Link>
-            <Link href="/blog" className="hover:text-emerald-700">
-              Blog
-            </Link>
-            <Link href="/diretorio" className="hover:text-emerald-700">
-              Diretório
-            </Link>
-            <Link href="/anuncie" className="hover:text-emerald-700">
-              Anuncie
             </Link>
           </div>
         </div>
