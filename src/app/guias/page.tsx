@@ -31,6 +31,12 @@ const GUIDES = [
     tag: "Checklist",
   },
   {
+    title: "Compostagem: guia prático para começar",
+    desc: "O que pode e não pode, métodos, passo a passo e soluções para problemas comuns.",
+    href: "/guias/compostagem",
+    tag: "Orgânicos",
+  },
+  {
     title: "Símbolos da reciclagem (o que significam)",
     desc: "Entenda os símbolos nas embalagens e como descartar com segurança.",
     href: "/simbolos-da-reciclagem",
