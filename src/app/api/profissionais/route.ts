@@ -134,8 +134,16 @@ if (honeypot) {
       );
     }
 
-    // whatsapp inválido repetido (0000.. etc)
-    if (whatsapp && (whatsapp.length < 10 || /^(\d)\1{7,}$/.test(whatsapp))) {
+    // WhatsApp curto -> erro de validação (400)
+    if (whatsapp && whatsapp.length < 10) {
+      return NextResponse.json(
+        { ok: false, error: "WhatsApp inválido. Informe DDD + número." },
+        { status: 400 }
+      );
+    }
+
+    // WhatsApp repetido -> bloqueio neutro (403)
+    if (whatsapp && /^(\d)\1{9,}$/.test(whatsapp)) {
       return NextResponse.json(
         { ok: false, message: "Não foi possível concluir seu cadastro no momento." },
         { status: 403 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const UFS = [
   "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
@@ -107,6 +107,8 @@ function titleCaseUF(uf: string) {
   return (uf || "").trim().slice(0, 2).toUpperCase();
 }
 
+type CityOption = { id: number; name: string };
+
 export default function AnunciePage() {
   const [loading, setLoading] = useState(false);
   const [ok, setOk] = useState(false);
@@ -115,6 +117,12 @@ export default function AnunciePage() {
   // ✅ Serviços selecionados (multi)
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [otherService, setOtherService] = useState("");
+
+  // ✅ cidades por UF (IBGE)
+  const [cities, setCities] = useState<CityOption[]>([]);
+  const [citiesLoading, setCitiesLoading] = useState(false);
+  const [citiesError, setCitiesError] = useState<string | null>(null);
+  const [manualCity, setManualCity] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -129,6 +137,52 @@ export default function AnunciePage() {
     companyWebsite: "", // honeypot (não visível)
     termsAccepted: false,
   });
+
+  // Carrega cidades ao trocar UF
+  useEffect(() => {
+    const uf = titleCaseUF(form.uf);
+    let cancelled = false;
+
+    async function loadCities() {
+      setCitiesLoading(true);
+      setCitiesError(null);
+
+      try {
+        const res = await fetch(`/api/ibge/municipios/${uf}`, { method: "GET" });
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok || !data?.ok) {
+          throw new Error(data?.error || "Falha ao carregar cidades.");
+        }
+
+        const list: CityOption[] = Array.isArray(data?.cities)
+          ? data.cities
+              .filter((c: any) => c?.name)
+              .map((c: any) => ({ id: Number(c.id), name: String(c.name) }))
+          : [];
+
+        if (!cancelled) {
+          setCities(list);
+        }
+      } catch (e: any) {
+        if (!cancelled) {
+          setCities([]);
+          setCitiesError(e?.message || "Falha ao carregar cidades.");
+        }
+      } finally {
+        if (!cancelled) setCitiesLoading(false);
+      }
+    }
+
+    // ao trocar UF, volta para modo select e limpa cidade
+    setManualCity(false);
+    setForm((v) => ({ ...v, city: "" }));
+    loadCities();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [form.uf]);
 
   // ✅ Lógica nova:
   // - Sem categoria: serviços gerais
@@ -184,18 +238,9 @@ export default function AnunciePage() {
         body: JSON.stringify(payload),
       });
 
-      // ✅ sempre tenta ler JSON para pegar message/error
-      const data = await res.json().catch(() => ({} as any));
-
+      const data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.ok) {
-        const msg =
-          data?.message || // <-- blacklist / mensagens amigáveis do backend
-          data?.error ||   // <-- validações antigas
-          (res.status === 403
-            ? "Não foi possível concluir seu cadastro no momento."
-            : "Falha ao enviar.");
-
-        throw new Error(msg);
+        throw new Error(data?.error || "Falha ao enviar.");
       }
 
       setOk(true);
@@ -211,6 +256,7 @@ export default function AnunciePage() {
     setOk(false);
     setSelectedServices([]);
     setOtherService("");
+    setManualCity(false);
     setForm({
       name: "",
       uf: "SP",
@@ -317,14 +363,67 @@ export default function AnunciePage() {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="text-sm font-semibold text-slate-900">Cidade *</label>
-              <input
-                value={form.city}
-                onChange={(e) => setForm((v) => ({ ...v, city: e.target.value }))}
-                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
-                placeholder="Ex.: Belo Horizonte"
-                required
-              />
+              <div className="flex items-center justify-between gap-3">
+                <label className="text-sm font-semibold text-slate-900">Cidade *</label>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setManualCity((v) => !v);
+                    setForm((prev) => ({ ...prev, city: "" }));
+                  }}
+                  className="text-xs font-semibold text-emerald-700 hover:text-emerald-800"
+                >
+                  {manualCity ? "Selecionar da lista" : "Não encontrei minha cidade"}
+                </button>
+              </div>
+
+              {!manualCity ? (
+                <>
+                  <select
+                    value={form.city}
+                    onChange={(e) => setForm((v) => ({ ...v, city: e.target.value }))}
+                    disabled={citiesLoading || !!citiesError}
+                    className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600 disabled:bg-slate-50"
+                    required
+                  >
+                    <option value="">
+                      {citiesLoading
+                        ? "Carregando cidades..."
+                        : citiesError
+                        ? "Falha ao carregar cidades (clique em 'Não encontrei minha cidade')"
+                        : "Selecione sua cidade"}
+                    </option>
+
+                    {cities.map((c) => (
+                      <option key={c.id} value={c.name}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {citiesError ? (
+                    <p className="mt-2 text-xs text-red-700">{citiesError}</p>
+                  ) : (
+                    <p className="mt-2 text-xs text-slate-500">
+                      Lista carregada automaticamente por UF.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <input
+                    value={form.city}
+                    onChange={(e) => setForm((v) => ({ ...v, city: e.target.value }))}
+                    className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+                    placeholder="Ex.: Belo Horizonte"
+                    required
+                  />
+                  <p className="mt-2 text-xs text-slate-500">
+                    Digite exatamente como você quer que apareça no diretório.
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
