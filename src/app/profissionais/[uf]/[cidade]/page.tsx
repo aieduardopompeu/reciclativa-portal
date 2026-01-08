@@ -93,11 +93,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const uf = normalizeUF(ufParam).toLowerCase();
   const UF = uf.toUpperCase();
   const stateName = STATES[uf] ?? "Estado";
+  const isValidUF = Boolean(STATES[uf]);
 
   const cidadeSlug = (cidadeParam ?? "").toString().toLowerCase().trim();
-  const list = (STATES[uf] ? getByUFCity(uf, cidadeSlug) : []) ?? [];
 
-  const cidadeNome = (list[0]?.city ?? titleFromSlug(cidadeSlug)).toString();
+  const list = isValidUF ? await getByUFCity(uf, cidadeSlug) : [];
+  const safeList = Array.isArray(list) ? list : [];
+
+  const cidadeNome = (safeList[0]?.city ?? titleFromSlug(cidadeSlug)).toString();
 
   const title = `Serviços em ${cidadeNome} (${UF}) | Profissionais | Reciclativa`;
   const description = `Encontre profissionais e serviços ligados à reciclagem e sustentabilidade em ${cidadeNome} (${stateName}). Cadastre seu serviço para aparecer nas buscas.`;
@@ -133,11 +136,16 @@ export default async function ProfissionaisCidadePage({
   const qNorm = normalizeText(q);
   const hasSearch = qNorm.length >= 2;
 
-  const list = isValidUF ? getByUFCity(uf, cidadeSlug) : [];
+  const listRaw = isValidUF ? await getByUFCity(uf, cidadeSlug) : [];
+  const list = Array.isArray(listRaw) ? listRaw : [];
+
   const cidadeNome = (list[0]?.city ?? titleFromSlug(cidadeSlug)).toString();
 
-  // Dados do estado
-  const listUF = isValidUF ? getByUF(uf) : [];
+  const listUFRaw = isValidUF ? await getByUF(uf) : [];
+  const listUF = Array.isArray(listUFRaw) ? listUFRaw : [];
+
+  const hasCityData = list.length > 0;
+  const hasStateData = listUF.length > 0;
 
   // Contagem por cidade no estado
   const cityCount = new Map<string, number>();
@@ -148,7 +156,11 @@ export default async function ProfissionaisCidadePage({
   }
 
   // Base de cidades: tenta citiesByUF; se vier vazio, deriva do listUF
-  const citiesFromConfig = isValidUF ? (citiesByUF(uf) ?? []) : [];
+  const citiesFromConfigRaw = isValidUF ? await citiesByUF(uf) : [];
+  const citiesFromConfig = Array.isArray(citiesFromConfigRaw)
+    ? citiesFromConfigRaw
+    : [];
+
   const citiesFallback = Array.from(new Set(Array.from(cityCount.keys())));
 
   const baseCities = (citiesFromConfig.length ? citiesFromConfig : citiesFallback)
@@ -157,7 +169,6 @@ export default async function ProfissionaisCidadePage({
 
   const currentCityNorm = normalizeText(cidadeNome);
 
-  // Lista de cidades (remove cidade atual), aplica contagem e ordena por relevância
   const citiesWithCount = baseCities
     .map((city) => ({
       city,
@@ -165,7 +176,8 @@ export default async function ProfissionaisCidadePage({
       slug: normalizeCity(city),
     }))
     .filter(
-      ({ city, slug }) => normalizeText(city) !== currentCityNorm && slug !== cidadeSlug
+      ({ city, slug }) =>
+        normalizeText(city) !== currentCityNorm && slug !== cidadeSlug
     )
     .sort(compareCityByRelevanceThenAlpha);
 
@@ -173,7 +185,6 @@ export default async function ProfissionaisCidadePage({
     ? citiesWithCount.filter(({ city }) => normalizeText(city).includes(qNorm))
     : citiesWithCount;
 
-  // Separação TOP vs ZERO (para o colapsável)
   const topCities = filteredCities.filter((c) => c.count > 0);
   const zeroCities = filteredCities.filter((c) => c.count === 0);
 
@@ -196,9 +207,7 @@ export default async function ProfissionaisCidadePage({
         <p className="mt-4 max-w-3xl text-sm text-slate-600 leading-relaxed">
           Em <strong>{cidadeNome}</strong>, no estado de <strong>{stateName}</strong>, é possível
           encontrar profissionais especializados em reciclagem, gestão de resíduos,
-          sustentabilidade e economia circular. Esta página reúne serviços disponíveis na
-          região para empresas, condomínios e pessoas físicas que buscam soluções ambientais
-          locais, com foco em boas práticas e conformidade ambiental.
+          sustentabilidade e economia circular.
         </p>
 
         <div className="mt-7 flex flex-wrap gap-3">
@@ -256,18 +265,35 @@ export default async function ProfissionaisCidadePage({
         <aside className="space-y-6">
           <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-bold tracking-tight">Nesta cidade</h2>
-            <p className="mt-2 text-sm text-slate-600">
-              Total de cadastros em {cidadeNome}:{" "}
-              <span className="font-semibold text-slate-900">{list.length}</span>
-            </p>
+
+            {hasCityData ? (
+              <p className="mt-2 text-sm text-slate-600">
+                Total de cadastros em {cidadeNome}:{" "}
+                <span className="font-semibold text-slate-900">{list.length}</span>
+              </p>
+            ) : (
+              <p className="mt-2 text-sm text-slate-600">
+                Ainda não há profissionais cadastrados em{" "}
+                <span className="font-semibold text-slate-900">{cidadeNome}</span>.
+                <br />
+                Seja o primeiro a aparecer nas buscas locais.
+              </p>
+            )}
 
             <div className="mt-5 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
-              Em {stateName}, já existem{" "}
-              <span className="font-semibold text-slate-900">{listUF.length}</span> cadastros no
-              total.
+              {hasStateData ? (
+                <>
+                  No estado de {stateName}, já existem{" "}
+                  <span className="font-semibold text-slate-900">{listUF.length}</span> cadastros.
+                </>
+              ) : (
+                <>Ainda não há cadastros no estado de {stateName}.</>
+              )}
+
               <div className="mt-2 text-slate-600">
-                Quer aparecer primeiro em {cidadeNome}? Cadastre seu serviço.
+                Cadastre seu serviço para aparecer nesta página.
               </div>
+
               <div className="mt-3">
                 <Link
                   href="/anuncie"
@@ -285,31 +311,27 @@ export default async function ProfissionaisCidadePage({
               <div>
                 <h2 className="text-lg font-bold tracking-tight">Outras cidades em {UF}</h2>
                 <p className="mt-2 text-sm text-slate-600">
-                  {hasSearch ? (
-                    <>
-                      Resultados para{" "}
-                      <span className="font-semibold text-slate-900">“{q}”</span>.
-                    </>
-                  ) : (
-                    <>Ordenadas por relevância (mais cadastros primeiro).</>
-                  )}
+                  {citiesWithCount.length
+                    ? "Ordenadas por relevância (mais cadastros primeiro)."
+                    : "As cidades serão listadas aqui quando houver cadastros no estado."}
                 </p>
               </div>
 
-              {isValidUF ? (
+              {isValidUF && citiesWithCount.length ? (
                 <div className="text-right text-xs text-slate-600">
                   <div>
                     <span className="font-semibold text-slate-900">{totalCities}</span> cidades
                   </div>
                   <div>
-                    <span className="font-semibold text-slate-900">{totalCitiesWithAny}</span>{" "}
-                    com cadastro
+                    <span className="font-semibold text-slate-900">{totalCitiesWithAny}</span> com
+                    cadastro
                   </div>
                 </div>
               ) : null}
             </div>
 
-            {isValidUF ? (
+            {/* Busca só quando há cidades listáveis */}
+            {isValidUF && canSearchCities ? (
               <form className="mt-5" action={`/profissionais/${uf}/${cidadeSlug}`} method="get">
                 <label htmlFor="q" className="sr-only">
                   Buscar cidade
@@ -319,20 +341,14 @@ export default async function ProfissionaisCidadePage({
                   <input
                     id="q"
                     name="q"
-                    placeholder={
-                      canSearchCities
-                        ? "Buscar cidade (ex.: Salvador, Campinas)…"
-                        : "Busca disponível quando houver cidades cadastradas"
-                    }
-                    className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600 disabled:cursor-not-allowed disabled:bg-slate-50"
+                    placeholder="Buscar cidade (ex.: Salvador, Campinas)…"
+                    className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
                     defaultValue={q}
-                    disabled={!canSearchCities}
                   />
 
                   <button
                     type="submit"
-                    disabled={!canSearchCities}
-                    className="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-slate-300"
+                    className="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-500"
                   >
                     Buscar
                   </button>
@@ -357,28 +373,7 @@ export default async function ProfissionaisCidadePage({
               <>
                 {citiesWithCount.length ? (
                   <>
-                    <div className="mt-4 flex items-center justify-between text-xs text-slate-600">
-                      <span>
-                        {hasSearch ? (
-                          <>
-                            <span className="font-semibold text-slate-900">
-                              {filteredCities.length}
-                            </span>{" "}
-                            resultados
-                          </>
-                        ) : (
-                          <>
-                            <span className="font-semibold text-slate-900">
-                              {citiesWithCount.length}
-                            </span>{" "}
-                            cidades listadas
-                          </>
-                        )}
-                      </span>
-                    </div>
-
                     {hasSearch ? (
-                      // Com busca: mostra filtradas (sem colapsar)
                       <div className="mt-3 space-y-2">
                         {filteredCities.slice(0, 24).map(({ city, count, slug }) => (
                           <Link
@@ -392,7 +387,6 @@ export default async function ProfissionaisCidadePage({
                             </span>
                           </Link>
                         ))}
-
                         {filteredCities.length > 24 ? (
                           <div className="pt-1 text-xs text-slate-500">
                             Mostrando 24 de {filteredCities.length} cidades.
@@ -401,7 +395,6 @@ export default async function ProfissionaisCidadePage({
                       </div>
                     ) : (
                       <>
-                        {/* TOP cidades (com cadastro) */}
                         {topCities.length ? (
                           <div className="mt-3 space-y-2">
                             {topCities.slice(0, 10).map(({ city, count, slug }) => (
@@ -423,7 +416,6 @@ export default async function ProfissionaisCidadePage({
                           </div>
                         )}
 
-                        {/* Colapsável: cidades sem cadastro */}
                         {zeroCities.length ? (
                           <details className="mt-4">
                             <summary className="cursor-pointer select-none text-sm font-semibold text-emerald-700 hover:underline">
@@ -443,7 +435,6 @@ export default async function ProfissionaisCidadePage({
                                   </span>
                                 </Link>
                               ))}
-
                               {zeroCities.length > 24 ? (
                                 <div className="pt-1 text-xs text-slate-500">
                                   Mostrando 24 de {zeroCities.length} cidades sem cadastro.
@@ -457,7 +448,8 @@ export default async function ProfissionaisCidadePage({
                   </>
                 ) : (
                   <div className="mt-5 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
-                    Ainda não temos cidades cadastradas para <strong>{stateName}</strong>.
+                    Ainda não temos dados suficientes para listar cidades em{" "}
+                    <strong>{stateName}</strong>.
                     <div className="mt-2 text-slate-600">
                       Se você presta serviços aí, cadastre-se para aparecer nas buscas.
                     </div>
@@ -481,18 +473,20 @@ export default async function ProfissionaisCidadePage({
           <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <h2 className="text-xl font-bold tracking-tight">
-                Profissionais em {cidadeNome}{" "}
-                <span className="text-slate-500">({list.length})</span>
+                Profissionais em {cidadeNome}
+                {hasCityData ? (
+                  <span className="text-slate-500"> ({list.length})</span>
+                ) : null}
               </h2>
 
               {isValidUF ? (
                 <div className="text-sm text-slate-600">
-                  {list.length ? <>Cadastros verificados por localização</> : <>Seja o primeiro a cadastrar</>}
+                  {hasCityData ? "Cadastros por localização" : "Seja o primeiro a cadastrar"}
                 </div>
               ) : null}
             </div>
 
-            {isValidUF && list.length ? (
+            {isValidUF && hasCityData ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {list.map((p: any) => (
                   <div
@@ -513,39 +507,45 @@ export default async function ProfissionaisCidadePage({
                     {p?.description ? (
                       <p className="mt-3 text-sm text-slate-600">{p.description}</p>
                     ) : null}
+            
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {p?.whatsapp ? (
+                    <a
+                      className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
+                      href={`https://wa.me/${String(p.whatsapp).replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      WhatsApp
+                    </a>
+                  ) : null}
 
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {p?.whatsapp ? (
-                        <a
-                          className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
-                          href={`https://wa.me/${String(p.whatsapp).replace(/\D/g, "")}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          WhatsApp
-                        </a>
-                      ) : null}
+                  {p?.email ? (
+                    <a
+                      className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
+                      href={`mailto:${p.email}`}
+                    >
+                      E-mail
+                    </a>
+                  ) : null}
 
-                      {p?.email ? (
-                        <a
-                          className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
-                          href={`mailto:${p.email}`}
-                        >
-                          E-mail
-                        </a>
-                      ) : null}
+                  {p?.website ? (
+                    <a
+                      className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
+                      href={p.website}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Site
+                    </a>
+                  ) : null}
 
-                      {p?.website ? (
-                        <a
-                          className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
-                          href={p.website}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Site
-                        </a>
-                      ) : null}
-                    </div>
+                  {!p?.whatsapp && !p?.email && !p?.website ? (
+                    <span className="rounded-md border border-black/5 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-600">
+                      Contato não informado
+                    </span>
+                  ) : null}
+                </div>
                   </div>
                 ))}
               </div>
@@ -555,8 +555,7 @@ export default async function ProfissionaisCidadePage({
                   <>
                     Ainda não há profissionais cadastrados para <strong>{cidadeNome}</strong>.
                     <div className="mt-2 text-slate-600">
-                      Clique em <strong>Cadastrar meu serviço</strong> para aparecer nas buscas desta
-                      cidade.
+                      Cadastre seu serviço para aparecer nas buscas desta cidade.
                     </div>
                     <div className="mt-3">
                       <Link

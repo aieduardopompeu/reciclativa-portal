@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
   },
+  images: {
+    // Inclui 70 para eliminar o warning do next/image
+    qualities: [70, 75],
+  },
 };
 
 export default nextConfig;

@@ -18,9 +18,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProfissionaisHubPage() {
-  const ufs = uniqueUFs();
-  const roles = uniqueRoles();
+export default async function ProfissionaisHubPage() {
+  const ufs = await uniqueUFs();
+  const roles = await uniqueRoles();
+
+  // Mantém “Tipos de profissionais” sempre visível (com fallback)
+  const fallbackRoles = [
+    "Coletor / Transportador de Recicláveis",
+    "Consultor em Sustentabilidade",
+  ];
+  const displayRoles = (roles?.length ? roles : fallbackRoles).slice(0, 24);
+
+  const hasUFs = Array.isArray(ufs) && ufs.length > 0;
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
@@ -66,7 +75,6 @@ export default function ProfissionaisHubPage() {
             </Link>
           </div>
 
-          {/* Breadcrumb simples */}
           <nav className="mt-8 text-sm text-slate-600">
             <ol className="flex flex-wrap gap-2">
               <li>
@@ -85,9 +93,9 @@ export default function ProfissionaisHubPage() {
 
       {/* Conteúdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
           {/* Coluna principal */}
-          <div className="space-y-6 lg:col-span-2">
+          <div className="space-y-5">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
@@ -101,41 +109,51 @@ export default function ProfissionaisHubPage() {
                 </div>
               </div>
 
-              {/* MAPA + fallback de UFs */}
               <ProfissionaisStatePicker ufs={ufs} />
 
-              {ufs.length === 0 ? (
-                <p className="mt-6 text-sm text-slate-700">
-                  Ainda não há profissionais cadastrados. Você pode adicionar
-                  itens em <code>src/content/profissionais.ts</code>.
-                </p>
+              {/* ✅ Padronizado: sem dados (humano + CTA, sem texto técnico) */}
+              {!hasUFs ? (
+                <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">
+                    Ainda não há profissionais cadastrados.
+                  </p>
+                  <p className="mt-1 text-sm text-slate-700">
+                    Cadastre seu serviço para aparecer nas buscas por estado e cidade.
+                  </p>
+                  <div className="mt-3">
+                    <Link
+                      href="/anuncie"
+                      className="inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                    >
+                      Cadastrar meu serviço
+                    </Link>
+                  </div>
+                </div>
               ) : null}
             </div>
 
-            {/* Tipos de profissionais (taxonomia inicial) */}
-            {roles.length ? (
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
-                  Tipos de profissionais
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                  Exemplos comuns no segmento. Vamos ampliando com o tempo.
-                </p>
+            {/* Tipos de profissionais (sempre aparece; com fallback) */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Tipos de profissionais
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                Exemplos comuns no segmento. Vamos ampliando com o tempo.
+              </p>
 
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {roles.map((r) => (
-                    <span
-                      key={r}
-                      className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700"
-                    >
-                      {r}
-                    </span>
-                  ))}
-                </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {displayRoles.map((r) => (
+                  <span
+                    key={r}
+                    className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700"
+                  >
+                    {r}
+                  </span>
+                ))}
               </div>
-            ) : null}
+            </div>
 
-            {/* Card “Quer anunciar?” abaixo do hub (mantido) */}
+            {/* Card “Quer anunciar?” */}
             <AdCtaProfissionaisCard signupHref="/anuncie" />
           </div>
 

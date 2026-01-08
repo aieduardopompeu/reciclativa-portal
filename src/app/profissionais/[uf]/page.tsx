@@ -33,6 +33,7 @@ const STATES: Record<string, string> = {
   se: "Sergipe",
   to: "Tocantins",
 };
+
 const STATE_BLURBS: Record<string, string> = {
   ac: "No Acre, iniciativas locais e negócios regionais buscam soluções práticas para reciclagem e gestão de resíduos com logística eficiente.",
   al: "Em Alagoas, serviços ambientais ganham força com foco em descarte correto, educação ambiental e soluções para cidades e empresas.",
@@ -101,8 +102,6 @@ export const revalidate = 0;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { uf: ufParam } = await params;
-
-  // ✅ garante compatibilidade com STATES (chaves minúsculas)
   const uf = normalizeUF(ufParam).toLowerCase();
   const name = STATES[uf] ?? "Estado";
   const UF = uf.toUpperCase();
@@ -139,15 +138,14 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
   const { uf: ufParam } = await params;
   const sp = searchParams ? await searchParams : undefined;
 
-  // ✅ garante compatibilidade com STATES (chaves minúsculas)
   const uf = normalizeUF(ufParam).toLowerCase();
   const name = STATES[uf] ?? "Estado";
   const UF = uf.toUpperCase();
 
   const isValidUF = Boolean(STATES[uf]);
 
-  const list = isValidUF ? getByUF(uf) : [];
-  const citiesRaw = isValidUF ? citiesByUF(uf) : [];
+  const list = isValidUF ? await getByUF(uf) : [];
+  const citiesRaw = isValidUF ? await citiesByUF(uf) : [];
 
   const q = readQueryQ(sp?.q);
   const qNorm = normalizeText(q);
@@ -164,7 +162,7 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
   // Cidades: dedup + ordenação (pt-BR)
   const cities = Array.from(
     new Set(
-      citiesRaw
+      (citiesRaw ?? [])
         .map((c: any) => (c ?? "").toString().trim())
         .filter(Boolean)
     )
@@ -177,19 +175,31 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
   }));
 
   // Filtrar cidades pela busca (?q=...)
-  const filteredCities =
-    hasSearch ? citiesWithCount.filter(({ city }) => normalizeText(city).includes(qNorm)) : citiesWithCount;
+const tokens = qNorm.replace(/\s+/g, " ").split(" ").filter(Boolean);
+
+const filteredCities = hasSearch
+  ? citiesWithCount.filter(({ city }) => {
+      const c = normalizeText(city).replace(/\s+/g, " ");
+      return tokens.every((t) => c.includes(t));
+    })
+  : citiesWithCount;
 
   const totalCitiesWithAny = Array.from(cityCount.values()).filter((n) => n > 0).length;
+
+  // ✅ Normalização “sem dados”
+  const hasStateData = isValidUF && list.length > 0;
+  const hasCities = isValidUF && citiesWithCount.length > 0;
+  const canSearchCities = hasCities; // busca só quando há base
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(faqJsonLd(uf, name, UF)),
-      }}
-    />
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqJsonLd(uf, name, UF)),
+        }}
+      />
+
       <section className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
           Profissionais
@@ -199,17 +209,18 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
           Serviços em {name} <span className="text-slate-500">({UF})</span>
         </h1>
 
-      <p className="mt-4 max-w-3xl text-sm text-slate-600 leading-relaxed">
-        No estado de <strong>{name}</strong> (<strong>{UF}</strong>), você encontra profissionais e
-        serviços ligados à reciclagem, gestão de resíduos, sustentabilidade e economia circular.
-        Navegue pelas cidades para localizar soluções ambientais na sua região — de consultoria e
-        coleta a apoio para empresas, condomínios e iniciativas locais — e cadastre seu serviço
-        para aparecer nas buscas do Reciclativa.
-      </p>
-         
-         <p className="mt-3 max-w-3xl text-sm text-slate-600">
-           {STATE_BLURBS[uf] ?? `Em ${name} (${UF}), serviços ambientais locais ajudam a conectar reciclagem e gestão de resíduos com soluções práticas para o dia a dia.`}
-          </p>
+        <p className="mt-4 max-w-3xl text-sm text-slate-600 leading-relaxed">
+          No estado de <strong>{name}</strong> (<strong>{UF}</strong>), você encontra profissionais e
+          serviços ligados à reciclagem, gestão de resíduos, sustentabilidade e economia circular.
+          Navegue pelas cidades para localizar soluções ambientais na sua região — de consultoria e
+          coleta a apoio para empresas, condomínios e iniciativas locais — e cadastre seu serviço
+          para aparecer nas buscas do Reciclativa.
+        </p>
+
+        <p className="mt-3 max-w-3xl text-sm text-slate-600">
+          {STATE_BLURBS[uf] ??
+            `Em ${name} (${UF}), serviços ambientais locais ajudam a conectar reciclagem e gestão de resíduos com soluções práticas para o dia a dia.`}
+        </p>
 
         <div className="mt-7 flex flex-wrap gap-3">
           <Link
@@ -248,59 +259,64 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
         </nav>
 
         <div className="mt-6 max-w-3xl">
-  <h2 className="text-base font-bold tracking-tight text-slate-900">
-    Perguntas frequentes em {name} ({UF})
-  </h2>
+          <h2 className="text-base font-bold tracking-tight text-slate-900">
+            Perguntas frequentes em {name} ({UF})
+          </h2>
 
-    <div className="mt-3 space-y-3">
-      <details className="rounded-xl border border-black/5 bg-white p-4">
-        <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
-          Como encontrar profissionais de reciclagem e sustentabilidade em {name} ({UF})?
-        </summary>
-        <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-          Use a lista de cidades para filtrar por região e encontre profissionais e serviços ligados
-          à reciclagem, gestão de resíduos e sustentabilidade em {name} ({UF}).
-        </p>
-      </details>
+          <div className="mt-3 space-y-3">
+            <details className="rounded-xl border border-black/5 bg-white p-4">
+              <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
+                Como encontrar profissionais de reciclagem e sustentabilidade em {name} ({UF})?
+              </summary>
+              <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                Use a lista de cidades para filtrar por região e encontre profissionais e serviços ligados
+                à reciclagem, gestão de resíduos e sustentabilidade em {name} ({UF}).
+              </p>
+            </details>
 
-      <details className="rounded-xl border border-black/5 bg-white p-4">
-        <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
-          Como cadastrar meu serviço para aparecer nas buscas em {name} ({UF})?
-        </summary>
-        <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-          Acesse a página de cadastro e envie seus dados. Após o cadastro, seu serviço pode aparecer
-          nas listagens por estado e cidade no Reciclativa.
-        </p>
+            <details className="rounded-xl border border-black/5 bg-white p-4">
+              <summary className="cursor-pointer select-none text-sm font-semibold text-slate-900">
+                Como cadastrar meu serviço para aparecer nas buscas em {name} ({UF})?
+              </summary>
+              <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                Acesse a página de cadastro e envie seus dados. Após o cadastro, seu serviço pode aparecer
+                nas listagens por estado e cidade no Reciclativa.
+              </p>
 
-        <div className="mt-3">
-          <Link
-            href="/anuncie"
-            className="inline-flex rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
-          >
-            Cadastrar meu serviço
-          </Link>
+              <div className="mt-3">
+                <Link
+                  href="/anuncie"
+                  className="inline-flex rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                >
+                  Cadastrar meu serviço
+                </Link>
+              </div>
+            </details>
+          </div>
         </div>
-      </details>
-    </div>
-  </div>
       </section>
+
       <section className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start">
         <aside className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h2 className="text-lg font-bold tracking-tight">Cidades</h2>
               <p className="mt-2 text-sm text-slate-600">
-                {hasSearch ? (
-                  <>
-                    Resultados para <span className="font-semibold text-slate-900">“{q}”</span>.
-                  </>
+                {hasCities ? (
+                  hasSearch ? (
+                    <>
+                      Resultados para <span className="font-semibold text-slate-900">“{q}”</span>.
+                    </>
+                  ) : (
+                    <>Escolha uma cidade para ver apenas os profissionais dessa região.</>
+                  )
                 ) : (
-                  <>Escolha uma cidade para ver apenas os profissionais dessa região.</>
+                  <>As cidades serão listadas aqui quando houver cadastros no estado.</>
                 )}
               </p>
             </div>
 
-            {isValidUF ? (
+            {isValidUF && hasCities ? (
               <div className="text-right text-xs text-slate-600">
                 <div>
                   <span className="font-semibold text-slate-900">{cities.length}</span> cidades
@@ -312,53 +328,48 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
             ) : null}
           </div>
 
-    {isValidUF ? (
-      <form className="mt-5" action={`/profissionais/${uf}`} method="get">
-        <label htmlFor="q" className="sr-only">
-          Buscar cidade
-        </label>
+          {/* ✅ Busca só quando há cidades listáveis */}
+          {isValidUF && canSearchCities ? (
+            <form className="mt-5" action={`/profissionais/${uf}`} method="get">
+              <label htmlFor="q" className="sr-only">
+                Buscar cidade
+              </label>
 
-        <div className="flex gap-2">
-          <input
-            id="q"
-            name="q"
-            placeholder={
-              cities.length
-                ? "Buscar cidade (ex.: Salvador, Feira de Santana)…"
-                : "Busca disponível quando houver cidades cadastradas"
-            }
-            className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600 disabled:cursor-not-allowed disabled:bg-slate-50"
-            defaultValue={q}
-            disabled={!cities.length}
-          />
+              <div className="flex gap-2">
+                <input
+                  id="q"
+                  name="q"
+                  placeholder="Buscar cidade (ex.: Salvador, Feira de Santana)…"
+                  className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+                  defaultValue={q}
+                />
 
-          <button
-            type="submit"
-            disabled={!cities.length}
-            className="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-slate-300"
-          >
-            Buscar
-          </button>
-        </div>
+                <button
+                  type="submit"
+                  className="rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-500"
+                >
+                  Buscar
+                </button>
+              </div>
 
-        <div className="mt-2 flex items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">Dica: digite ao menos 2 letras.</p>
+              <div className="mt-2 flex items-center justify-between gap-3">
+                <p className="text-xs text-slate-500">Dica: digite ao menos 2 letras.</p>
 
-          {hasSearch ? (
-            <Link
-              href={`/profissionais/${uf}`}
-              className="text-xs font-semibold text-emerald-700 hover:underline"
-            >
-              Limpar busca
-            </Link>
+                {hasSearch ? (
+                  <Link
+                    href={`/profissionais/${uf}`}
+                    className="text-xs font-semibold text-emerald-700 hover:underline"
+                  >
+                    Limpar busca
+                  </Link>
+                ) : null}
+              </div>
+            </form>
           ) : null}
-        </div>
-      </form>
-    ) : null}
 
           {isValidUF ? (
             <>
-              {citiesWithCount.length ? (
+              {hasCities ? (
                 <>
                   <div className="mt-4 flex items-center justify-between text-xs text-slate-600">
                     <span>
@@ -400,34 +411,46 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
                 </>
               ) : (
                 <div className="mt-5 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
-                  Ainda não temos cidades cadastradas para <strong>{name}</strong>.
-                  <div className="mt-2 text-slate-600">Se você presta serviços aí, cadastre-se para aparecer nas buscas.</div>
+                  Ainda não há profissionais cadastrados para <strong>{name}</strong>.
+                  <div className="mt-2 text-slate-600">
+                    Cadastre seu serviço para aparecer nas buscas do estado e por cidade.
+                  </div>
+                  <div className="mt-3">
+                    <Link
+                      href="/anuncie"
+                      className="inline-flex rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                    >
+                      Cadastrar meu serviço
+                    </Link>
+                  </div>
                 </div>
               )}
+
+              <div className="mt-6">
+                <AdCtaProfissionaisCard />
+              </div>
             </>
           ) : (
             <div className="mt-5 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
               UF inválida: <strong>{UF}</strong>. Volte e selecione um estado válido.
             </div>
           )}
-
-          <div className="mt-6">
-            <AdCtaProfissionaisCard />
-          </div>
         </aside>
 
         <div className="lg:col-span-2">
           <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <h2 className="text-xl font-bold tracking-tight">
-                Todos no estado <span className="text-slate-500">({isValidUF ? list.length : 0})</span>
+                Todos no estado{" "}
+                {hasStateData ? <span className="text-slate-500">({list.length})</span> : null}
               </h2>
 
               {isValidUF ? (
                 <div className="text-sm text-slate-600">
-                  {list.length ? (
+                  {hasStateData ? (
                     <>
-                      Atendimentos em <span className="font-semibold text-slate-900">{totalCitiesWithAny}</span> cidades
+                      Atendimentos em{" "}
+                      <span className="font-semibold text-slate-900">{totalCitiesWithAny}</span> cidades
                     </>
                   ) : (
                     <>Seja o primeiro a cadastrar</>
@@ -436,7 +459,7 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
               ) : null}
             </div>
 
-            {isValidUF && list.length ? (
+            {hasStateData ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {list.map((item: any) => (
                   <div
@@ -469,7 +492,15 @@ export default async function ProfissionaisUFPage({ params, searchParams }: Page
                   <>
                     Ainda não há profissionais cadastrados para <strong>{name}</strong>.
                     <div className="mt-2 text-slate-600">
-                      Clique em <strong>Cadastrar meu serviço</strong> para aparecer nas buscas.
+                      Cadastre seu serviço para aparecer nas buscas por estado e por cidade.
+                    </div>
+                    <div className="mt-3">
+                      <Link
+                        href="/anuncie"
+                        className="inline-flex rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                      >
+                        Cadastrar meu serviço
+                      </Link>
                     </div>
                   </>
                 ) : (

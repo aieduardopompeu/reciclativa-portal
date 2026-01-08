@@ -1,177 +1,484 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Anuncie | Reciclativa",
-  description:
-    "Anuncie na Reciclativa: mídia kit, formatos e contato comercial para marcas e serviços ligados à reciclagem e sustentabilidade.",
-  alternates: { canonical: "/anuncie" },
-  openGraph: {
-    title: "Anuncie | Reciclativa",
-    description:
-      "Mídia kit, formatos e contato comercial para anunciar na Reciclativa.",
-    url: "/anuncie",
-    type: "website",
-  },
+import { useMemo, useState } from "react";
+
+const UFS = [
+  "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
+];
+
+// ✅ Categorias “padrão” do Reciclativa
+const CATEGORIES = [
+  "Coleta e Transporte",
+  "Cooperativa / Reciclador",
+  "Consultoria Ambiental",
+  "Logística Reversa",
+  "Resíduos Eletrônicos (ITAD / e-lixo)",
+  "Educação Ambiental",
+  "Compostagem / Orgânicos",
+  "Gestão de Resíduos (PGRS / PGRCC)",
+  "Indústria / Beneficiamento",
+  "Outro",
+] as const;
+
+type Category = (typeof CATEGORIES)[number];
+
+// ✅ Serviços gerais (quando não escolhe categoria)
+const GENERAL_SERVICES = [
+  "Coleta seletiva",
+  "Triagem e reciclagem de materiais",
+  "Logística reversa",
+  "Consultoria ambiental / PGRS",
+  "Educação ambiental / treinamentos",
+  "Coleta de eletrônicos (e-lixo / ITAD)",
+  "Coleta de óleo de cozinha",
+  "Compostagem / orgânicos",
+  "Destinação ambientalmente adequada",
+  "Outro",
+];
+
+// ✅ Serviços por categoria (multi-seleção)
+const SERVICES_BY_CATEGORY: Record<Category, string[]> = {
+  "Coleta e Transporte": [
+    "Coleta seletiva",
+    "Coleta de recicláveis",
+    "Coleta de óleo de cozinha",
+    "Coleta de resíduos volumosos",
+    "Transporte e logística",
+    "Destinação ambientalmente adequada",
+  ],
+  "Cooperativa / Reciclador": [
+    "Triagem de recicláveis",
+    "Compra de recicláveis",
+    "Prensagem / enfardamento",
+    "Operação de ponto de entrega",
+    "Recebimento de materiais",
+  ],
+  "Consultoria Ambiental": [
+    "Consultoria para empresas",
+    "Diagnóstico e plano de melhoria",
+    "Treinamento e capacitação",
+    "Inventário/gestão de resíduos",
+    "Apoio a certificações e compliance",
+  ],
+  "Logística Reversa": [
+    "Logística reversa para empresas",
+    "Coleta de pós-consumo",
+    "Gestão de pontos de coleta",
+    "Relatórios e comprovações",
+    "Parcerias com recicladores",
+  ],
+  "Resíduos Eletrônicos (ITAD / e-lixo)": [
+    "Coleta de eletrônicos",
+    "Descarte seguro de e-lixo",
+    "Descaracterização / destruição",
+    "ITAD / reuso e recondicionamento",
+    "Emissão de comprovantes",
+  ],
+  "Educação Ambiental": [
+    "Palestras e workshops",
+    "Projetos em escolas",
+    "Campanhas internas (empresas)",
+    "Conteúdo e treinamento",
+  ],
+  "Compostagem / Orgânicos": [
+    "Coleta de orgânicos",
+    "Compostagem",
+    "Implantação de composteira",
+    "Treinamento e acompanhamento",
+  ],
+  "Gestão de Resíduos (PGRS / PGRCC)": [
+    "PGRS",
+    "PGRCC",
+    "Auditoria de resíduos",
+    "Plano de gerenciamento",
+    "Acompanhamento e relatórios",
+  ],
+  "Indústria / Beneficiamento": [
+    "Beneficiamento de materiais",
+    "Moagem / granulação",
+    "Lavagem",
+    "Reprocessamento",
+    "Compra de grandes volumes",
+  ],
+  "Outro": ["Outro"],
 };
 
-export default function Page() {
-  return (
-    <main className="min-h-screen bg-white text-slate-900">
-      {/* HERO com imagem (padrão do site) */}
-      <header className="relative overflow-hidden border-b border-slate-200">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero.webp')" }}
-          aria-hidden
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/75 to-white"
-          aria-hidden
-        />
+function titleCaseUF(uf: string) {
+  return (uf || "").trim().slice(0, 2).toUpperCase();
+}
 
-        <div className="relative mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-            Reciclativa
+export default function AnunciePage() {
+  const [loading, setLoading] = useState(false);
+  const [ok, setOk] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // ✅ Serviços selecionados (multi)
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [otherService, setOtherService] = useState("");
+
+  const [form, setForm] = useState({
+    name: "",
+    uf: "SP",
+    city: "",
+    category: "" as Category | "",
+    service: "", // será montado no submit
+    description: "",
+    whatsapp: "",
+    email: "",
+    website: "",
+    companyWebsite: "", // honeypot (não visível)
+    termsAccepted: false,
+  });
+
+  // ✅ Lógica nova:
+  // - Sem categoria: serviços gerais
+  // - Categoria "Outro": serviços gerais
+  // - Categoria específica: serviços da categoria
+  const serviceOptions = useMemo(() => {
+    if (!form.category) return GENERAL_SERVICES;
+
+    const cat = form.category as Category;
+
+    if (cat === "Outro") return GENERAL_SERVICES;
+
+    return SERVICES_BY_CATEGORY[cat] ?? GENERAL_SERVICES;
+  }, [form.category]);
+
+  const canSubmit = useMemo(() => {
+    return (
+      form.name.trim().length >= 2 &&
+      form.city.trim().length >= 2 &&
+      titleCaseUF(form.uf).length === 2 &&
+      form.termsAccepted === true
+    );
+  }, [form]);
+
+  function toggleService(s: string) {
+    setSelectedServices((prev) => {
+      if (prev.includes(s)) return prev.filter((x) => x !== s);
+      return [...prev, s];
+    });
+  }
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const parts = [
+        ...selectedServices,
+        otherService.trim().length ? otherService.trim() : null,
+      ].filter(Boolean) as string[];
+
+      const payload = {
+        ...form,
+        uf: titleCaseUF(form.uf),
+        category: form.category === "" ? "Outro" : form.category,
+        service: parts.join(" · "),
+      };
+
+      const res = await fetch("/api/profissionais", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.error || "Falha ao enviar.");
+      }
+
+      setOk(true);
+    } catch (err: any) {
+      setError(err?.message || "Falha ao enviar.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function resetAll() {
+    setError(null);
+    setOk(false);
+    setSelectedServices([]);
+    setOtherService("");
+    setForm({
+      name: "",
+      uf: "SP",
+      city: "",
+      category: "",
+      service: "",
+      description: "",
+      whatsapp: "",
+      email: "",
+      website: "",
+      companyWebsite: "",
+      termsAccepted: false,
+    });
+  }
+
+  if (ok) {
+    return (
+      <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+        <section className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
+          <h1 className="text-3xl font-bold tracking-tight">Cadastro enviado</h1>
+          <p className="mt-4 text-slate-700">
+            Recebemos seu cadastro. Ele ficará em análise e, após aprovação, poderá aparecer nas
+            páginas do seu estado e cidade.
           </p>
 
-          <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-            Anuncie na Reciclativa
-          </h1>
-
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            Em breve: opções de mídia, formatos e contato comercial.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-            >
-              Voltar para a Home
-            </Link>
-
-            <Link
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
               href="/profissionais"
-              className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
+              className="rounded-md border border-black/5 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
             >
-              Ver profissionais
-            </Link>
+              Ver diretório
+            </a>
+
+            <button
+              onClick={resetAll}
+              className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+            >
+              Enviar outro cadastro
+            </button>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+      <section className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+          Diretório de Profissionais
+        </p>
+
+        <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">
+          Cadastrar meu serviço
+        </h1>
+
+        <p className="mt-4 text-slate-700">
+          Envie seus dados para análise. Após aprovação, seu cadastro pode aparecer nas páginas do
+          seu estado e cidade.
+        </p>
+
+        {error ? (
+          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+            {error}
+          </div>
+        ) : null}
+
+        <form onSubmit={onSubmit} className="mt-8 space-y-4">
+          {/* honeypot (invisível) */}
+          <input
+            value={form.companyWebsite}
+            onChange={(e) => setForm((v) => ({ ...v, companyWebsite: e.target.value }))}
+            tabIndex={-1}
+            autoComplete="off"
+            className="hidden"
+            aria-hidden="true"
+          />
+
+          <div>
+            <label className="text-sm font-semibold text-slate-900">Nome / Empresa *</label>
+            <input
+              value={form.name}
+              onChange={(e) => setForm((v) => ({ ...v, name: e.target.value }))}
+              className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+              placeholder="Ex.: Verde Consultoria"
+              required
+            />
           </div>
 
-          {/* Breadcrumb simples */}
-          <nav className="mt-8 text-sm text-slate-600">
-            <ol className="flex flex-wrap gap-2">
-              <li>
-                <Link href="/" className="hover:underline">
-                  Home
-                </Link>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-slate-400">/</span>
-                <span className="font-medium text-slate-700">Anuncie</span>
-              </li>
-            </ol>
-          </nav>
-        </div>
-      </header>
-
-      {/* Conteúdo */}
-      <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Coluna principal */}
-          <div className="space-y-6 lg:col-span-2">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Mídia kit (em breve)
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Esta página será a central comercial da Reciclativa. Vamos publicar
-                aqui formatos, posicionamentos e um fluxo simples de contato.
-              </p>
-
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Formatos de anúncio
-                  </p>
-                  <p className="mt-2 text-sm text-slate-700">
-                    Display, cards, áreas de destaque e páginas estratégicas.
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Público e conteúdo
-                  </p>
-                  <p className="mt-2 text-sm text-slate-700">
-                    Reciclagem, sustentabilidade, guias e diretório de serviços.
-                  </p>
-                </div>
-              </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div>
+              <label className="text-sm font-semibold text-slate-900">UF *</label>
+              <select
+                value={form.uf}
+                onChange={(e) => setForm((v) => ({ ...v, uf: e.target.value }))}
+                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+              >
+                {UFS.map((u) => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Onde seu anúncio aparece
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                Páginas com alto valor (pilares e hubs) para reforçar intenção e CTR.
-              </p>
-
-              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <Link
-                  href="/reciclagem"
-                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-                >
-                  Página pilar: Reciclagem →
-                </Link>
-                <Link
-                  href="/blog"
-                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-                >
-                  Blog →
-                </Link>
-                <Link
-                  href="/guias"
-                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-                >
-                  Guias →
-                </Link>
-                <Link
-                  href="/profissionais"
-                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-                >
-                  Profissionais →
-                </Link>
-              </div>
+            <div className="sm:col-span-2">
+              <label className="text-sm font-semibold text-slate-900">Cidade *</label>
+              <input
+                value={form.city}
+                onChange={(e) => setForm((v) => ({ ...v, city: e.target.value }))}
+                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+                placeholder="Ex.: Belo Horizonte"
+                required
+              />
             </div>
           </div>
 
-          {/* Sidebar */}
-          <aside className="space-y-6">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
-              </h3>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Publicar mídia kit com formatos e exemplos</li>
-                <li>Adicionar canal de contato comercial</li>
-                <li>Definir páginas/posições prioritárias</li>
-              </ul>
+          {/* ✅ Categoria (select) */}
+          <div>
+            <label className="text-sm font-semibold text-slate-900">Categoria</label>
+            <select
+              value={form.category}
+              onChange={(e) => {
+                const cat = (e.target.value || "") as Category | "";
+                setForm((v) => ({ ...v, category: cat }));
+                setSelectedServices([]);
+                setOtherService("");
+              }}
+              className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+            >
+              <option value="">Selecione uma categoria (opcional)</option>
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+            <p className="mt-2 text-xs text-slate-500">
+              Selecione uma categoria para ver serviços mais específicos (opcional).
+            </p>
+          </div>
 
-              <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Dica rápida
-                </p>
-                <p className="mt-2 text-sm text-slate-800">
-                  Quando o mídia kit estiver pronto, este link vira o CTA padrão
-                  do site inteiro.
+          {/* ✅ Serviços (multi-select) */}
+          <div>
+            <label className="text-sm font-semibold text-slate-900">Serviços</label>
+
+            <div className="mt-2 rounded-xl border border-black/10 bg-white p-4">
+              <div className="flex flex-wrap gap-2">
+                {serviceOptions.map((s) => {
+                  const checked = selectedServices.includes(s);
+                  return (
+                    <label
+                      key={s}
+                      className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold ${
+                        checked
+                          ? "border-emerald-600 bg-emerald-50 text-emerald-800"
+                          : "border-black/10 bg-white text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="hidden"
+                        checked={checked}
+                        onChange={() => toggleService(s)}
+                      />
+                      {s}
+                    </label>
+                  );
+                })}
+              </div>
+
+              <div className="mt-4">
+                <label className="text-xs font-semibold text-slate-700">
+                  Outro serviço (opcional)
+                </label>
+                <input
+                  value={otherService}
+                  onChange={(e) => setOtherService(e.target.value)}
+                  className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+                  placeholder="Ex.: coleta de vidro em grandes volumes"
+                />
+                <p className="mt-2 text-xs text-slate-500">
+                  Dica: selecione alguns serviços acima e use este campo só para complementar.
                 </p>
               </div>
             </div>
-          </aside>
-        </div>
+          </div>
+
+          <div>
+            <label className="text-sm font-semibold text-slate-900">Descrição</label>
+            <textarea
+              value={form.description}
+              onChange={(e) => setForm((v) => ({ ...v, description: e.target.value }))}
+              className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+              placeholder="Em 2–4 linhas, descreva seu atendimento e público-alvo."
+              rows={4}
+            />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div>
+              <label className="text-sm font-semibold text-slate-900">WhatsApp</label>
+              <input
+                value={form.whatsapp}
+                onChange={(e) => setForm((v) => ({ ...v, whatsapp: e.target.value }))}
+                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+                placeholder="Ex.: (31) 99999-9999"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-slate-900">E-mail</label>
+              <input
+                value={form.email}
+                onChange={(e) => setForm((v) => ({ ...v, email: e.target.value }))}
+                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+                placeholder="contato@exemplo.com"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-slate-900">Site</label>
+              <input
+                value={form.website}
+                onChange={(e) => setForm((v) => ({ ...v, website: e.target.value }))}
+                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
+                placeholder="https://..."
+              />
+            </div>
+          </div>
+
+          {/* ✅ Checkbox obrigatório */}
+          <div className="mt-6 rounded-xl border border-black/5 bg-slate-50 p-4">
+            <label className="flex items-start gap-3 text-sm text-slate-700">
+              <input
+                type="checkbox"
+                checked={form.termsAccepted}
+                onChange={(e) => setForm((v) => ({ ...v, termsAccepted: e.target.checked }))}
+                required
+                className="mt-1 h-4 w-4 accent-emerald-600"
+              />
+              <span>
+                <strong>
+                  Declaro que todas as informações fornecidas neste cadastro são verdadeiras e de
+                  minha total responsabilidade.
+                </strong>
+                <br />
+                Estou ciente de que o envio de informações falsas, incompletas ou enganosas poderá
+                resultar na exclusão do cadastro e em medidas legais cabíveis, conforme a legislação
+                vigente.
+              </span>
+            </label>
+          </div>
+
+          <div className="pt-2 flex flex-col gap-3 sm:flex-row">
+            <button
+              type="submit"
+              disabled={!canSubmit || loading}
+              className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-slate-300"
+            >
+              {loading ? "Enviando..." : "Enviar para análise"}
+            </button>
+
+            <button
+              type="button"
+              disabled={loading}
+              onClick={resetAll}
+              className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Limpar
+            </button>
+          </div>
+
+          <p className="mt-3 text-xs text-slate-500">
+            Dica: quanto mais completo o cadastro, maior a chance de aparecer bem nas buscas.
+          </p>
+        </form>
       </section>
     </main>
   );
