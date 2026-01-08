@@ -13,7 +13,8 @@ function onlyDigits(s: string) {
 }
 
 function normalizeUF(uf: string) {
-  return (uf || "").trim().slice(0, 2).toLowerCase();
+  // ✅ prioridade 1: padroniza UF em UPPERCASE
+  return (uf || "").trim().slice(0, 2).toUpperCase();
 }
 
 function cleanText(s: unknown, max = 500) {
@@ -76,22 +77,42 @@ async function sendResendEmail(params: { to: string; subject: string; html: stri
   }
 }
 
+function parseCityId(payload: Record<string, unknown>): number | null {
+  // ✅ prioridade 2: aceitar cityId (camel) e city_id (snake) e variantes
+  const raw =
+    payload.cityId ??
+    payload.city_id ??
+    payload.ibgeCityId ??
+    payload.ibge_city_id ??
+    null;
+
+  if (raw === null || raw === undefined || raw === "") return null;
+
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n <= 0) return null;
+
+  return n;
+}
+
 export async function POST(req: Request) {
   try {
     const payload = await readPayload(req);
 
     const honeypot = String(payload.companyWebsite ?? "").trim();
-if (honeypot) {
-  return NextResponse.json(
-    { ok: false, message: "Não foi possível concluir seu cadastro no momento." },
-    { status: 403 }
-  );
-}
+    if (honeypot) {
+      return NextResponse.json(
+        { ok: false, message: "Não foi possível concluir seu cadastro no momento." },
+        { status: 403 }
+      );
+    }
 
-    // Campos vindos do seu formulário /anuncie
+    // Campos vindos do formulário /anuncie
     const name = cleanText(payload.name ?? payload.nome ?? payload.empresa, 120);
     const uf = normalizeUF(cleanText(payload.uf, 2));
     const city = cleanText(payload.city ?? payload.cidade, 80);
+
+    // ✅ novo (opcional): city_id (IBGE)
+    const cityId = parseCityId(payload);
 
     const category = cleanText(payload.category ?? payload.categoria, 80) || null;
     const service = cleanText(payload.service ?? payload.servico, 160) || null;
@@ -105,6 +126,7 @@ if (honeypot) {
 
     const website = cleanText(payload.website ?? payload.site, 200) || null;
 
+    // Validações
     if (!name || name.length < 2) {
       return NextResponse.json({ ok: false, error: "Nome inválido" }, { status: 400 });
     }
@@ -117,6 +139,7 @@ if (honeypot) {
     if (email && !isEmail(email)) {
       return NextResponse.json({ ok: false, error: "E-mail inválido" }, { status: 400 });
     }
+
     // Bloqueio por blacklist (email/whatsapp/domínio)
     const blk = await isBlacklisted({ email, whatsapp, website });
     if (blk.blocked) {
@@ -150,12 +173,12 @@ if (honeypot) {
       );
     }
 
-    // Salva pendente
+    // ✅ Salva pendente (agora com city_id)
     const { rows } = await sql<{ id: number }>`
       insert into profissionais
-        (name, uf, city, category, service, description, whatsapp, email, website, status)
+        (name, uf, city, city_id, category, service, description, whatsapp, email, website, status)
       values
-        (${name}, ${uf}, ${city}, ${category}, ${service}, ${description}, ${whatsapp}, ${email}, ${website}, 'pending')
+        (${name}, ${uf}, ${city}, ${cityId}, ${category}, ${service}, ${description}, ${whatsapp}, ${email}, ${website}, 'pending')
       returning id
     `;
 
@@ -169,6 +192,7 @@ if (honeypot) {
       const text =
         `Novo cadastro pendente:\n\n` +
         `Nome/Empresa: ${name}\nUF: ${uf}\nCidade: ${city}\n` +
+        (cityId ? `Cidade (IBGE ID): ${cityId}\n` : "") +
         (category ? `Categoria: ${category}\n` : "") +
         (service ? `Serviço: ${service}\n` : "") +
         (email ? `E-mail: ${email}\n` : "") +
@@ -181,6 +205,7 @@ if (honeypot) {
           <h2 style="margin:0 0 10px 0;">Novo cadastro pendente</h2>
           <p style="margin:0 0 6px 0;"><strong>Nome/Empresa:</strong> ${name}</p>
           <p style="margin:0 0 6px 0;"><strong>UF:</strong> ${uf} <strong>Cidade:</strong> ${city}</p>
+          ${cityId ? `<p style="margin:0 0 6px 0;"><strong>Cidade (IBGE ID):</strong> ${cityId}</p>` : ""}
           ${category ? `<p style="margin:0 0 6px 0;"><strong>Categoria:</strong> ${category}</p>` : ""}
           ${service ? `<p style="margin:0 0 6px 0;"><strong>Serviço:</strong> ${service}</p>` : ""}
           ${email ? `<p style="margin:0 0 6px 0;"><strong>E-mail:</strong> ${email}</p>` : ""}

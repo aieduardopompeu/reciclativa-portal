@@ -128,6 +128,7 @@ export default function AnunciePage() {
     name: "",
     uf: "SP",
     city: "",
+    cityId: null as number | null, // ✅ novo: IBGE city_id
     category: "" as Category | "",
     service: "", // será montado no submit
     description: "",
@@ -174,9 +175,9 @@ export default function AnunciePage() {
       }
     }
 
-    // ao trocar UF, volta para modo select e limpa cidade
+    // ao trocar UF, volta para modo select e limpa cidade (e cityId)
     setManualCity(false);
-    setForm((v) => ({ ...v, city: "" }));
+    setForm((v) => ({ ...v, city: "", cityId: null }));
     loadCities();
 
     return () => {
@@ -192,7 +193,6 @@ export default function AnunciePage() {
     if (!form.category) return GENERAL_SERVICES;
 
     const cat = form.category as Category;
-
     if (cat === "Outro") return GENERAL_SERVICES;
 
     return SERVICES_BY_CATEGORY[cat] ?? GENERAL_SERVICES;
@@ -230,6 +230,7 @@ export default function AnunciePage() {
         uf: titleCaseUF(form.uf),
         category: form.category === "" ? "Outro" : form.category,
         service: parts.join(" · "),
+        // cityId já vai junto (número ou null) ✅
       };
 
       const res = await fetch("/api/profissionais", {
@@ -261,6 +262,7 @@ export default function AnunciePage() {
       name: "",
       uf: "SP",
       city: "",
+      cityId: null,
       category: "",
       service: "",
       description: "",
@@ -370,7 +372,7 @@ export default function AnunciePage() {
                   type="button"
                   onClick={() => {
                     setManualCity((v) => !v);
-                    setForm((prev) => ({ ...prev, city: "" }));
+                    setForm((prev) => ({ ...prev, city: "", cityId: null }));
                   }}
                   className="text-xs font-semibold text-emerald-700 hover:text-emerald-800"
                 >
@@ -381,8 +383,17 @@ export default function AnunciePage() {
               {!manualCity ? (
                 <>
                   <select
-                    value={form.city}
-                    onChange={(e) => setForm((v) => ({ ...v, city: e.target.value }))}
+                    value={form.cityId ? String(form.cityId) : ""}
+                    onChange={(e) => {
+                      const id = e.target.value ? Number(e.target.value) : null;
+                      const found = id ? cities.find((c) => c.id === id) : undefined;
+
+                      setForm((v) => ({
+                        ...v,
+                        cityId: id,
+                        city: found?.name || "",
+                      }));
+                    }}
                     disabled={citiesLoading || !!citiesError}
                     className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600 disabled:bg-slate-50"
                     required
@@ -396,7 +407,7 @@ export default function AnunciePage() {
                     </option>
 
                     {cities.map((c) => (
-                      <option key={c.id} value={c.name}>
+                      <option key={c.id} value={String(c.id)}>
                         {c.name}
                       </option>
                     ))}
@@ -414,7 +425,7 @@ export default function AnunciePage() {
                 <>
                   <input
                     value={form.city}
-                    onChange={(e) => setForm((v) => ({ ...v, city: e.target.value }))}
+                    onChange={(e) => setForm((v) => ({ ...v, city: e.target.value, cityId: null }))}
                     className="mt-2 w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-600"
                     placeholder="Ex.: Belo Horizonte"
                     required
