@@ -184,9 +184,18 @@ export default function AnunciePage() {
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json().catch(() => ({}));
+      // ✅ sempre tenta ler JSON para pegar message/error
+      const data = await res.json().catch(() => ({} as any));
+
       if (!res.ok || !data?.ok) {
-        throw new Error(data?.error || "Falha ao enviar.");
+        const msg =
+          data?.message || // <-- blacklist / mensagens amigáveis do backend
+          data?.error ||   // <-- validações antigas
+          (res.status === 403
+            ? "Não foi possível concluir seu cadastro no momento."
+            : "Falha ao enviar.");
+
+        throw new Error(msg);
       }
 
       setOk(true);

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
+import { isBlacklisted } from "@/lib/blacklist";
 
 export const runtime = "nodejs";
 
@@ -79,6 +80,14 @@ export async function POST(req: Request) {
   try {
     const payload = await readPayload(req);
 
+    const honeypot = String(payload.companyWebsite ?? "").trim();
+if (honeypot) {
+  return NextResponse.json(
+    { ok: false, message: "Não foi possível concluir seu cadastro no momento." },
+    { status: 403 }
+  );
+}
+
     // Campos vindos do seu formulário /anuncie
     const name = cleanText(payload.name ?? payload.nome ?? payload.empresa, 120);
     const uf = normalizeUF(cleanText(payload.uf, 2));
@@ -107,6 +116,30 @@ export async function POST(req: Request) {
     }
     if (email && !isEmail(email)) {
       return NextResponse.json({ ok: false, error: "E-mail inválido" }, { status: 400 });
+    }
+    // Bloqueio por blacklist (email/whatsapp/domínio)
+    const blk = await isBlacklisted({ email, whatsapp, website });
+    if (blk.blocked) {
+      return NextResponse.json(
+        { ok: false, message: "Não foi possível concluir seu cadastro no momento." },
+        { status: 403 }
+      );
+    }
+
+    // sem contato nenhum = suspeito (ajuste se quiser permitir)
+    if (!email && !whatsapp && !website) {
+      return NextResponse.json(
+        { ok: false, error: "Informe pelo menos um contato: WhatsApp, e-mail ou site." },
+        { status: 400 }
+      );
+    }
+
+    // whatsapp inválido repetido (0000.. etc)
+    if (whatsapp && (whatsapp.length < 10 || /^(\d)\1{7,}$/.test(whatsapp))) {
+      return NextResponse.json(
+        { ok: false, message: "Não foi possível concluir seu cadastro no momento." },
+        { status: 403 }
+      );
     }
 
     // Salva pendente
