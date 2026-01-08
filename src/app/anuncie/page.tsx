@@ -433,7 +433,6 @@ export default function AnunciePage() {
             </div>
           </div>
 
-
           {/* ✅ Checkbox obrigatório */}
           <div className="mt-6 rounded-xl border border-black/5 bg-slate-50 p-4">
             <label className="flex items-start gap-3 text-sm text-slate-700">
