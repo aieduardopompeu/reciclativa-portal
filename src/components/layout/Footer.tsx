@@ -185,6 +185,11 @@ export function Footer() {
                 FAQ
               </Link>
             </li>
+            <li>
+              <Link href="/admin/login" className="hover:text-emerald-700" rel="nofollow">
+                Acesso Admin
+              </Link>
+            </li>
           </ul>
 
           {/* Selos */}

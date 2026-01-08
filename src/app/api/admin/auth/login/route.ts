@@ -2,34 +2,45 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+function safeNextPath(nextRaw: string) {
+  if (!nextRaw) return "/admin/profissionais";
+  if (!nextRaw.startsWith("/admin")) return "/admin/profissionais";
+  return nextRaw;
+}
+
 export async function POST(req: Request) {
   const form = await req.formData().catch(() => null);
+
   const password = (form?.get("password") || "").toString();
-  const next = (form?.get("next") || "/admin/profissionais").toString() || "/admin/profissionais";
+  const nextRaw = (form?.get("next") || "/admin/profissionais").toString();
+  const next = safeNextPath(nextRaw);
 
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
   const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
 
-  const url = new URL(req.url);
+  const origin = new URL(req.url).origin;
 
-  // se faltar env, volta pro login com erro
+  // Sempre 303 para garantir PRG (Post/Redirect/Get)
+  const redirect303 = (to: string) => NextResponse.redirect(new URL(to, origin), 303);
+
   if (!ADMIN_PASSWORD || !ADMIN_TOKEN) {
-    const back = new URL("/admin/login", url.origin);
+    const back = new URL("/admin/login", origin);
     back.searchParams.set("error", "env");
-    return NextResponse.redirect(back);
+    back.searchParams.set("next", next);
+    return NextResponse.redirect(back, 303);
   }
 
-  // senha inválida, volta pro login com erro
   if (password !== ADMIN_PASSWORD) {
-    const back = new URL("/admin/login", url.origin);
+    const back = new URL("/admin/login", origin);
     back.searchParams.set("error", "badpass");
     back.searchParams.set("next", next);
-    return NextResponse.redirect(back);
+    return NextResponse.redirect(back, 303);
   }
 
-  // ok: seta cookie e redireciona
-  const res = NextResponse.redirect(new URL(next, url.origin));
-  res.cookies.set("admin_token", ADMIN_TOKEN, {
+  const res = redirect303(next);
+
+  // Nome do cookie deve bater com o middleware
+  res.cookies.set("admin-token", ADMIN_TOKEN, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

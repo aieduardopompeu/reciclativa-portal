@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 type ProfRow = {
   id: number;
@@ -19,9 +20,14 @@ type ProfRow = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-function mustAuth(token?: string) {
+async function mustAuthByCookie() {
   const expected = process.env.ADMIN_TOKEN;
   if (!expected) return notFound();
+
+  // Next 16: cookies() é async
+  const store = await cookies();
+  const token = store.get("admin-token")?.value;
+
   if (!token || token !== expected) return notFound();
 }
 
@@ -37,14 +43,23 @@ function fmtDate(d: Date | null) {
   }
 }
 
+function safeStatus(v?: string | null) {
+  const x = (v || "").toLowerCase();
+  if (x === "pending" || x === "approved" || x === "rejected") return x;
+  return "";
+}
+
 export default async function AdminProfissionaisPage({
   searchParams,
 }: {
-  searchParams: Promise<{ token?: string; status?: string }>;
+  // No Next 16, pode vir como Promise em rotas dinâmicas
+  searchParams: Promise<{ status?: string }>;
 }) {
+  // Auth via COOKIE (não via query token)
+  await mustAuthByCookie();
+
   const sp = await searchParams;
-  const token = sp.token;
-  mustAuth(token);
+  const requested = safeStatus(sp.status);
 
   // Contadores
   const [{ pending_count }] = await sql<{ pending_count: number }>`
@@ -65,17 +80,10 @@ export default async function AdminProfissionaisPage({
     where status = 'rejected'
   `.then((r) => r.rows);
 
-  // Aba padrão
-  const requestedView = sp.status?.toLowerCase();
-  let view: "pending" | "approved" | "rejected";
-
-  if (requestedView === "approved" || requestedView === "rejected" || requestedView === "pending") {
-    view = requestedView;
-  } else {
-    view = pending_count > 0 ? "pending" : "approved";
-  }
-
-  const status = view;
+  // View padrão
+  const status =
+    requested ||
+    (pending_count > 0 ? "pending" : approved_count > 0 ? "approved" : "rejected");
 
   // Lista
   const { rows } = await sql<ProfRow>`
@@ -88,20 +96,24 @@ export default async function AdminProfissionaisPage({
 
   async function refreshAction() {
     "use server";
-    redirect(`/admin/profissionais?token=${encodeURIComponent(token!)}&status=${encodeURIComponent(status)}`);
+    redirect(`/admin/profissionais?status=${encodeURIComponent(status)}`);
   }
 
-  // endpoint novo (token via query)
-  const statusActionUrl = `/api/admin/profissionais/status?token=${encodeURIComponent(token!)}`;
+  // Endpoint das ações
+  const statusActionUrl = "/api/admin/profissionais/status";
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Admin</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight">Aprovação de Profissionais</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+            Admin
+          </p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight">
+            Aprovação de Profissionais
+          </h1>
           <p className="mt-2 text-sm text-slate-600">
-            Gerencie cadastros pendentes sem precisar abrir o Neon.
+            Gerencie cadastros pendentes e aprovados.
           </p>
         </div>
 
@@ -124,7 +136,7 @@ export default async function AdminProfissionaisPage({
               className={`text-sm font-semibold hover:underline ${
                 status === "pending" ? "text-emerald-700" : "text-slate-700"
               }`}
-              href={`/admin/profissionais?token=${encodeURIComponent(token!)}&status=pending`}
+              href={`/admin/profissionais?status=pending`}
             >
               Ver pendentes →
             </Link>
@@ -139,7 +151,7 @@ export default async function AdminProfissionaisPage({
               className={`text-sm font-semibold hover:underline ${
                 status === "approved" ? "text-emerald-700" : "text-slate-700"
               }`}
-              href={`/admin/profissionais?token=${encodeURIComponent(token!)}&status=approved`}
+              href={`/admin/profissionais?status=approved`}
             >
               Ver aprovados →
             </Link>
@@ -154,7 +166,7 @@ export default async function AdminProfissionaisPage({
               className={`text-sm font-semibold hover:underline ${
                 status === "rejected" ? "text-emerald-700" : "text-slate-700"
               }`}
-              href={`/admin/profissionais?token=${encodeURIComponent(token!)}&status=rejected`}
+              href={`/admin/profissionais?status=rejected`}
             >
               Ver rejeitados →
             </Link>
@@ -169,7 +181,8 @@ export default async function AdminProfissionaisPage({
           </h2>
 
           <div className="text-sm text-slate-600">
-            Mostrando <span className="font-semibold text-slate-900">{rows.length}</span> itens
+            Mostrando <span className="font-semibold text-slate-900">{rows.length}</span>{" "}
+            itens
           </div>
         </div>
 
@@ -197,7 +210,9 @@ export default async function AdminProfissionaisPage({
 
                       <div className="mt-1 text-sm text-slate-600">
                         {cityLabel ? (
-                          <span className="font-semibold text-slate-800">{cityLabel}</span>
+                          <span className="font-semibold text-slate-800">
+                            {cityLabel}
+                          </span>
                         ) : (
                           "—"
                         )}
@@ -205,17 +220,21 @@ export default async function AdminProfissionaisPage({
                         {p.category ? <span> · {p.category}</span> : null}
                       </div>
 
-                      <div className="mt-2 text-xs text-slate-500">Criado em: {fmtDate(p.created_at)}</div>
+                      <div className="mt-2 text-xs text-slate-500">
+                        Criado em: {fmtDate(p.created_at)}
+                      </div>
 
                       <div className="mt-3 text-sm text-slate-700">
                         {p.service ? (
                           <div>
-                            <span className="font-semibold">Serviço:</span> {p.service}
+                            <span className="font-semibold">Serviço:</span>{" "}
+                            {p.service}
                           </div>
                         ) : null}
                         {p.whatsapp ? (
                           <div>
-                            <span className="font-semibold">WhatsApp:</span> {p.whatsapp}
+                            <span className="font-semibold">WhatsApp:</span>{" "}
+                            {p.whatsapp}
                           </div>
                         ) : null}
                         {p.email ? (
@@ -231,7 +250,7 @@ export default async function AdminProfissionaisPage({
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-2 min-w-[220px]">
+                    <div className="flex min-w-[220px] flex-col gap-2">
                       {/* Aprovar */}
                       {status !== "approved" ? (
                         <form method="post" action={statusActionUrl}>
@@ -242,7 +261,7 @@ export default async function AdminProfissionaisPage({
                             className="w-full rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
                             type="submit"
                           >
-                            Aprovar (envia e-mail)
+                            Aprovar
                           </button>
                         </form>
                       ) : null}
@@ -254,18 +273,24 @@ export default async function AdminProfissionaisPage({
                             Rejeitar…
                           </summary>
 
-                          <form method="post" action={statusActionUrl} className="mt-3 space-y-3">
+                          <form
+                            method="post"
+                            action={statusActionUrl}
+                            className="mt-3 space-y-3"
+                          >
                             <input type="hidden" name="id" value={p.id} />
                             <input type="hidden" name="action" value="reject" />
                             <input type="hidden" name="returnTo" value={status} />
 
                             <div>
-                              <label className="text-xs font-semibold text-slate-700">Motivo (opcional)</label>
+                              <label className="text-xs font-semibold text-slate-700">
+                                Motivo (opcional)
+                              </label>
                               <textarea
                                 name="reason"
                                 className="mt-2 w-full rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600"
                                 rows={3}
-                                placeholder="Ex.: dados incompletos / contato inválido / serviço fora do escopo..."
+                                placeholder="Ex.: dados incompletos / contato inválido..."
                               />
                             </div>
 
@@ -277,7 +302,8 @@ export default async function AdminProfissionaisPage({
                                 className="mt-1 h-4 w-4 accent-emerald-600"
                               />
                               <span>
-                                Adicionar à <strong>blacklist</strong> (bloquear novos envios por e-mail/WhatsApp/domínio).
+                                Adicionar à <strong>blacklist</strong> (se
+                                existir tabela).
                               </span>
                             </label>
 
@@ -285,7 +311,7 @@ export default async function AdminProfissionaisPage({
                               className="w-full rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                               type="submit"
                             >
-                              Confirmar rejeição (envia e-mail)
+                              Confirmar rejeição
                             </button>
                           </form>
                         </details>
@@ -299,8 +325,7 @@ export default async function AdminProfissionaisPage({
         )}
 
         <div className="mt-8 border-t border-black/5 pt-6 text-sm text-slate-600">
-          Acesse sempre com token:{" "}
-          <span className="font-semibold text-slate-900">/admin/profissionais?token=SEU_TOKEN</span>
+          Acesso protegido por cookie (admin-token).
         </div>
       </section>
     </main>

@@ -4,16 +4,19 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // protege tudo dentro de /admin, exceto /admin/login
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    const cookieToken = req.cookies.get("admin_token")?.value || "";
-    const adminToken = process.env.ADMIN_TOKEN || "";
+  // Rotas livres
+  if (pathname === "/admin/login") {
+    return NextResponse.next();
+  }
 
-    if (!adminToken || cookieToken !== adminToken) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/admin/login";
-      url.searchParams.set("next", pathname);
-      return NextResponse.redirect(url);
+  // Protege /admin/*
+  if (pathname.startsWith("/admin")) {
+    const token = req.cookies.get("admin-token")?.value;
+
+    if (!token) {
+      const loginUrl = new URL("/admin/login", req.url);
+      loginUrl.searchParams.set("next", pathname);
+      return NextResponse.redirect(loginUrl);
     }
   }
 
