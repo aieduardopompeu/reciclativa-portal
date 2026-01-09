@@ -37,15 +37,19 @@ export async function POST(req: Request) {
     return NextResponse.redirect(back, 303);
   }
 
+  // Nome do cookie deve bater com o middleware
+const isProd = process.env.NODE_ENV === "production";
+
   const res = redirect303(next);
 
-  // Nome do cookie deve bater com o middleware
   res.cookies.set("admin-token", ADMIN_TOKEN, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProd,
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 12, // 12h
+    // ✅ garante que funcione em reciclativa.com e www.reciclativa.com
+    ...(isProd ? { domain: ".reciclativa.com" } : {}),
   });
 
   return res;
