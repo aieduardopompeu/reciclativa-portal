@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-
 import "./globals.css";
+
 import { site } from "@/config/site";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import CookieBanner from "@/components/cookies/CookieBanner";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.reciclativa.com";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.reciclativa.com";
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID ?? "";
 const ADSENSE_CLIENT = "ca-pub-4436420746304287";
 
@@ -31,14 +32,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-white text-slate-900">
-        {/* GA4 */}
         <GoogleAnalytics measurementId={GA4_ID} />
 
-        {/* AdSense fora do caminho crítico do LCP */}
         <Script
           id="adsense-base"
           async
@@ -50,8 +51,6 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-
-        {/* Banner de cookies (Client Component) */}
         <CookieBanner />
       </body>
     </html>

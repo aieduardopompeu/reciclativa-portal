@@ -1,0 +1,15 @@
+import { NextResponse } from "next/server";
+
+export async function GET(req: Request) {
+  const url = new URL("/admin/login", req.url);
+
+  const res = NextResponse.redirect(url);
+
+  // remove exatamente o cookie que o middleware valida
+  res.cookies.set("admin-token", "", {
+    path: "/",
+    maxAge: 0,
+  });
+
+  return res;
+}
