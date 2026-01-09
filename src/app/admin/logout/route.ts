@@ -1,18 +1,14 @@
 import { NextResponse } from "next/server";
 
-const CANONICAL_ORIGIN =
-  (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(
-    /\/$/,
-    ""
-  );
+export async function GET(req: Request) {
+  const isProd = process.env.NODE_ENV === "production";
+  const res = NextResponse.redirect(new URL("/admin/login", req.url));
 
-export async function GET() {
-  const res = NextResponse.redirect(new URL("/admin/login", CANONICAL_ORIGIN));
-
-  // remove cookie
+  // logout = remove o cookie (não precisa ADMIN_TOKEN)
   res.cookies.set("admin-token", "", {
     path: "/",
     maxAge: 0,
+    ...(isProd ? { domain: ".reciclativa.com" } : {}),
   });
 
   return res;
