@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 const UFS = [
@@ -311,14 +312,74 @@ export default function AnunciePage() {
           Diretório de Profissionais
         </p>
 
+        {/* ✅ COPY FINAL (produção) */}
         <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">
-          Cadastrar meu serviço
+          Cadastre seu serviço e seja encontrado no Google
         </h1>
 
         <p className="mt-4 text-slate-700">
-          Envie seus dados para análise. Após aprovação, seu cadastro pode aparecer nas páginas do
-          seu estado e cidade.
+          Divulgue sua empresa na Reciclativa e apareça para pessoas e organizações que buscam
+          soluções sustentáveis na sua cidade e estado.
+          <br />
+          <strong>Cadastro 100% gratuito.</strong> Após uma análise rápida, seu serviço pode ser
+          exibido no diretório e nas páginas regionais, aumentando sua visibilidade e autoridade.
         </p>
+
+        <ul className="mt-4 space-y-2 text-sm text-slate-700">
+          <li className="flex gap-2">
+            <span className="mt-0.5 inline-block h-1.5 w-1.5 rounded-full bg-emerald-600" />
+            Exposição orgânica (SEO local) e presença por estado e cidade
+          </li>
+          <li className="flex gap-2">
+            <span className="mt-0.5 inline-block h-1.5 w-1.5 rounded-full bg-emerald-600" />
+            Página dedicada para seu serviço, com contatos e descrição
+          </li>
+          <li className="flex gap-2">
+            <span className="mt-0.5 inline-block h-1.5 w-1.5 rounded-full bg-emerald-600" />
+            Público qualificado e alinhado ao tema sustentabilidade
+          </li>
+        </ul>
+
+        <div className="mt-5">
+          <Link
+            href="/profissionais/saiba-mais"
+            className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+          >
+            Saiba mais sobre os benefícios
+          </Link>
+          <p className="mt-2 text-xs text-slate-500">
+            Leva 1 minuto. Cadastro gratuito e sem compromisso.
+          </p>
+        </div>
+
+        {/* ✅ PASSO 5: Anti-fake + confiança (baixo impacto, alto efeito) */}
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+            Antes de enviar
+          </p>
+
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-slate-200 bg-white p-4">
+              <p className="text-sm font-semibold text-slate-900">Para quem é</p>
+              <p className="mt-2 text-sm text-slate-700">
+                Empresas e profissionais que oferecem soluções ambientais, reciclagem, logística
+                reversa, coleta, consultoria, educação ambiental, compostagem e serviços relacionados.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-slate-200 bg-white p-4">
+              <p className="text-sm font-semibold text-slate-900">O que não aceitamos</p>
+              <p className="mt-2 text-sm text-slate-700">
+                Cadastros com dados falsos, serviços não relacionados ao tema, links suspeitos,
+                conteúdo enganoso ou informações incompletas.
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-3 text-xs text-slate-500">
+            Seus dados serão usados para análise e, se necessário, contato sobre o cadastro.
+          </p>
+        </div>
 
         {error ? (
           <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
@@ -581,7 +642,7 @@ export default function AnunciePage() {
               disabled={!canSubmit || loading}
               className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-slate-300"
             >
-              {loading ? "Enviando..." : "Enviar para análise"}
+              {loading ? "Enviando..." : "Cadastrar meu serviço gratuitamente"}
             </button>
 
             <button
@@ -593,6 +654,10 @@ export default function AnunciePage() {
               Limpar
             </button>
           </div>
+
+          <p className="mt-2 text-xs text-slate-500">
+            Gratuito • Análise rápida • Sem compromisso
+          </p>
 
           <p className="mt-3 text-xs text-slate-500">
             Dica: quanto mais completo o cadastro, maior a chance de aparecer bem nas buscas.

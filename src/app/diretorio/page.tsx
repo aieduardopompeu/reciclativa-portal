@@ -5,12 +5,12 @@ import AdCtaProfissionaisCard from "@/components/AdCtaProfissionaisCard";
 export const metadata: Metadata = {
   title: "Diretório | Reciclativa",
   description:
-    "Diretório da Reciclativa: atalhos, páginas-base e acesso rápido a profissionais por estado.",
+    "Atalhos úteis para navegar pelos principais conteúdos da Reciclativa e acessar o Diretório de Profissionais por região.",
   alternates: { canonical: "/diretorio" },
   openGraph: {
     title: "Diretório | Reciclativa",
     description:
-      "Atalhos, páginas-base e acesso rápido a profissionais e serviços por estado.",
+      "Acesso rápido a páginas-base, guias práticos e ao Diretório de Profissionais por UF e cidade.",
     url: "/diretorio",
     type: "website",
   },
@@ -40,9 +40,12 @@ export default function Page() {
             Diretório da Reciclativa
           </h1>
 
+          {/* ✅ Texto editorial (AdSense-safe) */}
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            MVP: esta área será expandida. Por enquanto, foco em conteúdo prático
-            e navegação útil.
+            Use esta página para acessar rapidamente os principais conteúdos da Reciclativa e o
+            <strong> Diretório de Profissionais</strong>. Você encontra guias práticos, páginas-base
+            e caminhos diretos para tirar dúvidas comuns sobre reciclagem, descarte correto e
+            soluções sustentáveis.
           </p>
 
           <p className="mt-4 text-sm font-semibold text-slate-900">
@@ -54,14 +57,21 @@ export default function Page() {
               href="/profissionais"
               className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
             >
-              Ver profissionais por estado
+              Ver diretório de profissionais
             </Link>
 
             <Link
               href="/anuncie"
               className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
-              Anunciar no site
+              Cadastrar meu serviço
+            </Link>
+
+            <Link
+              href="/profissionais/saiba-mais"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              Saiba mais (benefícios)
             </Link>
           </div>
 
@@ -92,7 +102,7 @@ export default function Page() {
                 Acesso rápido
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Use estes atalhos para começar pela base e navegar sem 404.
+                Atalhos úteis para começar pelo essencial e navegar com clareza.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -101,10 +111,10 @@ export default function Page() {
                   className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
                 >
                   <p className="text-sm font-semibold text-slate-900">
-                    Página pilar: Reciclagem
+                    Página-base: Reciclagem
                   </p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Guia principal para reciclar corretamente e evitar rejeito.
+                    Entenda o básico para reciclar corretamente e reduzir rejeito.
                   </p>
                   <p className="mt-3 text-sm font-semibold text-emerald-800">
                     Abrir →
@@ -115,11 +125,9 @@ export default function Page() {
                   href="/guias"
                   className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
                 >
-                  <p className="text-sm font-semibold text-slate-900">
-                    Guias práticos
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Guias práticos</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Checklists e passo a passo para fazer certo.
+                    Checklists e passo a passo para fazer certo no dia a dia.
                   </p>
                   <p className="mt-3 text-sm font-semibold text-emerald-800">
                     Abrir →
@@ -130,11 +138,9 @@ export default function Page() {
                   href="/blog"
                   className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
                 >
-                  <p className="text-sm font-semibold text-slate-900">
-                    Blog da Reciclativa
-                  </p>
+                  <p className="text-sm font-semibold text-slate-900">Blog da Reciclativa</p>
                   <p className="mt-2 text-sm text-slate-700">
-                    Conteúdos práticos sobre reciclagem e sustentabilidade.
+                    Conteúdos práticos sobre reciclagem, descarte e sustentabilidade.
                   </p>
                   <p className="mt-3 text-sm font-semibold text-emerald-800">
                     Abrir →
@@ -146,7 +152,7 @@ export default function Page() {
                   className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
                 >
                   <p className="text-sm font-semibold text-slate-900">
-                    Profissionais por estado
+                    Diretório de profissionais
                   </p>
                   <p className="mt-2 text-sm text-slate-700">
                     Encontre serviços e contatos por UF e cidade.
@@ -158,30 +164,59 @@ export default function Page() {
               </div>
             </div>
 
-            {/* ✅ Bloco B2B (alto CTR) — mantido */}
+            {/* ✅ Mantido (alto CTR / conversão) */}
             <AdCtaProfissionaisCard signupHref="/anuncie" />
           </div>
 
           {/* Sidebar */}
           <aside className="space-y-6">
+            {/* ✅ Substitui “Próximos passos” por conteúdo útil */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
+                Como usar esta página
               </h3>
+
               <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Adicionar listagem por cidade (quando tiver base)</li>
-                <li>Incluir categorias e filtros (MVP+)</li>
-                <li>Reforçar links internos em posts e guias</li>
+                <li>
+                  Comece por <strong>Reciclagem</strong> para entender os fundamentos e evitar erros
+                  de descarte.
+                </li>
+                <li>
+                  Use <strong>Guias</strong> para checklists e passo a passo prático.
+                </li>
+                <li>
+                  Acesse <strong>Diretório de profissionais</strong> para encontrar serviços na sua
+                  região.
+                </li>
+                <li>
+                  Consulte o <strong>Blog</strong> para aprofundar temas específicos.
+                </li>
               </ul>
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Dica rápida
+                  Critérios do diretório
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Para SEO local, cada estado/cidade deve linkar para a página
-                  pilar e para 2–3 guias relacionados.
+                  Para manter qualidade e reduzir spam, os cadastros passam por análise.
+                  Se você oferece serviços ligados a sustentabilidade e reciclagem, pode cadastrar
+                  gratuitamente.
                 </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link
+                    href="/profissionais"
+                    className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                  >
+                    Ver diretório
+                  </Link>
+                  <Link
+                    href="/anuncie"
+                    className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    Cadastrar serviço
+                  </Link>
+                </div>
               </div>
             </div>
           </aside>
