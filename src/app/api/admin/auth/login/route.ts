@@ -18,10 +18,8 @@ export async function POST(req: Request) {
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
   const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
 
-  const origin = new URL(req.url).origin;
-
-  // Sempre 303 para garantir PRG (Post/Redirect/Get)
-  const redirect303 = (to: string) => NextResponse.redirect(new URL(to, origin), 303);
+  const redirect303 = (to: string) =>
+    NextResponse.redirect(`https://www.reciclativa.com${to}`, 303);
 
   if (!ADMIN_PASSWORD || !ADMIN_TOKEN) {
     const back = new URL("/admin/login", origin);
@@ -44,12 +42,10 @@ const isProd = process.env.NODE_ENV === "production";
 
   res.cookies.set("admin-token", ADMIN_TOKEN, {
     httpOnly: true,
-    secure: isProd,
+    secure: true,
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 12, // 12h
-    // ✅ garante que funcione em reciclativa.com e www.reciclativa.com
-    ...(isProd ? { domain: ".reciclativa.com" } : {}),
+    maxAge: 60 * 60 * 12,
   });
 
   return res;
