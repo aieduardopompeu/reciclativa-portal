@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { trackEvent } from "@/components/analytics/gaEvents";
 
 const UFS = [
   "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
@@ -220,6 +221,19 @@ export default function AnunciePage() {
     setLoading(true);
     setError(null);
 
+    // ✅ GA4: tentativa de envio
+    trackEvent("profissionais_signup_submit", {
+      status: "attempt",
+      page: "/anuncie",
+      uf: titleCaseUF(form.uf),
+      city_manual: manualCity,
+      has_city_id: Boolean(form.cityId),
+      category: form.category || "Outro",
+      services_count: selectedServices.length + (otherService.trim() ? 1 : 0),
+      has_email: Boolean(form.email?.trim()),
+      has_whatsapp: Boolean(form.whatsapp?.trim()),
+    });
+
     try {
       const parts = [
         ...selectedServices,
@@ -245,9 +259,28 @@ export default function AnunciePage() {
         throw new Error(data?.error || "Falha ao enviar.");
       }
 
+      // ✅ GA4: sucesso
+      trackEvent("profissionais_signup_submit", {
+        status: "success",
+        page: "/anuncie",
+        uf: titleCaseUF(form.uf),
+        category: form.category || "Outro",
+      });
+
       setOk(true);
     } catch (err: any) {
-      setError(err?.message || "Falha ao enviar.");
+      const msg = err?.message || "Falha ao enviar.";
+
+      // ✅ GA4: erro
+      trackEvent("profissionais_signup_submit", {
+        status: "error",
+        page: "/anuncie",
+        uf: titleCaseUF(form.uf),
+        category: form.category || "Outro",
+        error_message: msg,
+      });
+
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -288,13 +321,28 @@ export default function AnunciePage() {
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="/profissionais"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  page: "/anuncie",
+                  location: "success",
+                  cta: "ver_diretorio",
+                  href: "/profissionais",
+                })
+              }
               className="rounded-md border border-black/5 bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
             >
               Ver diretório
             </a>
 
             <button
-              onClick={resetAll}
+              onClick={() => {
+                trackEvent("cta_click", {
+                  page: "/anuncie",
+                  location: "success",
+                  cta: "enviar_outro",
+                });
+                resetAll();
+              }}
               className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
             >
               Enviar outro cadastro
@@ -343,6 +391,14 @@ export default function AnunciePage() {
         <div className="mt-5">
           <Link
             href="/profissionais/saiba-mais"
+            onClick={() =>
+              trackEvent("cta_click", {
+                page: "/anuncie",
+                location: "top",
+                cta: "saiba_mais",
+                href: "/profissionais/saiba-mais",
+              })
+            }
             className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
           >
             Saiba mais sobre os benefícios

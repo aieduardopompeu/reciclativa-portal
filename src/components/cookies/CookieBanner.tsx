@@ -35,7 +35,6 @@ export default function CookieBanner() {
     setConsent("accepted");
     // Se GA estiver presente, tentamos atualizar consent (não quebra se não existir)
     try {
-      // @ts-expect-error - window.gtag pode não existir
       window.gtag?.("consent", "update", {
         ad_storage: "granted",
         analytics_storage: "granted",
@@ -49,7 +48,6 @@ export default function CookieBanner() {
   function reject() {
     setConsent("rejected");
     try {
-      // @ts-expect-error - window.gtag pode não existir
       window.gtag?.("consent", "update", {
         ad_storage: "denied",
         analytics_storage: "denied",
