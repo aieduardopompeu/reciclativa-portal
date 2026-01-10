@@ -1,20 +1,8 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import AdCtaProfissionaisCard from "@/components/AdCtaProfissionaisCard";
-
-export const metadata: Metadata = {
-  title: "Diretório | Reciclativa",
-  description:
-    "Atalhos úteis para navegar pelos principais conteúdos da Reciclativa e acessar o Diretório de Profissionais por região.",
-  alternates: { canonical: "/diretorio" },
-  openGraph: {
-    title: "Diretório | Reciclativa",
-    description:
-      "Acesso rápido a páginas-base, guias práticos e ao Diretório de Profissionais por UF e cidade.",
-    url: "/diretorio",
-    type: "website",
-  },
-};
+import { trackEvent } from "@/components/analytics/gaEvents";
 
 export default function Page() {
   return (
@@ -40,21 +28,29 @@ export default function Page() {
             Diretório da Reciclativa
           </h1>
 
-          {/* ✅ Texto editorial (AdSense-safe) */}
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            Use esta página para acessar rapidamente os principais conteúdos da Reciclativa e o
-            <strong> Diretório de Profissionais</strong>. Você encontra guias práticos, páginas-base
-            e caminhos diretos para tirar dúvidas comuns sobre reciclagem, descarte correto e
-            soluções sustentáveis.
+            Use esta página para acessar rapidamente os principais conteúdos da Reciclativa e o{" "}
+            <strong>Diretório de Profissionais</strong>. Você encontra guias práticos, páginas-base e
+            caminhos diretos para tirar dúvidas comuns sobre reciclagem, descarte correto e soluções
+            sustentáveis.
           </p>
 
           <p className="mt-4 text-sm font-semibold text-slate-900">
             Transforme resíduos em recursos!
           </p>
 
+          {/* CTAs (padrão único: Link + onClick + trackEvent) */}
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/profissionais"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  page: "/diretorio",
+                  location: "hero",
+                  cta: "ver_diretorio_profissionais",
+                  href: "/profissionais",
+                })
+              }
               className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
             >
               Ver diretório de profissionais
@@ -62,6 +58,14 @@ export default function Page() {
 
             <Link
               href="/anuncie"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  page: "/diretorio",
+                  location: "hero",
+                  cta: "cadastrar_servico",
+                  href: "/anuncie",
+                })
+              }
               className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
               Cadastrar meu serviço
@@ -69,6 +73,14 @@ export default function Page() {
 
             <Link
               href="/profissionais/saiba-mais"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  page: "/diretorio",
+                  location: "hero",
+                  cta: "saiba_mais",
+                  href: "/profissionais/saiba-mais",
+                })
+              }
               className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
               Saiba mais (benefícios)
@@ -116,9 +128,7 @@ export default function Page() {
                   <p className="mt-2 text-sm text-slate-700">
                     Entenda o básico para reciclar corretamente e reduzir rejeito.
                   </p>
-                  <p className="mt-3 text-sm font-semibold text-emerald-800">
-                    Abrir →
-                  </p>
+                  <p className="mt-3 text-sm font-semibold text-emerald-800">Abrir →</p>
                 </Link>
 
                 <Link
@@ -129,9 +139,7 @@ export default function Page() {
                   <p className="mt-2 text-sm text-slate-700">
                     Checklists e passo a passo para fazer certo no dia a dia.
                   </p>
-                  <p className="mt-3 text-sm font-semibold text-emerald-800">
-                    Abrir →
-                  </p>
+                  <p className="mt-3 text-sm font-semibold text-emerald-800">Abrir →</p>
                 </Link>
 
                 <Link
@@ -142,9 +150,7 @@ export default function Page() {
                   <p className="mt-2 text-sm text-slate-700">
                     Conteúdos práticos sobre reciclagem, descarte e sustentabilidade.
                   </p>
-                  <p className="mt-3 text-sm font-semibold text-emerald-800">
-                    Abrir →
-                  </p>
+                  <p className="mt-3 text-sm font-semibold text-emerald-800">Abrir →</p>
                 </Link>
 
                 <Link
@@ -157,20 +163,16 @@ export default function Page() {
                   <p className="mt-2 text-sm text-slate-700">
                     Encontre serviços e contatos por UF e cidade.
                   </p>
-                  <p className="mt-3 text-sm font-semibold text-emerald-800">
-                    Abrir →
-                  </p>
+                  <p className="mt-3 text-sm font-semibold text-emerald-800">Abrir →</p>
                 </Link>
               </div>
             </div>
 
-            {/* ✅ Mantido (alto CTR / conversão) */}
             <AdCtaProfissionaisCard signupHref="/anuncie" />
           </div>
 
           {/* Sidebar */}
           <aside className="space-y-6">
-            {/* ✅ Substitui “Próximos passos” por conteúdo útil */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
                 Como usar esta página
@@ -198,8 +200,8 @@ export default function Page() {
                   Critérios do diretório
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Para manter qualidade e reduzir spam, os cadastros passam por análise.
-                  Se você oferece serviços ligados a sustentabilidade e reciclagem, pode cadastrar
+                  Para manter qualidade e reduzir spam, os cadastros passam por análise. Se você
+                  oferece serviços ligados a sustentabilidade e reciclagem, pode cadastrar
                   gratuitamente.
                 </p>
 
@@ -210,6 +212,7 @@ export default function Page() {
                   >
                     Ver diretório
                   </Link>
+
                   <Link
                     href="/anuncie"
                     className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
