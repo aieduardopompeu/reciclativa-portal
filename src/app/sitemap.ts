@@ -8,8 +8,15 @@ const SITE_URL = "https://www.reciclativa.com";
 
 // Ajuste se seu projeto não usa src/
 const APP_DIR = path.join(process.cwd(), "src", "app");
-// Onde estão seus posts (você tem src/content no projeto)
-const BLOG_CONTENT_DIR = path.join(process.cwd(), "src", "content", "blog");
+
+// Vamos procurar slugs do blog em alguns locais comuns.
+// (Isso evita “sumir” em produção caso os posts estejam em outro path.)
+const BLOG_DIR_CANDIDATES = [
+  path.join(process.cwd(), "src", "content", "blog"),
+  path.join(process.cwd(), "src", "content", "posts"),
+  path.join(process.cwd(), "content", "blog"),
+  path.join(process.cwd(), "content", "posts"),
+];
 
 function existsFile(p: string) {
   try {
@@ -42,19 +49,58 @@ function routeExists(route: string): boolean {
 }
 
 /**
- * Slugs do blog a partir de src/content/blog/*.md(x)
- * Gera: /blog/<slug>
+ * Lê arquivos .md/.mdx recursivamente e retorna slugs relativos (sem extensão).
  */
-function getBlogSlugsFromContent(): string[] {
-  if (!existsDir(BLOG_CONTENT_DIR)) return [];
+function walkFiles(dir: string, baseDir: string, out: string[] = []) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
 
-  const files = fs.readdirSync(BLOG_CONTENT_DIR, { withFileTypes: true });
-  return files
-    .filter((e) => e.isFile())
-    .map((e) => e.name)
-    .filter((name) => name.endsWith(".md") || name.endsWith(".mdx"))
-    .map((name) => name.replace(/\.(md|mdx)$/, ""))
-    .filter((slug) => slug && !slug.startsWith("_"));
+  for (const e of entries) {
+    const full = path.join(dir, e.name);
+
+    if (e.isDirectory()) {
+      walkFiles(full, baseDir, out);
+      continue;
+    }
+
+    if (e.isFile() && (e.name.endsWith(".md") || e.name.endsWith(".mdx"))) {
+      const rel = path.relative(baseDir, full).replace(/\\/g, "/");
+      const slug = rel.replace(/\.(md|mdx)$/, "");
+
+      // Ignora rascunhos do tipo "_algo.mdx"
+      if (!slug || slug.startsWith("_")) continue;
+
+      out.push(slug);
+    }
+  }
+
+  return out;
+}
+
+/**
+ * Retorna slugs do blog do primeiro diretório que realmente exista e tenha posts.
+ * IMPORTANTE: como sua rota é /blog/[slug], nós "achatamos" qualquer subpasta,
+ * mantendo apenas o último segmento do caminho (basename).
+ */
+function getBlogSlugs(): string[] {
+  for (const candidate of BLOG_DIR_CANDIDATES) {
+    if (!existsDir(candidate)) continue;
+
+    const slugs = walkFiles(candidate, candidate);
+
+    if (slugs.length > 0) {
+      // Achata subpastas: "pasta/meu-post" -> "meu-post"
+      // Isso evita gerar /blog/pasta/meu-post (quebraria com [slug]).
+      const flattened = slugs
+        .map((s) => s.split("/").pop() || "")
+        .filter(Boolean)
+        .filter((s) => !s.startsWith("_"));
+
+      // Dedup (caso existam nomes repetidos em subpastas)
+      return Array.from(new Set(flattened));
+    }
+  }
+
+  return [];
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -81,7 +127,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = desiredStatic
     .filter((route) => route === "/" || routeExists(route))
     .map((route) => {
-      // prioridades simples e estáveis (não precisa “hiper-otimizar”)
       let priority = 0.6;
       let changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] = "weekly";
 
@@ -109,7 +154,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return { url, lastModified: now, changeFrequency, priority };
     });
 
-  const blogSlugs = getBlogSlugsFromContent();
+  const blogSlugs = getBlogSlugs();
 
   const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
     url: `${SITE_URL}/blog/${slug}`,
