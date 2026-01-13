@@ -5,18 +5,8 @@ import path from "node:path";
 export const runtime = "nodejs";
 
 const SITE_URL = "https://www.reciclativa.com";
-
-// Ajuste se seu projeto não usa src/
 const APP_DIR = path.join(process.cwd(), "src", "app");
-
-// Vamos procurar slugs do blog em alguns locais comuns.
-// (Isso evita “sumir” em produção caso os posts estejam em outro path.)
-const BLOG_DIR_CANDIDATES = [
-  path.join(process.cwd(), "src", "content", "blog"),
-  path.join(process.cwd(), "src", "content", "posts"),
-  path.join(process.cwd(), "content", "blog"),
-  path.join(process.cwd(), "content", "posts"),
-];
+const BLOG_APP_DIR = path.join(APP_DIR, "blog");
 
 function existsFile(p: string) {
   try {
@@ -39,7 +29,7 @@ function existsDir(p: string) {
  * Ex.: routeExists("/faq") checa src/app/faq/page.tsx|page.ts
  */
 function routeExists(route: string): boolean {
-  const clean = route.replace(/^\/+/, ""); // remove leading /
+  const clean = route.replace(/^\/+/, "");
   const dir = path.join(APP_DIR, clean);
   if (!existsDir(dir)) return false;
 
@@ -49,64 +39,32 @@ function routeExists(route: string): boolean {
 }
 
 /**
- * Lê arquivos .md/.mdx recursivamente e retorna slugs relativos (sem extensão).
+ * Lista slugs do blog a partir das pastas em src/app/blog/<slug>/page.tsx
+ * Ignora:
+ * - [slug] (rota dinâmica)
+ * - pastas que não tenham page.tsx/page.ts
  */
-function walkFiles(dir: string, baseDir: string, out: string[] = []) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
+function getBlogSlugsFromAppDir(): string[] {
+  if (!existsDir(BLOG_APP_DIR)) return [];
 
-  for (const e of entries) {
-    const full = path.join(dir, e.name);
+  const entries = fs.readdirSync(BLOG_APP_DIR, { withFileTypes: true });
 
-    if (e.isDirectory()) {
-      walkFiles(full, baseDir, out);
-      continue;
-    }
+  const slugs = entries
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name)
+    .filter((name) => name !== "[slug]" && !name.startsWith("_"))
+    .filter((name) => {
+      const dir = path.join(BLOG_APP_DIR, name);
+      return existsFile(path.join(dir, "page.tsx")) || existsFile(path.join(dir, "page.ts"));
+    });
 
-    if (e.isFile() && (e.name.endsWith(".md") || e.name.endsWith(".mdx"))) {
-      const rel = path.relative(baseDir, full).replace(/\\/g, "/");
-      const slug = rel.replace(/\.(md|mdx)$/, "");
-
-      // Ignora rascunhos do tipo "_algo.mdx"
-      if (!slug || slug.startsWith("_")) continue;
-
-      out.push(slug);
-    }
-  }
-
-  return out;
-}
-
-/**
- * Retorna slugs do blog do primeiro diretório que realmente exista e tenha posts.
- * IMPORTANTE: como sua rota é /blog/[slug], nós "achatamos" qualquer subpasta,
- * mantendo apenas o último segmento do caminho (basename).
- */
-function getBlogSlugs(): string[] {
-  for (const candidate of BLOG_DIR_CANDIDATES) {
-    if (!existsDir(candidate)) continue;
-
-    const slugs = walkFiles(candidate, candidate);
-
-    if (slugs.length > 0) {
-      // Achata subpastas: "pasta/meu-post" -> "meu-post"
-      // Isso evita gerar /blog/pasta/meu-post (quebraria com [slug]).
-      const flattened = slugs
-        .map((s) => s.split("/").pop() || "")
-        .filter(Boolean)
-        .filter((s) => !s.startsWith("_"));
-
-      // Dedup (caso existam nomes repetidos em subpastas)
-      return Array.from(new Set(flattened));
-    }
-  }
-
-  return [];
+  return slugs;
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  // Rotas que você quer no sitemap (mas só entram se existirem de verdade)
+  // Rotas estáticas desejadas (só entram se existirem de verdade)
   const desiredStatic = [
     "/",
     "/reciclagem",
@@ -154,7 +112,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return { url, lastModified: now, changeFrequency, priority };
     });
 
-  const blogSlugs = getBlogSlugs();
+  // Posts do blog (rotas reais em src/app/blog/<slug>/page.tsx)
+  const blogSlugs = getBlogSlugsFromAppDir();
 
   const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
     url: `${SITE_URL}/blog/${slug}`,
