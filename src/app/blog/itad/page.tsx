@@ -3,9 +3,11 @@ import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+// Domínio canônico final (sempre preferir domínio real)
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://www.reciclativa.com"
+).replace(/\/+$/, "");
 
 const SLUG = "itad";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -14,13 +16,23 @@ export const metadata: Metadata = {
   title: "ITAD: o que é e como funciona (IT Asset Disposition) | Reciclativa",
   description:
     "Entenda ITAD (IT Asset Disposition): destinação de ativos de TI com segurança, rastreabilidade e conformidade — do inventário ao descarte final.",
-  alternates: { canonical: `/blog/${SLUG}` },
+
+  // Canonical ABSOLUTO (evita ambiguidade)
+  alternates: { canonical: URL },
+
   openGraph: {
     title: "ITAD: o que é e como funciona (IT Asset Disposition)",
     description:
       "Destinação de ativos de TI com segurança, rastreabilidade e conformidade — do inventário ao descarte final.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
+    siteName: "Reciclativa",
+    locale: "pt_BR",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -80,7 +92,7 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Corpo editorial (somente leitura/ritmo) */}
+      {/* Corpo editorial */}
       <section className="mt-10">
         <article className="mx-auto max-w-3xl">
           {/* Box editorial: resumo rápido */}
@@ -106,27 +118,23 @@ export default function Page() {
             </ul>
           </div>
 
-          {/* Tipografia editorial sem plugin prose */}
+          {/* Tipografia editorial */}
           <div
             className={[
               "mt-10 text-slate-800 leading-relaxed",
               "space-y-5",
 
-              // H2/H3
               "[&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:tracking-tight [&_h2]:text-slate-900",
               "[&_h3]:mt-7 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:tracking-tight [&_h3]:text-slate-900",
 
-              // parágrafos
               "[&_p]:text-base [&_p]:leading-relaxed",
               "[&_strong]:font-semibold [&_strong]:text-slate-900",
               "[&_em]:text-slate-800",
 
-              // listas
               "[&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6",
               "[&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-6",
               "[&_li]:mt-2",
 
-              // links
               "[&_a]:font-semibold [&_a]:text-emerald-700 hover:[&_a]:underline",
             ].join(" ")}
           >
@@ -229,15 +237,11 @@ export default function Page() {
 
           {/* FAQ */}
           <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-              FAQ rápido
-            </h2>
+            <h2 className="text-xl font-extrabold tracking-tight text-slate-900">FAQ rápido</h2>
 
             <div className="mt-5 space-y-5 text-sm leading-relaxed text-slate-700">
               <div>
-                <h3 className="text-base font-bold text-slate-900">
-                  ITAD é só para empresas?
-                </h3>
+                <h3 className="text-base font-bold text-slate-900">ITAD é só para empresas?</h3>
                 <p className="mt-2">
                   Na prática, sim: o termo é mais usado no contexto corporativo (inventário,
                   documentação, rastreabilidade). Para pessoas, o equivalente costuma ser “descarte
