@@ -4,9 +4,10 @@ import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://www.reciclativa.com"
+).replace(/\/+$/, "");
 
 const SLUG = "o-que-e-reciclagem";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,13 +16,25 @@ export const metadata: Metadata = {
   title: "O que é reciclagem: conceito, etapas e por que isso muda tudo | Reciclativa",
   description:
     "Entenda o que é reciclagem, como funciona (etapas), por que nem tudo recicla, o papel da coleta seletiva e como separar corretamente para aumentar o reaproveitamento.",
-  alternates: { canonical: `/blog/${SLUG}` },
+
+  // Canonical ABSOLUTO (mais robusto para o Google)
+  alternates: { canonical: URL },
+
   openGraph: {
     title: "O que é reciclagem: conceito, etapas e por que isso muda tudo",
     description:
       "Guia completo para entender reciclagem: conceito, etapas, benefícios, limites e como separar resíduos na prática sem erro.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
+    siteName: "Reciclativa",
+    locale: "pt_BR",
+    // Se você tiver uma OG padrão, pode ativar. Se não tiver, pode remover este bloco.
+    images: [{ url: `${SITE_URL}/og/blog-default.webp` }],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -91,16 +104,18 @@ export default function Page() {
             </p>
             <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
               <li>
-                Reciclagem é transformar resíduo em <strong className="text-slate-900">matéria-prima</strong>{" "}
-                para fabricar novos produtos.
+                Reciclagem é transformar resíduo em{" "}
+                <strong className="text-slate-900">matéria-prima</strong> para fabricar novos produtos.
               </li>
               <li>
-                Para acontecer de verdade, precisa de <strong className="text-slate-900">separação correta</strong>,{" "}
-                <strong className="text-slate-900">triagem</strong> e <strong className="text-slate-900">indústria</strong>.
+                Para acontecer de verdade, precisa de{" "}
+                <strong className="text-slate-900">separação correta</strong>,{" "}
+                <strong className="text-slate-900">triagem</strong> e{" "}
+                <strong className="text-slate-900">indústria</strong>.
               </li>
               <li>
-                O principal inimigo é <strong className="text-slate-900">contaminação</strong> (comida, líquido, gordura)
-                — pode inviabilizar cargas inteiras.
+                O principal inimigo é <strong className="text-slate-900">contaminação</strong> (comida,
+                líquido, gordura) — pode inviabilizar cargas inteiras.
               </li>
             </ul>
           </div>
@@ -130,9 +145,9 @@ export default function Page() {
           >
             <h2>O que é reciclagem (definição simples)</h2>
             <p>
-              Reciclagem é transformar um resíduo em <strong>matéria-prima</strong> para fabricar outro produto.
-              O objetivo é reduzir o uso de recursos naturais, diminuir a quantidade de lixo enviada a aterros
-              e recuperar valor econômico de materiais.
+              Reciclagem é transformar um resíduo em <strong>matéria-prima</strong> para fabricar outro
+              produto. O objetivo é reduzir o uso de recursos naturais, diminuir a quantidade de lixo
+              enviada a aterros e recuperar valor econômico de materiais.
             </p>
 
             <h2>Reciclar não é a mesma coisa que reutilizar</h2>
@@ -141,7 +156,8 @@ export default function Page() {
                 <strong>Reutilizar:</strong> usar o mesmo item novamente (ex.: pote virando recipiente).
               </li>
               <li>
-                <strong>Reciclar:</strong> transformar o material para virar outro produto (ex.: garrafa PET virando fibra).
+                <strong>Reciclar:</strong> transformar o material para virar outro produto (ex.: garrafa
+                PET virando fibra).
               </li>
             </ul>
 
@@ -160,7 +176,8 @@ export default function Page() {
                 <strong>Beneficiamento:</strong> limpeza, compactação, trituração, prensagem, etc.
               </li>
               <li>
-                <strong>Indústria:</strong> o material vira matéria-prima e entra na fabricação de novos produtos.
+                <strong>Indústria:</strong> o material vira matéria-prima e entra na fabricação de novos
+                produtos.
               </li>
             </ol>
 
@@ -168,13 +185,15 @@ export default function Page() {
             <p>Existem três motivos principais:</p>
             <ul>
               <li>
-                <strong>Infraestrutura local:</strong> nem toda cidade tem triagem e cadeia industrial para todos os materiais.
+                <strong>Infraestrutura local:</strong> nem toda cidade tem triagem e cadeia industrial para
+                todos os materiais.
               </li>
               <li>
                 <strong>Contaminação:</strong> comida, líquidos e gordura podem inviabilizar cargas inteiras.
               </li>
               <li>
-                <strong>Material misturado:</strong> embalagens multicamadas e metalizadas são mais difíceis de processar.
+                <strong>Material misturado:</strong> embalagens multicamadas e metalizadas são mais difíceis
+                de processar.
               </li>
             </ul>
 
@@ -316,9 +335,7 @@ export default function Page() {
 
           {/* CTA final (mantido no padrão do site) */}
           <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Próximo passo recomendado
-            </h2>
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900">Próximo passo recomendado</h2>
             <p className="mt-3 max-w-2xl text-sm text-slate-600">
               Para aplicar o básico sem errar, use a lista prática do que pode ser reciclado, com exemplos
               e dicas para evitar contaminação.
