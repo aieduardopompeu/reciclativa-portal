@@ -4,9 +4,11 @@ import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+// Domínio canônico FINAL
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://www.reciclativa.com"
+).replace(/\/+$/, "");
 
 const SLUG = "coleta-seletiva-no-brasil";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -14,14 +16,25 @@ const URL = `${SITE_URL}/blog/${SLUG}`;
 export const metadata: Metadata = {
   title: "Coleta seletiva no Brasil: como funciona e como participar | Reciclativa",
   description:
-    "Entenda como funciona a coleta seletiva no Brasil, como separar resíduos em casa, o que fazer quando não existe coleta no bairro e onde descartar corretamente.",
-  alternates: { canonical: `/blog/${SLUG}` },
+    "Entenda como funciona a coleta seletiva no Brasil, como separar resíduos em casa, evitar contaminação e o que fazer quando não existe coleta no bairro.",
+
+  // ✅ Canonical ABSOLUTO
+  alternates: { canonical: URL },
+
   openGraph: {
     title: "Coleta seletiva no Brasil: como funciona e como participar",
     description:
-      "Guia prático para participar da coleta seletiva: separação correta, erros comuns, alternativas quando não há serviço e como encontrar ecopontos/PEVs.",
-    url: `/blog/${SLUG}`,
+      "Guia prático para participar da coleta seletiva: separação correta, erros comuns, alternativas quando não há serviço e como encontrar ecopontos.",
+    url: URL,
     type: "article",
+    siteName: "Reciclativa",
+    locale: "pt_BR",
+    images: [{ url: `${SITE_URL}/og/blog-default.webp` }],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -32,19 +45,15 @@ export default function Page() {
         siteUrl={SITE_URL}
         url={URL}
         headline="Coleta seletiva no Brasil: como funciona e como participar"
-        description="Guia prático sobre coleta seletiva no Brasil: como separar resíduos, evitar contaminação, o que fazer quando não há coleta e onde levar recicláveis com segurança."
+        description="Guia prático sobre coleta seletiva no Brasil: como separar resíduos, evitar contaminação, o que fazer quando não há coleta e onde descartar corretamente."
         datePublished="2025-12-04"
       />
 
       {/* Breadcrumb */}
       <div className="text-sm text-slate-500">
-        <Link href="/" className="hover:underline">
-          Home
-        </Link>
+        <Link href="/" className="hover:underline">Home</Link>
         <span className="mx-2">/</span>
-        <Link href="/blog" className="hover:underline">
-          Blog
-        </Link>
+        <Link href="/blog" className="hover:underline">Blog</Link>
         <span className="mx-2">/</span>
         <span className="text-slate-700">Coleta seletiva no Brasil</span>
       </div>
@@ -61,8 +70,7 @@ export default function Page() {
 
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 md:text-base">
           A coleta seletiva varia muito de cidade para cidade, mas a lógica é sempre a mesma:
-          separar corretamente para evitar contaminação e facilitar triagem. Aqui você vai entender
-          como funciona, como fazer em casa e o que fazer quando não existe coleta no seu bairro.
+          separar corretamente para evitar contaminação e facilitar a triagem.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">

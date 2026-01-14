@@ -4,9 +4,11 @@ import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+// Domínio canônico FINAL (sem fallback errado)
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://www.reciclativa.com"
+).replace(/\/+$/, "");
 
 const SLUG = "o-que-pode-ser-reciclado";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,13 +17,24 @@ export const metadata: Metadata = {
   title: "O que pode ser reciclado: guia rápido para acertar no descarte | Reciclativa",
   description:
     "Lista prática do que pode (e do que não pode) ser reciclado: papel, plástico, metal, vidro, orgânicos e rejeitos, com dicas para evitar contaminação.",
-  alternates: { canonical: `/blog/${SLUG}` },
+
+  // ✅ Canonical ABSOLUTO
+  alternates: { canonical: URL },
+
   openGraph: {
     title: "O que pode ser reciclado: guia rápido para acertar no descarte",
     description:
       "Lista prática do que pode e do que não pode ser reciclado, com exemplos e dicas para evitar contaminação e melhorar a triagem.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
+    siteName: "Reciclativa",
+    locale: "pt_BR",
+    images: [{ url: `${SITE_URL}/og/blog-default.webp` }],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -38,13 +51,9 @@ export default function Page() {
 
       {/* Breadcrumb */}
       <div className="text-sm text-slate-500">
-        <Link href="/" className="hover:underline">
-          Home
-        </Link>
+        <Link href="/" className="hover:underline">Home</Link>
         <span className="mx-2">/</span>
-        <Link href="/blog" className="hover:underline">
-          Blog
-        </Link>
+        <Link href="/blog" className="hover:underline">Blog</Link>
         <span className="mx-2">/</span>
         <span className="text-slate-700">O que pode ser reciclado</span>
       </div>
@@ -60,10 +69,9 @@ export default function Page() {
         </h1>
 
         <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 md:text-base">
-          Se você já ficou na dúvida na hora de separar o lixo, este guia resolve o essencial. A
-          regra número 1 é simples: recicláveis devem estar <strong>secos</strong> e com{" "}
-          <strong>pouca contaminação</strong>. Abaixo, você encontra listas práticas por material e
-          os erros mais comuns.
+          Se você já ficou na dúvida na hora de separar o lixo, este guia resolve o essencial.
+          A regra número 1 é simples: recicláveis devem estar <strong>secos</strong> e com{" "}
+          <strong>pouca contaminação</strong>.
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
