@@ -6,7 +6,7 @@ import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+  "https://www.reciclativa.com";
 
 const SLUG = "reduzir-lixo-na-rotina";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   title: "Como reduzir lixo na rotina: hábitos simples com grande impacto | Reciclativa",
   description:
     "Guia prático para reduzir lixo no dia a dia com hábitos simples: compras, cozinha, banheiro, limpeza, descarte e organização sem radicalismo.",
-  alternates: { canonical: `/blog/${SLUG}` },
+  alternates: { canonical: URL },
   openGraph: {
     title: "Como reduzir lixo na rotina: hábitos simples com grande impacto",
     description:
       "Guia prático para reduzir lixo no dia a dia com hábitos simples: compras, cozinha, banheiro, limpeza, descarte e organização sem radicalismo.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
   },
 };

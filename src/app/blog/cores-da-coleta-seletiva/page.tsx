@@ -4,9 +4,10 @@ import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://www.reciclativa.com"
+).replace(/\/+$/, "");
 
 const SLUG = "cores-da-coleta-seletiva";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,12 +16,12 @@ export const metadata: Metadata = {
   title: "Cores da coleta seletiva: padrão, variações e como não errar | Reciclativa",
   description:
     "Entenda as cores da coleta seletiva (papel, plástico, vidro, metal, orgânico e rejeito), variações por cidade e dicas práticas para separar corretamente sem confusão.",
-  alternates: { canonical: `/blog/${SLUG}` },
+  alternates: { canonical: URL },
   openGraph: {
     title: "Cores da coleta seletiva: padrão, variações e como não errar",
     description:
       "Guia prático sobre as cores da coleta seletiva e como separar resíduos corretamente, mesmo quando sua cidade usa variações.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
   },
 };

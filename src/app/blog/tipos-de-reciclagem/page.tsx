@@ -6,7 +6,7 @@ import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+  "https://www.reciclativa.com";
 
 const SLUG = "tipos-de-reciclagem";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   title: "Tipos de reciclagem: mecânica, química, energética e orgânica | Reciclativa",
   description:
     "Entenda os tipos de reciclagem (mecânica, química, energética e orgânica), exemplos práticos, quando cada uma é usada e como isso afeta o descarte no dia a dia.",
-  alternates: { canonical: `/blog/${SLUG}` },
+  alternates: { canonical: URL },
   openGraph: {
     title: "Tipos de reciclagem: mecânica, química, energética e orgânica",
     description:
       "Guia didático sobre os principais tipos de reciclagem, com exemplos e orientações para separar resíduos sem erro.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
   },
 };

@@ -6,7 +6,7 @@ import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+  "https://www.reciclativa.com";
 
 const SLUG = "economia-circular-e-linear";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   title: "Economia circular vs. economia linear: diferenças e exemplos | Reciclativa",
   description:
     "Entenda economia circular e linear na prática: principais diferenças, exemplos do dia a dia, benefícios, desafios e como aplicar reduzir, reutilizar e reciclar.",
-  alternates: { canonical: `/blog/${SLUG}` },
+  alternates: { canonical: URL },
   openGraph: {
     title: "Economia circular vs. economia linear: diferenças e exemplos",
     description:
       "Diferenças entre economia circular e linear com exemplos práticos, benefícios e como aplicar reduzir, reutilizar e reciclar no dia a dia e nas empresas.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
   },
 };

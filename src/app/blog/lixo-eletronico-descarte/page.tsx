@@ -5,21 +5,21 @@ import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+  "https://www.reciclativa.com";
 
 const SLUG = "lixo-eletronico-descarte";
 const URL = `${SITE_URL}/blog/${SLUG}`;
 
 export const metadata: Metadata = {
-  title: "Lixo eletrônico: como descartarsrüiar corretamente sem poluir | Reciclativa",
+  title: "Lixo eletrônico: como descartar corretamente sem poluir | Reciclativa",
   description:
     "Guia prático de descarte de lixo eletrônico (e-lixo): o que é, riscos ambientais, como separar por tipo e onde levar com segurança.",
-  alternates: { canonical: `/blog/${SLUG}` },
+  alternates: { canonical: URL },
   openGraph: {
     title: "Lixo eletrônico: como descartar corretamente sem poluir",
     description:
       "Guia prático de descarte de lixo eletrônico (e-lixo): separação por tipo e onde levar.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
   },
 };

@@ -6,7 +6,7 @@ import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+  "https://www.reciclativa.com";
 
 const SLUG = "reciclagem-plastico";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   title: "Reciclagem de plástico: tipos, símbolos e como separar corretamente | Reciclativa",
   description:
     "Entenda reciclagem de plástico na prática: tipos (PET, PEAD, PVC, PP, PS), símbolos, o que pode/não pode, como higienizar e evitar contaminação.",
-  alternates: { canonical: `/blog/${SLUG}` },
+  alternates: { canonical: URL },
   openGraph: {
     title: "Reciclagem de plástico: tipos, símbolos e como separar corretamente",
     description:
       "Entenda reciclagem de plástico na prática: tipos (PET, PEAD, PVC, PP, PS), símbolos, o que pode/não pode, como higienizar e evitar contaminação.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
   },
 };

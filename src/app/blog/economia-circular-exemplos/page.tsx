@@ -6,7 +6,7 @@ import RecommendedLinks from "@/components/RecommendedLinks";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
-  "https://reciclativa-portal.vercel.app";
+  "https://www.reciclativa.com";
 
 const SLUG = "economia-circular-exemplos";
 const URL = `${SITE_URL}/blog/${SLUG}`;
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   title: "Economia circular no Brasil: exemplos práticos e como aplicar | Reciclativa",
   description:
     "Veja exemplos práticos de economia circular no Brasil: logística reversa, retornáveis, cooperativas, reciclagem, reuso e como aplicar no dia a dia e em empresas.",
-  alternates: { canonical: `/blog/${SLUG}` },
+  alternates: { canonical: URL },
   openGraph: {
     title: "Economia circular no Brasil: exemplos práticos e como aplicar",
     description:
       "Exemplos práticos de economia circular no Brasil e um passo a passo para aplicar no dia a dia e em empresas, sem complicar.",
-    url: `/blog/${SLUG}`,
+    url: URL,
     type: "article",
   },
 };
