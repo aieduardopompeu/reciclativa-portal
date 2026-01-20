@@ -148,6 +148,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/faq",
     "/anuncie",
 
+    // Hubs adicionais (importantes e rastreáveis)
+    "/meio-ambiente",
+    "/educacao-ambiental",
+
     // Legais canônicas (mantém apenas estas 3)
     "/politica-de-privacidade",
     "/politica-de-cookies",
