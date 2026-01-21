@@ -179,7 +179,7 @@ export default function Page() {
           {/* Links úteis */}
           <div className="mt-10">
             <RecommendedLinks
-              items={[
+              links={[
                 {
                   href: "/blog/coleta-seletiva-no-brasil",
                   title: "Coleta seletiva no Brasil",

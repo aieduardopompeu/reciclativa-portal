@@ -1,6 +1,7 @@
 // src/app/blog/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import { POSTS, getAllTags, getAllCategories, type CategoryUI, type PostCard } from "@/content/blog/posts";
 
 export const metadata: Metadata = {
   title: "Blog | Reciclativa",
@@ -24,124 +25,9 @@ export const metadata: Metadata = {
   },
 };
 
-type CategoryUI = "Reciclagem" | "Sustentabilidade" | "Guias" | "Economia circular";
-
-type PostCard = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  category: CategoryUI;
-  dateISO: string; // YYYY-MM-DD
-  readMin: number;
-};
-
-const POSTS: PostCard[] = [
-  {
-    slug: "o-que-e-reciclagem",
-    title: "O que é reciclagem: conceito, etapas e por que isso muda tudo",
-    excerpt:
-      "Reciclagem não é “jogar no reciclável”. Veja o que acontece depois da coleta e como separar sem contaminar.",
-    category: "Reciclagem",
-    dateISO: "2025-12-01",
-    readMin: 7,
-  },
-  {
-    slug: "o-que-pode-ser-reciclado",
-    title: "O que pode ser reciclado: guia rápido para acertar no descarte",
-    excerpt: "Um mapa simples por material e o que costuma dar errado na separação.",
-    category: "Guias",
-    dateISO: "2025-12-02",
-    readMin: 8,
-  },
-  {
-    slug: "tipos-de-reciclagem",
-    title: "Tipos de reciclagem: mecânica, química, energética e orgânica",
-    excerpt:
-      "Mecânica, química, energética e orgânica: diferenças e exemplos práticos.",
-    category: "Reciclagem",
-    dateISO: "2025-12-03",
-    readMin: 7,
-  },
-  {
-    slug: "coleta-seletiva-no-brasil",
-    title: "Coleta seletiva no Brasil: como funciona e como participar",
-    excerpt:
-      "Separação correta, ecopontos, cooperativas e alternativas quando não há coleta no seu bairro.",
-    category: "Guias",
-    dateISO: "2025-12-04",
-    readMin: 8,
-  },
-  {
-    slug: "cores-da-coleta-seletiva",
-    title: "Cores da coleta seletiva: padrão, variações e como não errar",
-    excerpt:
-      "Guia direto das cores e o que vai em cada categoria para você não errar na separação.",
-    category: "Guias",
-    dateISO: "2025-12-05",
-    readMin: 6,
-  },
-  {
-    slug: "economia-circular-e-linear",
-    title: "Economia circular vs. economia linear: diferenças e exemplos",
-    excerpt:
-      "O que muda entre linear e circular e como isso aparece no consumo e no descarte.",
-    category: "Economia circular",
-    dateISO: "2025-12-06",
-    readMin: 8,
-  },
-  {
-    slug: "lixo-eletronico-descarte",
-    title: "Lixo eletrônico: como descartar corretamente sem poluir",
-    excerpt:
-      "Onde descartar e-lixo e como evitar contaminação por metais pesados e componentes perigosos.",
-    category: "Sustentabilidade",
-    dateISO: "2025-12-07",
-    readMin: 7,
-  },
-  {
-    slug: "reciclagem-plastico",
-    title: "Reciclagem de plástico: tipos, símbolos e como separar…",
-    excerpt:
-      "PET, PEAD, PP e outros: o que costuma ser aceito e o que dá problema na triagem.",
-    category: "Reciclagem",
-    dateISO: "2025-12-08",
-    readMin: 9,
-  },
-  {
-    slug: "reduzir-lixo-na-rotina",
-    title: "Como reduzir lixo na rotina: 12 hábitos simples que funcionam",
-    excerpt:
-      "Um plano realista para reduzir rejeito: compras, reuso, separação e hábitos do dia a dia.",
-    category: "Sustentabilidade",
-    dateISO: "2025-12-09",
-    readMin: 7,
-  },
-  {
-    slug: "economia-circular-exemplos",
-    title: "Economia circular no Brasil: exemplos práticos e como aplicar",
-    excerpt: "Circularidade na prática: o que já funciona, onde falha e como aplicar.",
-    category: "Economia circular",
-    dateISO: "2025-12-10",
-    readMin: 8,
-  },
-];
-
-const CATEGORY_ORDER: CategoryUI[] = [
-  "Economia circular",
-  "Guias",
-  "Reciclagem",
-  "Sustentabilidade",
-];
-
 function toBRDate(iso: string) {
   const [y, m, d] = iso.split("-").map((n) => Number(n));
   return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
-}
-
-function uniqueCategories(posts: PostCard[]) {
-  const set = new Set<CategoryUI>();
-  posts.forEach((p) => set.add(p.category));
-  return CATEGORY_ORDER.filter((c) => set.has(c));
 }
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -153,18 +39,17 @@ export default async function BlogPage({
 }) {
   const sp = await searchParams;
 
+  // Mantém compatibilidade com seu /blog atual: ?tag=Categoria
   const rawTag = sp?.tag;
   const tagValue = Array.isArray(rawTag) ? rawTag[0] : rawTag;
   const tagParam = (tagValue ?? "").toString().trim();
 
-  const categories = uniqueCategories(POSTS);
-
-  const activeTag = categories.includes(tagParam as CategoryUI)
+  const categories = getAllCategories();
+  const activeCategory = categories.includes(tagParam as CategoryUI)
     ? (tagParam as CategoryUI)
     : null;
 
-  const filtered = activeTag ? POSTS.filter((p) => p.category === activeTag) : POSTS;
-
+  const filtered = activeCategory ? POSTS.filter((p) => p.category === activeCategory) : POSTS;
   const postsSorted = [...filtered].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
 
   const startCards = [
@@ -178,6 +63,8 @@ export default async function BlogPage({
     POSTS.find((p) => p.slug === "o-que-e-reciclagem"),
     POSTS.find((p) => p.slug === "economia-circular-exemplos"),
   ].filter(Boolean) as PostCard[];
+
+  const tags = getAllTags();
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
@@ -243,13 +130,13 @@ export default async function BlogPage({
 
       {/* Conteúdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        {/* CHIPS */}
+        {/* CHIPS: Categorias (filtro no /blog) + Tags (atalhos para páginas de tag) */}
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex flex-wrap items-center gap-2">
             <Link
               href="/blog"
               className={`rounded-full px-3 py-1 text-sm font-semibold ring-1 ${
-                !activeTag
+                !activeCategory
                   ? "bg-emerald-600 text-white ring-emerald-600"
                   : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
               }`}
@@ -262,7 +149,7 @@ export default async function BlogPage({
                 key={c}
                 href={`/blog?tag=${encodeURIComponent(c)}`}
                 className={`rounded-full px-3 py-1 text-sm font-semibold ring-1 ${
-                  activeTag === c
+                  activeCategory === c
                     ? "bg-emerald-600 text-white ring-emerald-600"
                     : "bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
                 }`}
@@ -275,6 +162,39 @@ export default async function BlogPage({
               {postsSorted.length} artigos
             </div>
           </div>
+
+        {/* Tags (estilo "wrap" igual ao print) */}
+        {tags.length > 0 && (
+          <div className="mt-4 border-t border-slate-200 pt-4">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                Tags
+              </p>
+              <span className="text-xs text-slate-500">{tags.length} tags</span>
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              {/* "Todos" (leva para /blog sem filtro) */}
+              <Link
+                href="/blog"
+                className="inline-flex items-center rounded-full bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-white hover:ring-slate-300"
+              >
+                Todos
+              </Link>
+
+              {tags.map((t) => (
+                <Link
+                  key={t}
+                  href={`/blog/tags/${t}`}
+                  className="inline-flex items-center rounded-full bg-white/80 px-3 py-1.5 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-white hover:ring-slate-300"
+                  title={`Ver tag: ${t.replace(/-/g, " ")}`}
+                >
+                  {t.replace(/-/g, " ")}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
         </div>
 
         {/* 2 COLUNAS */}

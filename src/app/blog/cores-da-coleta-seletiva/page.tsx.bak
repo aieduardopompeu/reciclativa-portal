@@ -275,7 +275,7 @@ export default function Page() {
           {/* Links úteis (padrão itad) */}
           <div className="mt-10">
             <RecommendedLinks
-              items={[
+              links={[
                 {
                   href: "/blog/o-que-pode-ser-reciclado",
                   title: "O que pode ser reciclado",

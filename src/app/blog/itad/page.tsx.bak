@@ -210,7 +210,7 @@ export default function Page() {
           {/* Links úteis */}
           <div className="mt-10">
             <RecommendedLinks
-              items={[
+              links={[
                 {
                   href: "/blog/lixo-eletronico-descarte",
                   title: "Lixo eletrônico: descarte correto",

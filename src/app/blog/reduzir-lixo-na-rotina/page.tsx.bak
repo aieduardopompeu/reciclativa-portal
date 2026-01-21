@@ -231,7 +231,7 @@ export default function Page() {
           {/* Links úteis (padrão ITAD: componente) */}
           <div className="mt-10">
             <RecommendedLinks
-              items={[
+              links={[
                 {
                   href: "/reciclagem",
                   title: "Página pilar: Reciclagem",
