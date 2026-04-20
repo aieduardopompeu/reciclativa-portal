@@ -37,7 +37,6 @@ function CloseIcon() {
   );
 }
 
-/* Ícones outline (minimalistas, consistentes) */
 function IconRecycleOutline() {
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
@@ -165,15 +164,48 @@ function IconFolderOutline() {
   );
 }
 
+function IconChartOutline() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        d="M5 19.5h14M8 16V10.5M12 16V7.5M16 16v-3.8"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="m7.8 8.8 3.4-3 2.7 1.9 3.3-3.2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 type NavItem = { href: string; label: string; icon: React.ReactNode };
 
 const nav: NavItem[] = [
+  { href: "/gestao", label: "Gestão", icon: <IconChartOutline /> },
+  { href: "/diretorio", label: "Diretório", icon: <IconFolderOutline /> },
+  { href: "/profissionais", label: "Profissionais", icon: <IconUsersOutline /> },
   { href: "/reciclagem", label: "Reciclagem", icon: <IconRecycleOutline /> },
   { href: "/sustentabilidade", label: "Sustentabilidade", icon: <IconLeafOutline /> },
   { href: "/guias", label: "Guias", icon: <IconBookOutline /> },
   { href: "/blog", label: "Blog", icon: <IconBlogOutline /> },
-  { href: "/profissionais", label: "Profissionais", icon: <IconUsersOutline /> },
-  { href: "/diretorio", label: "Diretório", icon: <IconFolderOutline /> },
+];
+
+const desktopNav = [
+  { href: "/reciclagem", label: "Reciclagem" },
+  { href: "/sustentabilidade", label: "Sustentabilidade" },
+  { href: "/guias", label: "Guias" },
+  { href: "/profissionais", label: "Profissionais" },
+  { href: "/diretorio", label: "Diretório" },
+  { href: "/gestao", label: "Gestão" },
 ];
 
 export function Header() {
@@ -204,20 +236,20 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-emerald-200/80 bg-emerald-50/70 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link
           href="/"
           aria-label="Reciclativa — página inicial"
           className="flex items-center gap-3"
         >
-          {/* Removido priority para não competir com o preload do HERO (LCP). */}
           <Image src="/logo.png" alt="Reciclativa" width={140} height={36} />
         </Link>
 
-        {/* Desktop nav (limpo; sem ícones) */}
-        <nav aria-label="Navegação principal" className="hidden gap-2 md:flex">
-          {nav.map((i) => {
+        <nav aria-label="Navegação principal" className="hidden gap-3 md:flex">
+          {desktopNav.map((i) => {
             const active = isActiveRoute(pathname, i.href);
+            const isGestao = i.href === "/gestao";
+
             return (
               <Link
                 key={i.href}
@@ -227,7 +259,9 @@ export function Header() {
                   "rounded-md px-3 py-2 text-sm transition",
                   active
                     ? "bg-white/70 text-emerald-900"
-                    : "text-slate-700 hover:bg-white/50 hover:text-slate-950"
+                    : isGestao
+                      ? "font-semibold text-slate-900 hover:bg-emerald-50/70 hover:text-emerald-900"
+                      : "text-slate-700 hover:bg-white/50 hover:text-slate-950"
                 )}
               >
                 {i.label}
@@ -237,7 +271,20 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* Botão destacado (desktop) */}
+          <Link
+            href="https://app.reciclativa.com"
+            target="_blank"
+            rel="noreferrer"
+            className={cn(
+              "hidden md:inline-flex items-center justify-center rounded-full px-4 py-2",
+              "text-sm font-semibold text-slate-800",
+              "border border-slate-300 bg-white/80 transition hover:bg-white",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
+            )}
+          >
+            Acessar plataforma
+          </Link>
+
           <Link
             href="/anuncie"
             className={cn(
@@ -266,7 +313,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {open ? (
         <>
           <div
@@ -281,7 +327,7 @@ export function Header() {
               className="fixed left-4 right-4 top-[84px] z-50 overflow-hidden rounded-2xl border border-emerald-200/80 bg-white/95 shadow-lg backdrop-blur sm:left-6 sm:right-6"
             >
               <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-                <p className="text-sm font-semibold text-slate-900">Menu</p>
+                <p className="text-sm font-semibold text-slate-900">Navegação</p>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -322,7 +368,9 @@ export function Header() {
                         {i.icon}
                       </span>
 
-                      <span className="flex-1">{i.label}</span>
+                      <span className={cn("flex-1", i.href === "/gestao" && "font-semibold text-slate-900")}>
+                        {i.label}
+                      </span>
 
                       {active ? (
                         <span
@@ -348,8 +396,17 @@ export function Header() {
 
               <div className="border-t border-slate-200 p-3">
                 <Link
+                  href="https://app.reciclativa.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
+                >
+                  Acessar plataforma
+                </Link>
+
+                <Link
                   href="/anuncie"
-                  className="flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800"
+                  className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800"
                 >
                   Anuncie
                   <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">

@@ -147,6 +147,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contato",
     "/faq",
     "/anuncie",
+    "/gestao",
 
     // Hubs adicionais (importantes e rastreáveis)
     "/meio-ambiente",

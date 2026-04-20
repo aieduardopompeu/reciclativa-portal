@@ -3,8 +3,23 @@ import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const host = req.headers.get("host") || "";
 
-  // Rotas livres
+  const isLocalhost =
+    host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
+
+  const isAppSubdomain =
+    !isLocalhost &&
+    (host === "app.reciclativa.com" || host.startsWith("app.reciclativa.com:"));
+
+  // app.reciclativa.com -> mostra página própria na raiz
+  if (isAppSubdomain && pathname === "/") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/app-home";
+    return NextResponse.rewrite(url);
+  }
+
+  // Rotas livres do admin
   if (pathname === "/admin/login") {
     return NextResponse.next();
   }
@@ -24,5 +39,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/", "/admin/:path*"],
 };

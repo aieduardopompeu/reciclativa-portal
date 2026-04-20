@@ -328,6 +328,72 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* RECICLATIVA GESTÃO */}
+      <section className="border-y border-slate-200 bg-[linear-gradient(135deg,rgba(240,253,244,0.95)_0%,rgba(255,255,255,1)_55%,rgba(248,250,252,1)_100%)]">
+        <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="grid gap-6 overflow-hidden rounded-[28px] border border-slate-200 bg-white/90 p-7 shadow-sm lg:grid-cols-[1.05fr_0.95fr] lg:p-8">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
+                Reciclativa Gestão
+              </p>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+                Sistema para empresas de reciclagem e gestão de resíduos
+              </h2>
+              <p className="mt-4 text-base leading-7 text-slate-700">
+                Conheça a nova frente da Reciclativa para empresas que precisam de mais controle
+                operacional, financeiro, emissão fiscal e organização da rotina em uma plataforma
+                online.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href="/gestao"
+                  className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500"
+                >
+                  Conhecer o sistema
+                </Link>
+                <Link
+                  href="/contato?assunto=reciclativa-gestao"
+                  className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+                >
+                  Solicitar demonstração
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-slate-200 bg-slate-950 p-5 text-white shadow-[0_20px_60px_-35px_rgba(15,23,42,0.8)]">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                    Financeiro
+                  </p>
+                  <p className="mt-2 text-sm text-slate-200">Mais clareza sobre movimentações e rotina administrativa.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                    Emissão fiscal
+                  </p>
+                  <p className="mt-2 text-sm text-slate-200">NFe e NFS-e com uma base mais estruturada para o dia a dia.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                    Operação
+                  </p>
+                  <p className="mt-2 text-sm text-slate-200">Entradas, saídas, processos e usuários em um só ambiente.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-300">
+                    Gestão
+                  </p>
+                  <p className="mt-2 text-sm text-slate-200">Mais visibilidade para acompanhar resultados e decidir melhor.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* DIRETÓRIO + ANUNCIE */}
       <section className="border-y border-slate-200 bg-white">
         <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
