@@ -4,9 +4,7 @@ import "./globals.css";
 
 import { site } from "@/config/site";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import CookieBanner from "@/components/cookies/CookieBanner";
+import ConditionalLayout from "@/components/layout/ConditionalLayout";
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.reciclativa.com").replace(
   /\/+$/,
@@ -29,10 +27,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: `${SITE_URL}/` },
 
-  // ✅ Manifest (PWA) — arquivo em /public/site.webmanifest
   manifest: "/site.webmanifest",
 
-  // ✅ Favicons / Apple / PNGs
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -62,10 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           crossOrigin="anonymous"
         />
 
-        <Header />
-        {children}
-        <Footer />
-        <CookieBanner />
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   );

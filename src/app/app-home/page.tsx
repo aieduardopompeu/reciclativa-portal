@@ -201,7 +201,7 @@ export default function AppHomePage() {
             </div>
           </div>
 
-          <footer className="border-t border-slate-200 py-5">
+          <div className="border-t border-slate-200 py-5">
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
               <p>Reciclativa Gestão — ambiente da plataforma</p>
               <div className="flex flex-wrap items-center gap-4">
@@ -219,7 +219,7 @@ export default function AppHomePage() {
                 </Link>
               </div>
             </div>
-          </footer>
+          </div>
         </div>
       </section>
     </main>
