@@ -200,26 +200,6 @@ export default function AppHomePage() {
               </div>
             </div>
           </div>
-
-          <div className="border-t border-slate-200 py-5">
-            <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
-              <p>Reciclativa Gestão — ambiente da plataforma</p>
-              <div className="flex flex-wrap items-center gap-4">
-                <Link href="https://www.reciclativa.com/gestao" className="hover:text-slate-900">
-                  Gestão
-                </Link>
-                <Link
-                  href="https://www.reciclativa.com/gestao/contato?tipo=comercial"
-                  className="hover:text-slate-900"
-                >
-                  Contato
-                </Link>
-                <Link href="https://www.reciclativa.com" className="hover:text-slate-900">
-                  Portal Reciclativa
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </main>
