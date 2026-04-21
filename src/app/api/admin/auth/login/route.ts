@@ -22,14 +22,14 @@ export async function POST(req: Request) {
     NextResponse.redirect(`https://www.reciclativa.com${to}`, 303);
 
   if (!ADMIN_PASSWORD || !ADMIN_TOKEN) {
-    const back = new URL("/admin/login", origin);
+    const back = new URL("/admin/login", req.url);
     back.searchParams.set("error", "env");
     back.searchParams.set("next", next);
     return NextResponse.redirect(back, 303);
   }
 
   if (password !== ADMIN_PASSWORD) {
-    const back = new URL("/admin/login", origin);
+    const back = new URL("/admin/login", req.url);
     back.searchParams.set("error", "badpass");
     back.searchParams.set("next", next);
     return NextResponse.redirect(back, 303);
