@@ -76,11 +76,21 @@ export function normalizeCity(city: string) {
   return (city || "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9\s-]/g, "")
     .trim()
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
+}
+
+export function normalizeWebsiteUrl(website?: string | null) {
+  const raw = (website ?? "").toString().trim();
+  if (!raw) return undefined;
+
+  if (/^https?:\/\//i.test(raw)) return raw;
+  if (/^\/\//.test(raw)) return `https:${raw}`;
+
+  return `https://${raw.replace(/^\/+/, "")}`;
 }
 
 async function getApprovedFromDB(): Promise<Profissional[]> {
@@ -114,10 +124,9 @@ async function getApprovedFromDB(): Promise<Profissional[]> {
       description: r.description ?? undefined,
       whatsapp: r.whatsapp ?? undefined,
       email: r.email ?? undefined,
-      website: r.website ?? undefined,
+      website: normalizeWebsiteUrl(r.website),
     }));
   } catch {
-    // se DB não estiver disponível localmente, cai no seed (via getAllProfissionais)
     return [];
   }
 }
@@ -127,12 +136,10 @@ export async function getAllProfissionais(): Promise<Profissional[]> {
     ...p,
     uf: normalizeUF(p.uf),
     city: normalizeCityLabel(p.city),
+    website: normalizeWebsiteUrl(p.website),
   }));
 
   const db = await getApprovedFromDB();
-
-  // ✅ Normalização de vazio:
-  // - se não vier nada do DB, pelo menos o DEV_SEED mantém o local utilizável
   return [...db, ...seed];
 }
 

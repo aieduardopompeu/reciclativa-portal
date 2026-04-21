@@ -14,31 +14,28 @@ export default function ConditionalLayout({
 }) {
   const pathname = usePathname() || "/";
   const [hostname, setHostname] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const [checkedHost, setCheckedHost] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setHostname(window.location.hostname);
+      setHostname(window.location.hostname.toLowerCase());
+      setCheckedHost(true);
     }
-    setMounted(true);
   }, []);
 
-  const isAdmin = pathname.startsWith("/admin");
-  const isAppHome = pathname === "/app-home";
-  const isAppSubdomain =
-    hostname === "app.reciclativa.com" ||
-    hostname.startsWith("app.") ||
-    hostname === "localhost";
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isAppHomeRoute = pathname === "/app-home";
+  const isAppSubdomain = hostname === "app.reciclativa.com";
 
-  if (isAdmin) {
+  if (isAdminRoute) {
     return <>{children}</>;
   }
 
-  if (!mounted) {
+  if (!checkedHost) {
     return <>{children}</>;
   }
 
-  if (isAppHome || isAppSubdomain) {
+  if (isAppSubdomain || isAppHomeRoute) {
     return (
       <>
         {children}

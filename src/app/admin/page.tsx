@@ -1,34 +1,46 @@
+import Link from "next/link";
+
 export const dynamic = "force-dynamic";
 
 export default function AdminHome() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <h1 className="text-3xl font-bold">Painel Interno</h1>
-      <p className="mt-2 text-slate-600">
-        Área restrita para operações internas do Reciclativa (checklists, auditorias, aprovações e rotinas).
-      </p>
+    <main className="mx-auto max-w-5xl">
+      <section className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm sm:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+          Painel interno
+        </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        <a
-          href="/admin/tools"
-          className="rounded-2xl border border-black/10 bg-white p-5 hover:bg-slate-50"
-        >
-          <h2 className="text-lg font-semibold">Ferramentas internas</h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Checklists, páginas de aprovação, auditorias, rotinas e utilitários.
-          </p>
-        </a>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">
+          Central administrativa
+        </h1>
 
-        <a
-          href="/admin/profissionais"
-          className="rounded-2xl border border-black/10 bg-white p-5 hover:bg-slate-50"
-        >
-          <h2 className="text-lg font-semibold">Aprovar profissionais</h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Revisar e aprovar cadastros pendentes do diretório.
-          </p>
-        </a>
-      </div>
+        <p className="mt-3 max-w-3xl text-slate-600">
+          Área restrita para operações internas do Reciclativa, incluindo checklists,
+          aprovações, auditorias e rotinas de apoio.
+        </p>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <Link
+            href="/admin/tools"
+            className="rounded-2xl border border-black/10 bg-slate-50 p-5 transition hover:bg-slate-100"
+          >
+            <h2 className="text-lg font-semibold text-slate-900">Ferramentas internas</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Checklists, páginas de apoio, auditorias e utilitários administrativos.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/profissionais"
+            className="rounded-2xl border border-black/10 bg-slate-50 p-5 transition hover:bg-slate-100"
+          >
+            <h2 className="text-lg font-semibold text-slate-900">Aprovar profissionais</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Revisar e aprovar cadastros pendentes do diretório.
+            </p>
+          </Link>
+        </div>
+      </section>
     </main>
   );
 }

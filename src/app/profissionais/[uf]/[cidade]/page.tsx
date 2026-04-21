@@ -8,6 +8,7 @@ import {
   getByUF,
   normalizeUF,
   normalizeCity,
+  normalizeWebsiteUrl,
 } from "@/content/profissionais";
 
 const STATES: Record<string, string> = {
@@ -488,66 +489,70 @@ export default async function ProfissionaisCidadePage({
 
             {isValidUF && hasCityData ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {list.map((p: any) => (
-                  <div
-                    key={p?.id ?? `${p?.name ?? "prof"}-${p?.city ?? ""}-${p?.service ?? ""}`}
-                    className="rounded-2xl border border-black/5 bg-white p-5 hover:bg-slate-50"
-                  >
-                    <div className="text-sm font-semibold text-slate-900">
-                      {p?.name ?? "Profissional"}
-                    </div>
+                {list.map((p: any) => {
+                  const websiteUrl = normalizeWebsiteUrl(p?.website);
 
-                    <div className="mt-1 text-sm text-slate-600">
-                      {p?.service ? (
-                        <span className="font-semibold text-slate-800">{p.service}</span>
+                  return (
+                    <div
+                      key={p?.id ?? `${p?.name ?? "prof"}-${p?.city ?? ""}-${p?.service ?? ""}`}
+                      className="rounded-2xl border border-black/5 bg-white p-5 hover:bg-slate-50"
+                    >
+                      <div className="text-sm font-semibold text-slate-900">
+                        {p?.name ?? "Profissional"}
+                      </div>
+
+                      <div className="mt-1 text-sm text-slate-600">
+                        {p?.service ? (
+                          <span className="font-semibold text-slate-800">{p.service}</span>
+                        ) : null}
+                        {p?.category ? <span> · {p.category}</span> : null}
+                      </div>
+
+                      {p?.description ? (
+                        <p className="mt-3 text-sm text-slate-600">{p.description}</p>
                       ) : null}
-                      {p?.category ? <span> · {p.category}</span> : null}
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {p?.whatsapp ? (
+                          <a
+                            className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
+                            href={`https://wa.me/${String(p.whatsapp).replace(/\D/g, "")}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            WhatsApp
+                          </a>
+                        ) : null}
+
+                        {p?.email ? (
+                          <a
+                            className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
+                            href={`mailto:${p.email}`}
+                          >
+                            E-mail
+                          </a>
+                        ) : null}
+
+                        {websiteUrl ? (
+                          <a
+                            className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
+                            href={websiteUrl}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                          >
+                            Site
+                          </a>
+                        ) : null}
+
+                        {!p?.whatsapp && !p?.email && !websiteUrl ? (
+                          <span className="rounded-md border border-black/5 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-600">
+                            Contato não informado
+                          </span>
+                        ) : null}
+                      </div>
                     </div>
-
-                    {p?.description ? (
-                      <p className="mt-3 text-sm text-slate-600">{p.description}</p>
-                    ) : null}
-            
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p?.whatsapp ? (
-                    <a
-                      className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
-                      href={`https://wa.me/${String(p.whatsapp).replace(/\D/g, "")}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      WhatsApp
-                    </a>
-                  ) : null}
-
-                  {p?.email ? (
-                    <a
-                      className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
-                      href={`mailto:${p.email}`}
-                    >
-                      E-mail
-                    </a>
-                  ) : null}
-
-                  {p?.website ? (
-                    <a
-                      className="rounded-md border border-black/5 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50"
-                      href={p.website}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Site
-                    </a>
-                  ) : null}
-
-                  {!p?.whatsapp && !p?.email && !p?.website ? (
-                    <span className="rounded-md border border-black/5 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-600">
-                      Contato não informado
-                    </span>
-                  ) : null}
-                </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="mt-6 rounded-xl border border-black/5 bg-slate-50 p-4 text-sm text-slate-700">
