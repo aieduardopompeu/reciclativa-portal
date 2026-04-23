@@ -1,7 +1,100 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import { canAccessModule } from "@/lib/saas/permissions";
-import { saasNavigation } from "@/lib/saas/navigation";
+import { saasNavigation, saasNavGroups, type SaaSNavGroupKey, type SaaSNavItem } from "@/lib/saas/navigation";
 import type { SaaSSessionUser } from "@/types/saas";
+
+function isItemActive(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+      className={`h-4 w-4 text-slate-500 transition-transform ${open ? "rotate-180" : "rotate-0"}`}
+    >
+      <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function SidebarNav({ items }: { items: SaaSNavItem[] }) {
+  const pathname = usePathname();
+
+  const groupedItems = useMemo(
+    () =>
+      saasNavGroups
+        .map((group) => ({
+          ...group,
+          items: items.filter((item) => item.group === group.key),
+        }))
+        .filter((group) => group.items.length > 0),
+    [items],
+  );
+
+  const activeGroup =
+    groupedItems.find((group) => group.items.some((item) => isItemActive(pathname, item.href)))?.key ??
+    groupedItems[0]?.key ??
+    null;
+
+  const [openGroup, setOpenGroup] = useState<SaaSNavGroupKey | null>(activeGroup);
+
+  return (
+    <nav className="mt-4 space-y-3">
+      {groupedItems.map((group) => {
+        const isOpen = openGroup === group.key;
+        const hasActiveItem = group.items.some((item) => isItemActive(pathname, item.href));
+
+        return (
+          <div key={group.key} className="rounded-2xl border border-black/5 bg-slate-50/80">
+            <button
+              type="button"
+              onClick={() => setOpenGroup((current) => (current === group.key ? null : group.key))}
+              className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left transition ${
+                hasActiveItem ? "bg-emerald-50 text-emerald-800" : "hover:bg-slate-100"
+              }`}
+              aria-expanded={isOpen}
+            >
+              <span className="text-sm font-semibold uppercase tracking-[0.14em]">
+                {group.label}
+              </span>
+              <Chevron open={isOpen} />
+            </button>
+
+            {isOpen ? (
+              <div className="space-y-2 border-t border-black/5 px-3 py-3">
+                {group.items.map((item) => {
+                  const active = isItemActive(pathname, item.href);
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`block rounded-2xl border px-4 py-3 transition ${
+                        active
+                          ? "border-emerald-200 bg-white shadow-sm"
+                          : "border-transparent bg-white/70 hover:border-black/5 hover:bg-white"
+                      }`}
+                    >
+                      <div className="text-sm font-semibold text-slate-900">{item.label}</div>
+                      <div className="mt-1 text-xs text-slate-600">{item.description}</div>
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </nav>
+  );
+}
 
 export default function SaaSShell({
   user,
@@ -10,15 +103,13 @@ export default function SaaSShell({
   user: SaaSSessionUser;
   children: React.ReactNode;
 }) {
-  const navItems = saasNavigation.filter((item) =>
-    canAccessModule(user.role, item.module),
-  );
+  const navItems = saasNavigation.filter((item) => canAccessModule(user.role, item.module));
 
   return (
     <div className="min-h-screen bg-[#f6faf7] text-slate-900">
       <div className="mx-auto flex w-full max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:px-8">
-        <aside className="hidden w-72 shrink-0 lg:block">
-          <div className="sticky top-6 rounded-3xl border border-black/10 bg-white p-4 shadow-sm">
+        <aside className="w-full shrink-0 lg:sticky lg:top-6 lg:block lg:h-fit lg:w-72">
+          <div className="rounded-3xl border border-black/10 bg-white p-4 shadow-sm">
             <div className="border-b border-black/5 pb-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
                 Reciclativa Gestão
@@ -34,18 +125,7 @@ export default function SaaSShell({
               </p>
             </div>
 
-            <nav className="mt-4 space-y-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block rounded-2xl border border-black/5 bg-slate-50 px-4 py-3 transition hover:bg-slate-100"
-                >
-                  <div className="text-sm font-semibold text-slate-900">{item.label}</div>
-                  <div className="mt-1 text-xs text-slate-600">{item.description}</div>
-                </Link>
-              ))}
-            </nav>
+            <SidebarNav items={navItems} />
           </div>
         </aside>
 
