@@ -1,12 +1,21 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { sql } from "@vercel/postgres";
+import { createHash, randomBytes } from "crypto";
+import { redirect } from "next/navigation";
 import type { SaaSRole, SaaSSessionUser } from "@/types/saas";
 
+export const SAAS_SESSION_COOKIE = "saas-session";
+export const SAAS_SESSION_MAX_AGE = 60 * 60 * 24 * 7;
+
 type SaaSUserRow = {
+  session_id: string;
   user_id: string;
   user_name: string;
   user_email: string;
   user_role: SaaSRole;
+  must_change_password: boolean;
+  password_changed_at: Date | null;
+  mfa_enabled: boolean;
   organization_id: string;
   organization_legal_name: string;
   organization_trade_name: string | null;
@@ -24,134 +33,185 @@ const allowedRoles: SaaSRole[] = [
   "viewer",
 ];
 
+function sha256(value: string) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
 function normalizeRole(value: unknown): SaaSRole {
   return allowedRoles.includes(value as SaaSRole)
     ? (value as SaaSRole)
     : "org_admin";
 }
 
-async function findSaaSUserByEmail(email: string): Promise<SaaSSessionUser | null> {
-  const normalizedEmail = (email || "").trim().toLowerCase();
-  if (!normalizedEmail) return null;
+async function resolveRequestMeta(req?: Request) {
+  if (req) {
+    return {
+      ip:
+        req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+        req.headers.get("x-real-ip") ||
+        "",
+      userAgent: req.headers.get("user-agent") || "",
+    };
+  }
+
+  const hdrs = await headers();
+  return {
+    ip:
+      hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      hdrs.get("x-real-ip") ||
+      "",
+    userAgent: hdrs.get("user-agent") || "",
+  };
+}
+
+function mapRow(row: SaaSUserRow): SaaSSessionUser {
+  return {
+    id: row.user_id,
+    name: row.user_name,
+    email: row.user_email,
+    role: normalizeRole(row.user_role),
+    mustChangePassword: Boolean(row.must_change_password),
+    passwordChangedAt: row.password_changed_at,
+    mfaEnabled: Boolean(row.mfa_enabled),
+    organization: {
+      id: row.organization_id,
+      legalName: row.organization_legal_name,
+      tradeName: row.organization_trade_name,
+    },
+    unit: row.unit_id
+      ? {
+          id: row.unit_id,
+          name: row.unit_name || "Unidade",
+        }
+      : null,
+  };
+}
+
+async function findUserBySessionToken(token: string): Promise<SaaSSessionUser | null> {
+  const tokenHash = sha256(token);
 
   const { rows } = await sql<SaaSUserRow>`
     select
-      su.id as user_id,
+      sus.id::text as session_id,
+      su.id::text as user_id,
       su.name as user_name,
       su.email as user_email,
       su.role as user_role,
-      o.id as organization_id,
+      coalesce(su.must_change_password, false) as must_change_password,
+      su.password_changed_at,
+      coalesce(su.mfa_enabled, false) as mfa_enabled,
+      o.id::text as organization_id,
       o.legal_name as organization_legal_name,
       o.trade_name as organization_trade_name,
-      ou.id as unit_id,
+      ou.id::text as unit_id,
       ou.name as unit_name
-    from saas_users su
+    from saas_user_sessions sus
+    inner join saas_users su
+      on su.id = sus.user_id
     inner join organizations o
       on o.id = su.organization_id
     left join organization_units ou
       on ou.id = su.unit_id
-    where lower(su.email) = ${normalizedEmail}
+    where sus.session_token_hash = ${tokenHash}
+      and sus.revoked_at is null
+      and sus.expires_at > now()
       and su.is_active = true
     limit 1
   `;
 
-  const row = rows[0];
-  if (!row) return null;
-
-  return {
-    id: row.user_id,
-    name: row.user_name,
-    email: row.user_email,
-    role: normalizeRole(row.user_role),
-    organization: {
-      id: row.organization_id,
-      legalName: row.organization_legal_name,
-      tradeName: row.organization_trade_name,
-    },
-    unit: row.unit_id
-      ? {
-          id: row.unit_id,
-          name: row.unit_name || "Unidade",
-        }
-      : null,
-  };
+  return rows[0] ? mapRow(rows[0]) : null;
 }
 
-async function findFirstActiveSaaSUser(): Promise<SaaSSessionUser | null> {
-  const { rows } = await sql<SaaSUserRow>`
-    select
-      su.id as user_id,
-      su.name as user_name,
-      su.email as user_email,
-      su.role as user_role,
-      o.id as organization_id,
-      o.legal_name as organization_legal_name,
-      o.trade_name as organization_trade_name,
-      ou.id as unit_id,
-      ou.name as unit_name
-    from saas_users su
-    inner join organizations o
-      on o.id = su.organization_id
-    left join organization_units ou
-      on ou.id = su.unit_id
-    where su.is_active = true
-    order by su.created_at asc
-    limit 1
+export async function createSaaSSession(params: {
+  userId: string;
+  req?: Request;
+}) {
+  const token = randomBytes(32).toString("hex");
+  const tokenHash = sha256(token);
+  const meta = await resolveRequestMeta(params.req);
+
+  await sql`
+    insert into saas_user_sessions (
+      user_id,
+      session_token_hash,
+      expires_at,
+      ip_address,
+      user_agent
+    )
+    values (
+      ${params.userId},
+      ${tokenHash},
+      now() + interval '7 days',
+      ${meta.ip || null},
+      ${meta.userAgent || null}
+    )
   `;
 
-  const row = rows[0];
-  if (!row) return null;
-
-  return {
-    id: row.user_id,
-    name: row.user_name,
-    email: row.user_email,
-    role: normalizeRole(row.user_role),
-    organization: {
-      id: row.organization_id,
-      legalName: row.organization_legal_name,
-      tradeName: row.organization_trade_name,
-    },
-    unit: row.unit_id
-      ? {
-          id: row.unit_id,
-          name: row.unit_name || "Unidade",
-        }
-      : null,
-  };
+  return token;
 }
 
-/**
- * Sessão SaaS ligada ao banco real.
- *
- * Estratégia atual:
- * 1. tenta cookie "saas-user-email"
- * 2. tenta env SAAS_SEED_EMAIL
- * 3. tenta o seed padrão admin@reciclativa-teste.local
- * 4. faz fallback para o primeiro usuário ativo
- *
- * Isso permite avançar na Sprint 1 sem mexer no /admin atual.
- */
+export async function setSaaSSessionCookie(token: string) {
+  const store = await cookies();
+  store.set(SAAS_SESSION_COOKIE, token, {
+    path: "/",
+    maxAge: SAAS_SESSION_MAX_AGE,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+}
+
+export async function clearSaaSSessionCookie() {
+  const store = await cookies();
+  store.set(SAAS_SESSION_COOKIE, "", {
+    path: "/",
+    maxAge: 0,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+}
+
+export async function getCurrentSaaSApiUser(): Promise<SaaSSessionUser | null> {
+  const store = await cookies();
+  const token = store.get(SAAS_SESSION_COOKIE)?.value || "";
+  if (!token) return null;
+
+  return findUserBySessionToken(token);
+}
+
 export async function getCurrentSaaSUser(): Promise<SaaSSessionUser> {
-  const cookieStore = await cookies();
+  const user = await getCurrentSaaSApiUser();
+  if (!user) {
+    redirect("/app/login");
+  }
+  return user;
+}
 
-  const emailCandidates = [
-    cookieStore.get("saas-user-email")?.value,
-    process.env.SAAS_SEED_EMAIL,
-    "admin@reciclativa-teste.local",
-  ]
-    .map((value) => (value || "").trim().toLowerCase())
-    .filter(Boolean);
+export async function requireSaaSAppReady() {
+  const user = await getCurrentSaaSUser();
 
-  for (const email of emailCandidates) {
-    const found = await findSaaSUserByEmail(email);
-    if (found) return found;
+  if (user.mustChangePassword) {
+    redirect("/app/primeiro-acesso");
   }
 
-  const fallback = await findFirstActiveSaaSUser();
-  if (fallback) return fallback;
+  if (!user.mfaEnabled) {
+    redirect("/app/mfa/setup");
+  }
 
-  throw new Error(
-    "Nenhum usuário SaaS ativo foi encontrado. Verifique migrations, seeds e a tabela saas_users.",
-  );
+  return user;
+}
+
+export async function revokeCurrentSaaSSession() {
+  const store = await cookies();
+  const token = store.get(SAAS_SESSION_COOKIE)?.value || "";
+  if (!token) return;
+
+  const tokenHash = sha256(token);
+  await sql`
+    update saas_user_sessions
+    set revoked_at = now()
+    where session_token_hash = ${tokenHash}
+      and revoked_at is null
+  `;
 }

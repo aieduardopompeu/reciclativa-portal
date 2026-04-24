@@ -1,52 +1,50 @@
+import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
+import { createSaaSSession, setSaaSSessionCookie } from "@/lib/saas/session";
 
 export const runtime = "nodejs";
 
-function safeNextPath(nextRaw: string) {
-  if (!nextRaw) return "/admin/profissionais";
-  if (!nextRaw.startsWith("/admin")) return "/admin/profissionais";
-  return nextRaw;
+function buildRedirect(req: Request, path: string) {
+  const res = NextResponse.redirect(new URL(path, req.url), 303);
+  res.headers.set("Cache-Control", "no-store");
+  return res;
 }
+
+type UserRow = {
+  id: string;
+  must_change_password: boolean;
+};
 
 export async function POST(req: Request) {
   const form = await req.formData().catch(() => null);
-
+  const email = (form?.get("email") || "").toString().trim().toLowerCase();
   const password = (form?.get("password") || "").toString();
-  const nextRaw = (form?.get("next") || "/admin/profissionais").toString();
-  const next = safeNextPath(nextRaw);
 
-  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
-  const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
-
-  const redirect303 = (to: string) =>
-    NextResponse.redirect(`https://www.reciclativa.com${to}`, 303);
-
-  if (!ADMIN_PASSWORD || !ADMIN_TOKEN) {
-    const back = new URL("/admin/login", req.url);
-    back.searchParams.set("error", "env");
-    back.searchParams.set("next", next);
-    return NextResponse.redirect(back, 303);
+  if (!email || !password) {
+    return buildRedirect(req, "/app/login?error=invalid_credentials");
   }
 
-  if (password !== ADMIN_PASSWORD) {
-    const back = new URL("/admin/login", req.url);
-    back.searchParams.set("error", "badpass");
-    back.searchParams.set("next", next);
-    return NextResponse.redirect(back, 303);
+  const result = await sql<UserRow>`
+    select
+      id::text,
+      coalesce(must_change_password, false) as must_change_password
+    from saas_users
+    where lower(email) = ${email}
+      and password_hash = crypt(${password}, password_hash)
+      and is_active = true
+    limit 1
+  `;
+
+  const user = result.rows[0];
+  if (!user) {
+    return buildRedirect(req, "/app/login?error=invalid_credentials");
   }
 
-  // Nome do cookie deve bater com o middleware
-const isProd = process.env.NODE_ENV === "production";
-
-  const res = redirect303(next);
-
-  res.cookies.set("admin-token", ADMIN_TOKEN, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 12,
+  const token = await createSaaSSession({
+    userId: user.id,
+    req,
   });
+  await setSaaSSessionCookie(token);
 
-  return res;
+  return buildRedirect(req, user.must_change_password ? "/app/primeiro-acesso" : "/app/dashboard");
 }

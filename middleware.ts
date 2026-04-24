@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const ADMIN_MASTER_SESSION_COOKIE = "admin-master-session";
+
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const { pathname, search } = req.nextUrl;
   const host = req.headers.get("host") || "";
 
   const isLocalhost =
@@ -12,21 +14,28 @@ export function middleware(req: NextRequest) {
     !isLocalhost &&
     (host === "app.reciclativa.com" || host.startsWith("app.reciclativa.com:"));
 
-  // app.reciclativa.com -> mostra página própria na raiz
   if (isAppSubdomain && pathname === "/") {
     const url = req.nextUrl.clone();
     url.pathname = "/app-home";
     return NextResponse.rewrite(url);
   }
 
-  // Rotas livres do admin
   if (pathname === "/admin/login") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/admin-login";
+    url.search = search;
+    return NextResponse.rewrite(url);
+  }
+
+  if (
+    pathname === "/admin-login" ||
+    pathname.startsWith("/api/admin/auth/login")
+  ) {
     return NextResponse.next();
   }
 
-  // Protege /admin/*
   if (pathname.startsWith("/admin")) {
-    const token = req.cookies.get("admin-token")?.value;
+    const token = req.cookies.get(ADMIN_MASTER_SESSION_COOKIE)?.value;
 
     if (!token) {
       const loginUrl = new URL("/admin/login", req.url);
@@ -39,5 +48,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/admin/:path*"],
+  matcher: ["/", "/admin/:path*", "/admin-login", "/api/admin/auth/login"],
 };

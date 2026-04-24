@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import SaaSShell from "@/components/saas/saas-shell";
-import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { requireSaaSAppReady } from "@/lib/saas/session";
 
 export const metadata: Metadata = {
   title: "Reciclativa Gestão | App",
@@ -16,7 +16,7 @@ export default async function SaaSAppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentSaaSUser();
+  const user = await requireSaaSAppReady();
 
   return <SaaSShell user={user}>{children}</SaaSShell>;
 }

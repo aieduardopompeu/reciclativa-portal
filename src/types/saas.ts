@@ -38,6 +38,9 @@ export type SaaSSessionUser = {
   name: string;
   email: string;
   role: SaaSRole;
+  mustChangePassword: boolean;
+  passwordChangedAt?: Date | null;
+  mfaEnabled: boolean;
   organization: SaaSOrganization;
   unit?: SaaSUnit | null;
 };

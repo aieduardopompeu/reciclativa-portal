@@ -141,8 +141,16 @@ export default function SaaSShell({
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-slate-50 px-4 py-2 text-sm text-slate-700">
-                {user.email}
+              <div className="flex items-center gap-3">
+                <div className="rounded-2xl bg-slate-50 px-4 py-2 text-sm text-slate-700">
+                  {user.email}
+                </div>
+                <Link
+                  href="/app/logout"
+                  className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+                >
+                  Sair
+                </Link>
               </div>
             </div>
           </header>

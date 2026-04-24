@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { requireAdminMasterReady } from "../../../lib/admin-master-auth";
 
 type ProfRow = {
   id: number;
@@ -19,17 +19,6 @@ type ProfRow = {
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-
-async function mustAuthByCookie() {
-  const expected = process.env.ADMIN_TOKEN;
-  if (!expected) return notFound();
-
-  // Next 16: cookies() é async
-  const store = await cookies();
-  const token = store.get("admin-token")?.value;
-
-  if (!token || token !== expected) return notFound();
-}
 
 function fmtDate(d: Date | null) {
   if (!d) return "—";
@@ -49,19 +38,25 @@ function safeStatus(v?: string | null) {
   return "";
 }
 
+async function resolveSearchParams(
+  value?: { status?: string } | Promise<{ status?: string }>
+): Promise<{ status?: string }> {
+  if (!value) return {};
+  if (typeof (value as Promise<{ status?: string }>).then === "function") {
+    return (await value) ?? {};
+  }
+  return value;
+}
+
 export default async function AdminProfissionaisPage({
   searchParams,
 }: {
-  // No Next 16, pode vir como Promise em rotas dinâmicas
-  searchParams: Promise<{ status?: string }>;
+  searchParams?: { status?: string } | Promise<{ status?: string }>;
 }) {
-  // Auth via COOKIE (não via query token)
-  await mustAuthByCookie();
-
-  const sp = await searchParams;
+  await requireAdminMasterReady("/admin/profissionais");
+  const sp = await resolveSearchParams(searchParams);
   const requested = safeStatus(sp.status);
 
-  // Contadores
   const [{ pending_count }] = await sql<{ pending_count: number }>`
     select count(*)::int as pending_count
     from profissionais
@@ -80,12 +75,10 @@ export default async function AdminProfissionaisPage({
     where status = 'rejected'
   `.then((r) => r.rows);
 
-  // View padrão
   const status =
     requested ||
     (pending_count > 0 ? "pending" : approved_count > 0 ? "approved" : "rejected");
 
-  // Lista
   const { rows } = await sql<ProfRow>`
     select id, status, name, uf, city, category, service, whatsapp, email, website, created_at
     from profissionais
@@ -99,7 +92,6 @@ export default async function AdminProfissionaisPage({
     redirect(`/admin/profissionais?status=${encodeURIComponent(status)}`);
   }
 
-  // Endpoint das ações
   const statusActionUrl = "/api/admin/profissionais/status";
 
   return (
@@ -251,14 +243,13 @@ export default async function AdminProfissionaisPage({
                     </div>
 
                     <div className="flex min-w-[220px] flex-col gap-2">
-                      {/* Aprovar */}
                       {status !== "approved" ? (
                         <form method="post" action={statusActionUrl}>
                           <input type="hidden" name="id" value={p.id} />
                           <input type="hidden" name="action" value="approve" />
                           <input type="hidden" name="returnTo" value={status} />
                           <button
-                            className="w-full rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                            className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
                             type="submit"
                           >
                             Aprovar
@@ -266,55 +257,27 @@ export default async function AdminProfissionaisPage({
                         </form>
                       ) : null}
 
-                      {/* Rejeitar */}
                       {status !== "rejected" ? (
-                        <details className="rounded-xl border border-black/10 bg-white p-3">
-                          <summary className="cursor-pointer text-sm font-semibold text-slate-800">
-                            Rejeitar…
-                          </summary>
-
-                          <form
-                            method="post"
-                            action={statusActionUrl}
-                            className="mt-3 space-y-3"
+                        <form method="post" action={statusActionUrl}>
+                          <input type="hidden" name="id" value={p.id} />
+                          <input type="hidden" name="action" value="reject" />
+                          <input type="hidden" name="returnTo" value={status} />
+                          <textarea
+                            name="reason"
+                            className="min-h-[88px] rounded-xl border border-black/10 px-3 py-2 text-sm"
+                            placeholder="Motivo da rejeição (opcional)"
+                          />
+                          <label className="mt-2 flex items-center gap-2 text-xs text-slate-600">
+                            <input type="checkbox" name="addToBlacklist" value="1" />
+                            Adicionar e-mail/site/WhatsApp à blacklist, se houver
+                          </label>
+                          <button
+                            className="mt-2 rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+                            type="submit"
                           >
-                            <input type="hidden" name="id" value={p.id} />
-                            <input type="hidden" name="action" value="reject" />
-                            <input type="hidden" name="returnTo" value={status} />
-
-                            <div>
-                              <label className="text-xs font-semibold text-slate-700">
-                                Motivo (opcional)
-                              </label>
-                              <textarea
-                                name="reason"
-                                className="mt-2 w-full rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600"
-                                rows={3}
-                                placeholder="Ex.: dados incompletos / contato inválido..."
-                              />
-                            </div>
-
-                            <label className="flex items-start gap-2 text-sm text-slate-700">
-                              <input
-                                type="checkbox"
-                                name="addToBlacklist"
-                                value="1"
-                                className="mt-1 h-4 w-4 accent-emerald-600"
-                              />
-                              <span>
-                                Adicionar à <strong>blacklist</strong> (se
-                                existir tabela).
-                              </span>
-                            </label>
-
-                            <button
-                              className="w-full rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
-                              type="submit"
-                            >
-                              Confirmar rejeição
-                            </button>
-                          </form>
-                        </details>
+                            Rejeitar
+                          </button>
+                        </form>
                       ) : null}
                     </div>
                   </div>
@@ -323,10 +286,6 @@ export default async function AdminProfissionaisPage({
             })}
           </div>
         )}
-
-        <div className="mt-8 border-t border-black/5 pt-6 text-sm text-slate-600">
-          Acesso protegido por cookie (admin-token).
-        </div>
       </section>
     </main>
   );

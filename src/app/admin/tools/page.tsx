@@ -1,3 +1,5 @@
+import { requireAdminMasterReady } from "../../../lib/admin-master-auth";
+
 export const dynamic = "force-dynamic";
 
 const tools = [
@@ -7,12 +9,11 @@ const tools = [
     href: "/admin/tools/adsense-checklist",
     tag: "Checklist",
   },
-  // Futuro:
-  // { title: "Aprovação AdSense (status)", desc: "Checklist + evidências + links", href: "/admin/tools/adsense-approval", tag: "Operação" },
-  // { title: "Checklist SEO", desc: "Auditoria de indexação e conteúdo", href: "/admin/tools/seo-checklist", tag: "Checklist" },
 ];
 
-export default function ToolsHome() {
+export default async function ToolsHome() {
+  await requireAdminMasterReady("/admin/tools");
+
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
       <div className="flex items-start justify-between gap-4">

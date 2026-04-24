@@ -1,16 +1,24 @@
 import { NextResponse } from "next/server";
+import {
+  ADMIN_MASTER_SESSION_COOKIE,
+  revokeCurrentAdminMasterSession,
+} from "../../../lib/admin-master-auth";
+import { clearAdminMasterMfaCookies } from "../../../lib/admin-master-mfa";
 
 export async function GET(req: Request) {
+  await revokeCurrentAdminMasterSession();
+  await clearAdminMasterMfaCookies();
+
   const isProd = process.env.NODE_ENV === "production";
   const res = NextResponse.redirect(new URL("/admin/login", req.url));
 
-  // logout = remove o cookie (não precisa ADMIN_TOKEN)
-  res.cookies.set("admin-token", "", {
+  res.cookies.set(ADMIN_MASTER_SESSION_COOKIE, "", {
     path: "/",
     maxAge: 0,
-    ...(isProd ? { domain: ".reciclativa.com" } : {}),
+    httpOnly: true,
+    secure: isProd,
+    sameSite: "lax",
   });
 
   return res;
 }
-
