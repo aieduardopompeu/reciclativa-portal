@@ -1,6 +1,7 @@
 export type SaaSRole =
   | "super_admin"
   | "org_admin"
+  | "org_admin_full"
   | "manager_operational"
   | "manager_financial"
   | "manager_commercial"

@@ -27,6 +27,19 @@ const moduleAccess: Record<SaaSRole, SaaSModule[]> = {
     "inventory_locations",
     "audit_logs",
   ],
+  org_admin_full: [
+    "dashboard",
+    "company",
+    "units",
+    "users",
+    "customers",
+    "suppliers",
+    "carriers",
+    "material_categories",
+    "materials",
+    "inventory_locations",
+    "audit_logs",
+  ],
   manager_operational: [
     "dashboard",
     "customers",
@@ -60,6 +73,7 @@ const moduleAccess: Record<SaaSRole, SaaSModule[]> = {
 const actionAccess: Record<SaaSRole, SaaSAction[]> = {
   super_admin: ["view", "create", "update", "archive"],
   org_admin: ["view", "create", "update", "archive"],
+  org_admin_full: ["view", "create", "update", "archive"],
   manager_operational: ["view", "create", "update"],
   manager_financial: ["view", "create", "update"],
   manager_commercial: ["view", "create", "update"],
