@@ -182,14 +182,10 @@ export async function getCurrentSaaSApiUser(): Promise<SaaSSessionUser | null> {
 
 export async function getCurrentSaaSUser(): Promise<SaaSSessionUser> {
   const user = await getCurrentSaaSApiUser();
+
   if (!user) {
     redirect("/app/login");
   }
-  return user;
-}
-
-export async function requireSaaSAppReady() {
-  const user = await getCurrentSaaSUser();
 
   if (user.mustChangePassword) {
     redirect("/app/primeiro-acesso");
@@ -200,6 +196,10 @@ export async function requireSaaSAppReady() {
   }
 
   return user;
+}
+
+export async function requireSaaSAppReady() {
+  return getCurrentSaaSUser();
 }
 
 export async function revokeCurrentSaaSSession() {

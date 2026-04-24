@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import QRCode from "qrcode";
-import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { getCurrentSaaSApiUser } from "@/lib/saas/session";
 import {
   buildOtpAuthUri,
   getSaaSMfaSetupSecretCookie,
@@ -10,7 +10,15 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function SaaSMfaSetupPage() {
-  const user = await getCurrentSaaSUser();
+  const user = await getCurrentSaaSApiUser();
+
+  if (!user) {
+    redirect("/app/login");
+  }
+
+  if (user.mustChangePassword) {
+    redirect("/app/primeiro-acesso");
+  }
 
   if (user.mfaEnabled) {
     redirect("/app/dashboard");

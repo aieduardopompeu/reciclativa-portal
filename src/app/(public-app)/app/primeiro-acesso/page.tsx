@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { getCurrentSaaSApiUser } from "@/lib/saas/session";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -39,9 +39,13 @@ export default async function SaaSFirstAccessPage({
 }: {
   searchParams?: SearchParamsShape | Promise<SearchParamsShape>;
 }) {
-  const user = await getCurrentSaaSUser();
+  const user = await getCurrentSaaSApiUser();
+  if (!user) {
+    redirect("/app/login");
+  }
+
   if (!user.mustChangePassword) {
-    redirect("/app/dashboard");
+    redirect(user.mfaEnabled ? "/app/dashboard" : "/app/mfa/setup");
   }
 
   const sp = await resolveSearchParams(searchParams);

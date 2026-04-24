@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -62,6 +62,12 @@ export default function AppHomePage() {
               >
                 Cadastre-se
               </Link>
+              <Link
+                href="/app/login"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+              >
+                Login
+              </Link>
             </div>
           </header>
 
@@ -94,6 +100,12 @@ export default function AppHomePage() {
                   Cadastre-se
                 </Link>
                 <Link
+                  href="/app/login"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
+                >
+                  Login
+                </Link>
+                <Link
                   href="https://www.reciclativa.com/gestao/contato?tipo=comercial"
                   className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
                 >
@@ -119,94 +131,80 @@ export default function AppHomePage() {
                 <div className="rounded-2xl border border-emerald-200 bg-emerald-50/90 p-4">
                   <p className="text-sm font-semibold text-slate-900">Relacionamento</p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                    Apoio comercial para acompanhar contatos, propostas e oportunidades.
+                    Estrutura para organizar acessos e apoiar o relacionamento comercial.
                   </p>
                 </div>
               </div>
-
-              <p className="mt-8 max-w-2xl text-sm leading-relaxed text-slate-600">
-                Este endereço já pode ser usado como ponto de entrada da plataforma. Enquanto a
-                aplicação completa evolui, ele funciona como uma porta oficial da Reciclativa Gestão.
-              </p>
             </div>
 
-            <div className="lg:justify-self-end">
-              <div className="rounded-[28px] border border-slate-200 bg-[#07122b] p-4 shadow-[0_24px_80px_rgba(15,23,42,0.22)] sm:p-5">
-                <div className="mx-auto max-w-[420px] rounded-[24px] border border-white/10 bg-[#091733] p-5 text-white">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-                        Plataforma
-                      </p>
-                      <h2 className="mt-2 text-2xl font-bold">Reciclativa Gestão</h2>
-                    </div>
-                    <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-200">
-                      Em evolução
-                    </span>
+            <div className="relative">
+              <div className="rounded-[32px] border border-slate-200 bg-white/90 p-5 shadow-xl backdrop-blur">
+                <div className="flex items-center justify-between gap-3 rounded-2xl bg-slate-50 px-4 py-3">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                      Painel inicial
+                    </p>
+                    <p className="mt-1 text-sm text-slate-600">
+                      Estrutura inicial da plataforma Reciclativa Gestão.
+                    </p>
                   </div>
 
-                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                        Financeiro
-                      </p>
-                      <p className="mt-3 text-3xl font-extrabold">R$ 184 mil</p>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                        Visão consolidada da operação e das movimentações principais.
+                  <div className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                    SaaS
+                  </div>
+                </div>
+
+                <div className="mt-5 grid gap-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-black/5 bg-slate-50 p-4">
+                      <p className="text-sm font-semibold text-slate-900">Empresa</p>
+                      <p className="mt-2 text-sm text-slate-600">
+                        Organização principal, dados da operação e visão geral da conta.
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                        CRM
-                      </p>
-                      <p className="mt-3 text-3xl font-extrabold">27</p>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                        Contatos e oportunidades em acompanhamento comercial.
+                    <div className="rounded-2xl border border-black/5 bg-slate-50 p-4">
+                      <p className="text-sm font-semibold text-slate-900">Usuários</p>
+                      <p className="mt-2 text-sm text-slate-600">
+                        Controle de acessos por empresa, unidade e área de atuação.
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
-                          Operação
-                        </p>
-                        <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                          Entradas e saídas em um ambiente mais claro para acompanhamento da rotina.
-                        </p>
-                      </div>
-                      <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300">
-                        Organização
-                      </span>
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    <div className="rounded-2xl border border-black/5 bg-slate-50 p-4">
+                      <p className="text-sm font-semibold text-slate-900">Cadastros</p>
+                      <p className="mt-2 text-sm text-slate-600">
+                        Clientes, fornecedores, materiais e estrutura inicial da empresa.
+                      </p>
                     </div>
 
-                    <div className="mt-4 flex items-end gap-2">
-                      <span className="h-4 w-9 rounded-md bg-emerald-400" />
-                      <span className="h-7 w-9 rounded-md bg-emerald-500" />
-                      <span className="h-5 w-9 rounded-md bg-emerald-400" />
-                      <span className="h-8 w-9 rounded-md bg-emerald-500" />
-                      <span className="h-6 w-9 rounded-md bg-emerald-400" />
-                      <span className="h-9 w-9 rounded-md bg-emerald-500" />
-                      <span className="h-7 w-9 rounded-md bg-emerald-400" />
+                    <div className="rounded-2xl border border-black/5 bg-slate-50 p-4">
+                      <p className="text-sm font-semibold text-slate-900">Operação</p>
+                      <p className="mt-2 text-sm text-slate-600">
+                        Entradas, saídas, estoque e movimentos conectados ao banco real.
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-black/5 bg-slate-50 p-4">
+                      <p className="text-sm font-semibold text-slate-900">Financeiro</p>
+                      <p className="mt-2 text-sm text-slate-600">
+                        Contas a pagar, contas a receber e acompanhamento inicial do painel.
+                      </p>
                     </div>
                   </div>
 
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <p className="text-sm font-semibold">Usuários e acessos</p>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                        Acesso organizado por perfil, função e responsabilidade.
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <p className="text-sm font-semibold">Relatórios</p>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                        Mais visibilidade para acompanhar a evolução da empresa.
-                      </p>
-                    </div>
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                    <p className="text-sm font-semibold text-slate-900">
+                      Fluxo já preparado para:
+                    </p>
+                    <ul className="mt-3 space-y-2 text-sm text-slate-700">
+                      <li>• Cadastro de empresa</li>
+                      <li>• Aprovação interna</li>
+                      <li>• Envio do acesso inicial</li>
+                      <li>• Primeiro acesso com troca de senha</li>
+                      <li>• MFA com recovery codes</li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -217,4 +215,3 @@ export default function AppHomePage() {
     </main>
   );
 }
-
