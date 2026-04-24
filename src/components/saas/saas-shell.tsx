@@ -76,6 +76,7 @@ function SidebarNav({ items }: { items: SaaSNavItem[] }) {
                     <Link
                       key={item.href}
                       href={item.href}
+                      prefetch={false}
                       className={`block rounded-2xl border px-4 py-3 transition ${
                         active
                           ? "border-emerald-200 bg-white shadow-sm"
@@ -147,6 +148,7 @@ export default function SaaSShell({
                 </div>
                 <Link
                   href="/app/logout"
+                  prefetch={false}
                   className="rounded-2xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
                 >
                   Sair
