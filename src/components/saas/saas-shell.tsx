@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { canAccessModule } from "@/lib/saas/permissions";
 import { saasNavigation, saasNavGroups, type SaaSNavGroupKey, type SaaSNavItem } from "@/lib/saas/navigation";
 import type { SaaSSessionUser } from "@/types/saas";
+import IdleLogout from "@/components/auth/IdleLogout";
 
 function isItemActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -108,6 +109,7 @@ export default function SaaSShell({
 
   return (
     <div className="min-h-screen bg-[#f6faf7] text-slate-900">
+      <IdleLogout logoutHref="/app/logout" />
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:px-8">
         <aside className="w-full shrink-0 lg:sticky lg:top-6 lg:block lg:h-fit lg:w-72">
           <div className="rounded-3xl border border-black/10 bg-white p-4 shadow-sm">

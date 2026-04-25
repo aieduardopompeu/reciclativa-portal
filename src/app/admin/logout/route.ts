@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   await clearAdminMasterMfaCookies();
 
   const isProd = process.env.NODE_ENV === "production";
-  const res = NextResponse.redirect(new URL("/admin/login", req.url));
+  const res = NextResponse.redirect(new URL("/login?next=/admin", req.url));
 
   res.cookies.set(ADMIN_MASTER_SESSION_COOKIE, "", {
     path: "/",

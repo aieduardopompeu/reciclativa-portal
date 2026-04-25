@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCurrentAdminMasterSession } from "../../lib/admin-master-auth";
+import IdleLogout from "@/components/auth/IdleLogout";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -32,6 +33,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
+      <IdleLogout logoutHref="/admin/logout" />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <header className="mb-8 rounded-2xl border border-black/10 bg-white px-4 py-4 shadow-sm sm:px-5">
           <div className="flex flex-wrap items-start justify-between gap-4">

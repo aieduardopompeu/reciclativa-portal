@@ -63,7 +63,7 @@ export default function AppHomePage() {
                 Cadastre-se
               </Link>
               <Link
-                href="/app/login"
+                href="/login?next=/app/dashboard"
                 className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
               >
                 Login
@@ -100,7 +100,7 @@ export default function AppHomePage() {
                   Cadastre-se
                 </Link>
                 <Link
-                  href="/app/login"
+                  href="/login?next=/app/dashboard"
                   className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
                 >
                   Login

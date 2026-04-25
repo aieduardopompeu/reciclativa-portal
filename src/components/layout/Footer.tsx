@@ -186,8 +186,8 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/admin/login" className="hover:text-emerald-700" rel="nofollow">
-                Acesso Admin
+              <Link href="https://app.reciclativa.com/login?next=/app/dashboard" className="hover:text-emerald-700" rel="nofollow">
+                Área restrita
               </Link>
             </li>
           </ul>

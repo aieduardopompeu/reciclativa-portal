@@ -66,7 +66,7 @@ async function sendInitialAccessEmail(params: {
   }
 
   const resend = new Resend(apiKey);
-  const appUrl = `${getBaseUrl()}/app/login`;
+  const appUrl = `${getBaseUrl()}/login?next=/app/dashboard`;
 
   await resend.emails.send({
     from,

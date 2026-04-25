@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import type { SaaSRole, SaaSSessionUser } from "@/types/saas";
 
 export const SAAS_SESSION_COOKIE = "saas-session";
-export const SAAS_SESSION_MAX_AGE = 60 * 60 * 24 * 7;
+export const SAAS_SESSION_MAX_AGE = 60 * 60 * 8;
 
 type SaaSUserRow = {
   session_id: string;
@@ -142,7 +142,7 @@ export async function createSaaSSession(params: {
     values (
       ${params.userId},
       ${tokenHash},
-      now() + interval '7 days',
+      now() + interval '8 hours',
       ${meta.ip || null},
       ${meta.userAgent || null}
     )
@@ -185,7 +185,7 @@ export async function getCurrentSaaSUser(): Promise<SaaSSessionUser> {
   const user = await getCurrentSaaSApiUser();
 
   if (!user) {
-    redirect("/app/login");
+    redirect("/login?next=/app/dashboard");
   }
 
   if (user.mustChangePassword) {

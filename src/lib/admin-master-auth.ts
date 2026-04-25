@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const ADMIN_MASTER_SESSION_COOKIE = "admin-master-session";
-export const ADMIN_MASTER_SESSION_MAX_AGE = 60 * 60 * 12;
+export const ADMIN_MASTER_SESSION_MAX_AGE = 60 * 60 * 8;
 
 export type AdminMasterSession = {
   sessionId: string;
@@ -31,21 +31,12 @@ type SessionRow = {
 
 export function safeAdminNextPath(nextRaw: string | null | undefined) {
   const next = (nextRaw || "").trim();
-
   if (!next.startsWith("/admin")) return "/admin";
-  if (next.startsWith("//") || next.includes("\\")) return "/admin";
-
-  const pathOnly = next.split("?")[0] || "/admin";
-  const isAuthFlowPath =
-    pathOnly === "/admin/login" ||
-    pathOnly === "/admin/mfa" ||
-    pathOnly === "/admin/mfa/setup" ||
-    pathOnly.startsWith("/admin/mfa/recovery");
-
-  if (isAuthFlowPath) return "/admin";
-
+  if (next === "/admin/login" || next === "/admin-login") return "/admin";
+  if (next.startsWith("/admin/mfa")) return "/admin";
   return next;
 }
+
 async function resolveRequestMeta(req?: Request) {
   if (req) {
     return {
@@ -90,7 +81,7 @@ export async function createAdminMasterSession(params: {
       ${meta.ip || null},
       ${meta.userAgent || null},
       ${mfaVerifiedAtIso},
-      now() + interval '12 hours'
+      now() + interval '8 hours'
     )
     returning id::text
   `;
@@ -181,7 +172,7 @@ export async function requireAdminMasterReady(nextPath = "/admin") {
 export async function requireAdminMasterSession(nextPath = "/admin") {
   const session = await getCurrentAdminMasterSession();
   if (!session) {
-    redirect(`/admin/login?next=${encodeURIComponent(nextPath)}`);
+    redirect(`/login?next=${encodeURIComponent(nextPath)}`);
   }
 
   return session;
