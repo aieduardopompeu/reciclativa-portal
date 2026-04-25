@@ -49,21 +49,61 @@ function errorMessage(error?: string) {
   }
 }
 
+function statusMessage(status?: string) {
+  switch (status) {
+    case "password_reset":
+      return "Senha redefinida com sucesso. Entre novamente para continuar.";
+    case "idle_timeout":
+      return "Sua sessão foi encerrada por inatividade. Entre novamente para continuar.";
+    case "logged_out":
+      return "Você saiu com segurança.";
+    default:
+      return "";
+  }
+}
+
+function accessNotice(params: {
+  next: string;
+  hasSaaSSession: boolean;
+  hasAdminSession: boolean;
+}) {
+  const { next, hasSaaSSession, hasAdminSession } = params;
+
+  if (next.startsWith("/admin") && !hasAdminSession) {
+    return hasSaaSSession
+      ? "Esta área exige acesso de Admin Master. Você está autenticado no sistema da empresa; para continuar, entre com uma conta Admin Master."
+      : "Esta área exige acesso de Admin Master. Entre com uma conta autorizada para continuar.";
+  }
+
+  if (next.startsWith("/app") && !hasSaaSSession) {
+    return hasAdminSession
+      ? "Esta área exige acesso de usuário do sistema. Você está autenticado como Admin Master; para continuar, entre com uma conta da empresa."
+      : "Esta área exige acesso de usuário do sistema. Entre com uma conta cadastrada na empresa para continuar.";
+  }
+
+  return "";
+}
+
 export default async function UnifiedLoginPage({
   searchParams,
 }: {
   searchParams?: SearchParamsShape | Promise<SearchParamsShape>;
 }) {
   const sp = await resolveSearchParams(searchParams);
+  const requestedNext = (sp.next || "").trim();
+  const hasExplicitNext = Boolean(requestedNext);
   const next = safeNextPath(sp.next);
   const errorMsg = errorMessage(sp.error);
-  const successMsg = sp.status === "password_reset" ? "Senha redefinida com sucesso. Entre novamente para continuar." : "";
+  const successMsg = statusMessage(sp.status);
   const email = (sp.email || "").trim();
 
   const [adminSession, saasUser] = await Promise.all([
     getCurrentAdminMasterSession(),
     getCurrentSaaSApiUser(),
   ]);
+
+  const hasAdminSession = Boolean(adminSession);
+  const hasSaaSSession = Boolean(saasUser);
 
   if (adminSession && next.startsWith("/admin")) {
     redirect(next);
@@ -79,11 +119,11 @@ export default async function UnifiedLoginPage({
     redirect(next);
   }
 
-  if (adminSession && !saasUser) {
+  if (adminSession && !saasUser && (!hasExplicitNext || !next.startsWith("/app"))) {
     redirect("/admin");
   }
 
-  if (saasUser && !adminSession) {
+  if (saasUser && !adminSession && (!hasExplicitNext || !next.startsWith("/admin"))) {
     if (saasUser.mustChangePassword) {
       redirect("/app/primeiro-acesso");
     }
@@ -92,6 +132,12 @@ export default async function UnifiedLoginPage({
     }
     redirect("/app/dashboard");
   }
+
+  const noticeMsg = accessNotice({
+    next,
+    hasSaaSSession,
+    hasAdminSession,
+  });
 
   return (
     <main className="min-h-screen bg-[#f6faf7] px-4 py-10 text-slate-900 sm:py-14">
@@ -117,6 +163,12 @@ export default async function UnifiedLoginPage({
               Use seu e-mail e senha. O sistema identifica automaticamente seu tipo de acesso.
             </p>
           </div>
+
+          {noticeMsg ? (
+            <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium leading-6 text-amber-950">
+              {noticeMsg}
+            </div>
+          ) : null}
 
           {successMsg ? (
             <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">
