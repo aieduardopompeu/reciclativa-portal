@@ -10,7 +10,7 @@ import {
 
 export const runtime = "nodejs";
 
-function buildRedirect(req: Request, path: string) {
+function buildRedirectResponse(req: Request, path: string) {
   const res = NextResponse.redirect(new URL(path, req.url), 303);
   res.headers.set("Cache-Control", "no-store");
   return res;
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   const password = (form?.get("password") || "").toString();
 
   if (!email || !password) {
-    return buildRedirect(
+    return buildRedirectResponse(
       req,
       `/admin/login?error=badcreds&next=${encodeURIComponent(next)}`
     );
@@ -49,14 +49,14 @@ export async function POST(req: Request) {
 
   const user = result.rows[0];
   if (!user) {
-    return buildRedirect(
+    return buildRedirectResponse(
       req,
       `/admin/login?error=badcreds&next=${encodeURIComponent(next)}`
     );
   }
 
   if (!user.is_active) {
-    return buildRedirect(
+    return buildRedirectResponse(
       req,
       `/admin/login?error=inactive&next=${encodeURIComponent(next)}`
     );
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
 
   if (!user.mfa_enabled) {
     const secret = generateTotpSecret();
-    const res = buildRedirect(
+    const res = buildRedirectResponse(
       req,
       `/admin/mfa/setup?next=${encodeURIComponent(next)}`
     );
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
     return res;
   }
 
-  const res = buildRedirect(
+  const res = buildRedirectResponse(
     req,
     `/admin/mfa?next=${encodeURIComponent(next)}`
   );
