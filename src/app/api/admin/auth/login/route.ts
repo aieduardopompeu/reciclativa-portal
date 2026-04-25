@@ -2,10 +2,10 @@ import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 import { safeAdminNextPath } from "@/lib/admin-master-auth";
 import {
+  ADMIN_MASTER_MFA_CHALLENGE_COOKIE,
+  ADMIN_MASTER_MFA_SETUP_SECRET_COOKIE,
   createAdminMasterChallenge,
   generateTotpSecret,
-  setAdminMasterMfaChallengeCookie,
-  setAdminMasterSetupSecretCookie,
 } from "@/lib/admin-master-mfa";
 
 export const runtime = "nodejs";
@@ -66,20 +66,45 @@ export async function POST(req: Request) {
     userId: user.id,
     req,
   });
-  await setAdminMasterMfaChallengeCookie(challengeToken);
 
   if (!user.mfa_enabled) {
     const secret = generateTotpSecret();
-    await setAdminMasterSetupSecretCookie(secret);
-
-    return buildRedirect(
+    const res = buildRedirect(
       req,
       `/admin/mfa/setup?next=${encodeURIComponent(next)}`
     );
+
+    res.cookies.set(ADMIN_MASTER_MFA_CHALLENGE_COOKIE, challengeToken, {
+      path: "/",
+      maxAge: 60 * 10,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    res.cookies.set(ADMIN_MASTER_MFA_SETUP_SECRET_COOKIE, secret, {
+      path: "/",
+      maxAge: 60 * 10,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    return res;
   }
 
-  return buildRedirect(
+  const res = buildRedirect(
     req,
     `/admin/mfa?next=${encodeURIComponent(next)}`
   );
+
+  res.cookies.set(ADMIN_MASTER_MFA_CHALLENGE_COOKIE, challengeToken, {
+    path: "/",
+    maxAge: 60 * 10,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+
+  return res;
 }
