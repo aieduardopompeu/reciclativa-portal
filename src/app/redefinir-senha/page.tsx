@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import PasswordInput from "../../components/auth/PasswordInput";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 type SearchParamsShape = {
-  email?: string;
+  token?: string;
   next?: string;
-  status?: string;
   error?: string;
 };
 
@@ -30,22 +30,27 @@ function safeNextPath(nextRaw?: string) {
 
 function errorMessage(error?: string) {
   switch (error) {
-    case "invalid_email":
-      return "Informe um e-mail válido para continuar.";
+    case "missing_token":
+      return "Link de recuperação ausente. Solicite um novo link.";
+    case "invalid_or_expired":
+      return "Este link expirou ou já foi usado. Solicite uma nova recuperação.";
+    case "new_short":
+      return "A nova senha deve ter pelo menos 10 caracteres.";
+    case "confirm_mismatch":
+      return "A confirmação da senha não confere.";
     default:
       return "";
   }
 }
 
-export default async function RecoverPasswordPage({
+export default async function ResetPasswordPage({
   searchParams,
 }: {
   searchParams?: SearchParamsShape | Promise<SearchParamsShape>;
 }) {
   const sp = await resolveSearchParams(searchParams);
-  const email = (sp.email || "").trim();
+  const token = (sp.token || "").trim();
   const next = safeNextPath(sp.next);
-  const success = sp.status === "received" || sp.status === "sent";
   const errorMsg = errorMessage(sp.error);
 
   return (
@@ -66,18 +71,12 @@ export default async function RecoverPasswordPage({
               Reciclativa Gestão
             </p>
             <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-950">
-              Recuperar senha
+              Redefinir senha
             </h1>
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-slate-600">
-              Informe seu e-mail cadastrado. Se ele estiver autorizado no sistema, enviaremos as próximas instruções.
+              Crie uma nova senha para continuar acessando a área restrita.
             </p>
           </div>
-
-          {success ? (
-            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">
-              Se o e-mail estiver cadastrado, enviaremos um link de redefinição com validade de 30 minutos.
-            </div>
-          ) : null}
 
           {errorMsg ? (
             <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-900">
@@ -85,36 +84,44 @@ export default async function RecoverPasswordPage({
             </div>
           ) : null}
 
-          <form className="mt-6 space-y-4" method="POST" action="/api/auth/forgot-password">
-            <input type="hidden" name="next" value={next} />
+          {!token ? (
+            <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900">
+              Para redefinir a senha, solicite um link de recuperação válido.
+            </div>
+          ) : (
+            <form className="mt-6 space-y-4" method="POST" action="/api/auth/reset-password">
+              <input type="hidden" name="token" value={token} />
+              <input type="hidden" name="next" value={next} />
 
-            <label className="block">
-              <span className="text-sm font-semibold text-slate-900">E-mail</span>
-              <input
-                name="email"
-                type="email"
-                defaultValue={email}
-                className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
-                placeholder="seuemail@empresa.com.br"
-                required
-                autoComplete="username"
+              <PasswordInput
+                name="new_password"
+                label="Nova senha"
+                placeholder="Mínimo de 10 caracteres"
+                autoComplete="new-password"
               />
-            </label>
 
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-100"
-            >
-              Solicitar recuperação
-            </button>
-          </form>
+              <PasswordInput
+                name="confirm_password"
+                label="Confirmar nova senha"
+                placeholder="Repita a nova senha"
+                autoComplete="new-password"
+              />
+
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-100"
+              >
+                Salvar nova senha
+              </button>
+            </form>
+          )}
 
           <div className="mt-5 text-center text-sm">
             <Link
-              href={`/login?next=${encodeURIComponent(next)}${email ? `&email=${encodeURIComponent(email)}` : ""}`}
+              href={`/recuperar-senha?next=${encodeURIComponent(next)}`}
               className="font-medium text-slate-600 underline underline-offset-4 hover:text-emerald-700"
             >
-              Voltar para o login
+              Solicitar novo link
             </Link>
           </div>
 

@@ -11,6 +11,7 @@ type SearchParamsShape = {
   next?: string;
   error?: string;
   email?: string;
+  status?: string;
 };
 
 async function resolveSearchParams(
@@ -56,6 +57,7 @@ export default async function UnifiedLoginPage({
   const sp = await resolveSearchParams(searchParams);
   const next = safeNextPath(sp.next);
   const errorMsg = errorMessage(sp.error);
+  const successMsg = sp.status === "password_reset" ? "Senha redefinida com sucesso. Entre novamente para continuar." : "";
   const email = (sp.email || "").trim();
 
   const [adminSession, saasUser] = await Promise.all([
@@ -116,6 +118,12 @@ export default async function UnifiedLoginPage({
             </p>
           </div>
 
+          {successMsg ? (
+            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900">
+              {successMsg}
+            </div>
+          ) : null}
+
           {errorMsg ? (
             <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-900">
               {errorMsg}
@@ -164,7 +172,15 @@ export default async function UnifiedLoginPage({
           </div>
 
           <div className="mt-8 border-t border-slate-100 pt-5 text-center text-xs text-slate-500">
-            Desenvolvido no Brasil por <span className="font-semibold text-slate-700">Alta Cloud</span>
+            Desenvolvido no Brasil por{" "}
+            <a
+              href="https://www.altacloud.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-slate-700 underline-offset-4 hover:text-emerald-700 hover:underline"
+            >
+              Alta Cloud
+            </a>
           </div>
         </section>
       </div>
