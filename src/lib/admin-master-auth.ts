@@ -31,10 +31,21 @@ type SessionRow = {
 
 export function safeAdminNextPath(nextRaw: string | null | undefined) {
   const next = (nextRaw || "").trim();
+
   if (!next.startsWith("/admin")) return "/admin";
+  if (next.startsWith("//") || next.includes("\\")) return "/admin";
+
+  const pathOnly = next.split("?")[0] || "/admin";
+  const isAuthFlowPath =
+    pathOnly === "/admin/login" ||
+    pathOnly === "/admin/mfa" ||
+    pathOnly === "/admin/mfa/setup" ||
+    pathOnly.startsWith("/admin/mfa/recovery");
+
+  if (isAuthFlowPath) return "/admin";
+
   return next;
 }
-
 async function resolveRequestMeta(req?: Request) {
   if (req) {
     return {

@@ -3,15 +3,36 @@ import type { NextRequest } from "next/server";
 
 const ADMIN_MASTER_SESSION_COOKIE = "admin-master-session";
 
+function isLocalHost(host: string) {
+  return (
+    host.startsWith("localhost:") ||
+    host.startsWith("127.0.0.1:") ||
+    host === "localhost" ||
+    host === "127.0.0.1"
+  );
+}
+
+function isAdminAuthPublicPath(pathname: string) {
+  return (
+    pathname === "/admin/login" ||
+    pathname === "/admin-login" ||
+    pathname === "/admin/mfa" ||
+    pathname === "/admin/mfa/setup"
+  );
+}
+
+function redirectPreservingHost(req: NextRequest, pathname: string) {
+  const url = req.nextUrl.clone();
+  url.pathname = pathname;
+  return url;
+}
+
 export function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   const host = req.headers.get("host") || "";
 
-  const isLocalhost =
-    host.startsWith("localhost:") || host.startsWith("127.0.0.1:");
-
   const isAppSubdomain =
-    !isLocalhost &&
+    !isLocalHost(host) &&
     (host === "app.reciclativa.com" || host.startsWith("app.reciclativa.com:"));
 
   if (isAppSubdomain && pathname === "/") {
@@ -28,7 +49,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (
-    pathname === "/admin-login" ||
+    isAdminAuthPublicPath(pathname) ||
     pathname.startsWith("/api/admin/auth/login")
   ) {
     return NextResponse.next();
@@ -38,7 +59,7 @@ export function middleware(req: NextRequest) {
     const token = req.cookies.get(ADMIN_MASTER_SESSION_COOKIE)?.value;
 
     if (!token) {
-      const loginUrl = new URL("/admin/login", req.url);
+      const loginUrl = redirectPreservingHost(req, "/admin/login");
       loginUrl.searchParams.set("next", pathname);
       return NextResponse.redirect(loginUrl);
     }
