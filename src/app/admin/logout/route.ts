@@ -10,7 +10,14 @@ export async function GET(req: Request) {
   await clearAdminMasterMfaCookies();
 
   const isProd = process.env.NODE_ENV === "production";
-  const res = NextResponse.redirect(new URL("/login?next=/admin", req.url));
+  const url = new URL(req.url);
+  const params = new URLSearchParams({ next: "/admin" });
+
+  if (url.searchParams.get("reason") === "idle") {
+    params.set("status", "idle_logout");
+  }
+
+  const res = NextResponse.redirect(new URL(`/login?${params.toString()}`, req.url), 303);
 
   res.cookies.set(ADMIN_MASTER_SESSION_COOKIE, "", {
     path: "/",
@@ -20,5 +27,6 @@ export async function GET(req: Request) {
     sameSite: "lax",
   });
 
+  res.headers.set("Cache-Control", "no-store");
   return res;
 }

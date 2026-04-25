@@ -1,30 +1,24 @@
 import { redirect } from "next/navigation";
 
-type SearchParamsShape = {
-  next?: string;
-  error?: string;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+type AdminLoginPageProps = {
+  searchParams?: Promise<{
+    next?: string;
+  }>;
 };
 
-async function resolveSearchParams(
-  value?: SearchParamsShape | Promise<SearchParamsShape>
-): Promise<SearchParamsShape> {
-  if (!value) return {};
-  if (typeof (value as Promise<SearchParamsShape>).then === "function") {
-    return (await value) ?? {};
-  }
-  return value;
+function safeAdminNextPath(nextRaw?: string) {
+  const next = (nextRaw || "").trim();
+  return next.startsWith("/admin") ? next : "/admin";
 }
 
-export default async function AdminLoginRedirectPage({
+export default async function AdminLoginPage({
   searchParams,
-}: {
-  searchParams?: SearchParamsShape | Promise<SearchParamsShape>;
-}) {
-  const sp = await resolveSearchParams(searchParams);
-  const qs = new URLSearchParams();
+}: AdminLoginPageProps) {
+  const params = await searchParams;
+  const next = safeAdminNextPath(params?.next);
 
-  if (sp.next) qs.set("next", sp.next);
-  if (sp.error) qs.set("error", sp.error);
-
-  redirect(`/admin-login${qs.toString() ? `?${qs.toString()}` : ""}`);
+  redirect(`/login?next=${encodeURIComponent(next)}`);
 }
