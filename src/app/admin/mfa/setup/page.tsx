@@ -57,6 +57,10 @@ export default async function AdminMfaSetupPage({
       <p className="mt-2 text-sm text-neutral-600">
         Escaneie o QR Code no seu aplicativo autenticador. Se preferir, você também pode usar a chave manual.
       </p>
+      <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">
+        <span className="font-semibold">Configurando MFA para:</span>{" "}
+        <span className="break-all">{challenge.email}</span>
+      </div>
 
       <div className="mt-6 rounded-xl border bg-white p-5 shadow-sm">
         {qrCodeDataUrl ? (

@@ -5,10 +5,89 @@ import { revalidatePath } from "next/cache";
 import { sql } from "@vercel/postgres";
 import { Resend } from "resend";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
-import type { SaaSRole } from "@/types/saas";
+import { assertCanPerformActionForUser, canPerformActionForUser } from "@/lib/saas/permissions";
+import type { SaaSAccessLevel, SaaSModule, SaaSRole } from "@/types/saas";
 
 function sanitizeText(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
+}
+
+const CUSTOM_PERMISSION_MODULES: SaaSModule[] = [
+  "dashboard",
+  "company",
+  "units",
+  "users",
+  "customers",
+  "suppliers",
+  "carriers",
+  "material_categories",
+  "materials",
+  "inventory_locations",
+  "operation",
+  "finance",
+  "settings",
+  "audit_logs",
+];
+
+const allowedAccessLevels: SaaSAccessLevel[] = ["none", "read", "write", "admin"];
+
+function defaultCustomAccessLevel(module: SaaSModule): SaaSAccessLevel {
+  if ([
+    "dashboard",
+    "company",
+    "units",
+    "customers",
+    "suppliers",
+    "carriers",
+    "material_categories",
+    "materials",
+    "inventory_locations",
+    "operation",
+    "finance",
+  ].includes(module)) {
+    return "read";
+  }
+
+  return "none";
+}
+
+function normalizeAccessLevel(value: FormDataEntryValue | null): SaaSAccessLevel {
+  const text = sanitizeText(value) as SaaSAccessLevel;
+  return allowedAccessLevels.includes(text) ? text : "none";
+}
+
+async function seedDefaultCustomPermissions(params: {
+  organizationId: string;
+  userId: string;
+}) {
+  for (const module of CUSTOM_PERMISSION_MODULES) {
+    await sql`
+      insert into saas_user_permissions (
+        organization_id,
+        user_id,
+        feature,
+        access_level
+      ) values (
+        ${params.organizationId},
+        ${params.userId},
+        ${module},
+        ${defaultCustomAccessLevel(module)}
+      )
+      on conflict (organization_id, user_id, feature)
+      do nothing
+    `;
+  }
+}
+
+async function clearCustomPermissions(params: {
+  organizationId: string;
+  userId: string;
+}) {
+  await sql`
+    delete from saas_user_permissions
+    where organization_id = ${params.organizationId}
+      and user_id = ${params.userId}
+  `;
 }
 
 const allowedCreateRolesByCreator: Record<SaaSRole, SaaSRole[]> = {
@@ -19,6 +98,7 @@ const allowedCreateRolesByCreator: Record<SaaSRole, SaaSRole[]> = {
     "manager_commercial",
     "operator",
     "viewer",
+    "custom",
   ],
   org_admin_full: [
     "manager_operational",
@@ -26,12 +106,14 @@ const allowedCreateRolesByCreator: Record<SaaSRole, SaaSRole[]> = {
     "manager_commercial",
     "operator",
     "viewer",
+    "custom",
   ],
   manager_operational: [],
   manager_financial: [],
   manager_commercial: [],
   operator: [],
   viewer: [],
+  custom: [],
   super_admin: [],
 };
 
@@ -47,6 +129,7 @@ function buildTemporaryPassword() {
 function getBaseUrl() {
   return (
     process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.APP_URL ||
     process.env.NEXT_PUBLIC_SITE_URL ||
     "http://localhost:3000"
   ).replace(/\/$/, "");
@@ -121,6 +204,7 @@ async function getTargetUserForOrg(params: { organizationId: string; userId: str
 
 export async function createSaaSUserAction(formData: FormData) {
   const currentUser = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(currentUser, "users", "create");
 
   const name = sanitizeText(formData.get("name"));
   const email = sanitizeText(formData.get("email")).toLowerCase();
@@ -130,7 +214,9 @@ export async function createSaaSUserAction(formData: FormData) {
   if (!name) throw new Error("O nome do usuário é obrigatório.");
   if (!email) throw new Error("O e-mail do usuário é obrigatório.");
 
-  const allowedRoles = allowedCreateRolesByCreator[currentUser.role] || [];
+  const allowedRoles = currentUser.role === "custom"
+    ? ["manager_operational", "manager_financial", "manager_commercial", "operator", "viewer", "custom"]
+    : allowedCreateRolesByCreator[currentUser.role] || [];
   if (!allowedRoles.includes(role)) {
     throw new Error("Você não tem permissão para criar este perfil.");
   }
@@ -149,7 +235,7 @@ export async function createSaaSUserAction(formData: FormData) {
   const validUnitId = unitId || null;
   const temporaryPassword = buildTemporaryPassword();
 
-  await sql`
+  const createdUser = await sql<{ id: string }>`
     insert into saas_users (
       organization_id,
       unit_id,
@@ -173,7 +259,17 @@ export async function createSaaSUserAction(formData: FormData) {
       false,
       '[]'::jsonb
     )
+    returning id
   `;
+
+  const createdUserId = createdUser.rows[0]?.id;
+
+  if (role === "custom" && createdUserId) {
+    await seedDefaultCustomPermissions({
+      organizationId: currentUser.organization.id,
+      userId: createdUserId,
+    });
+  }
 
   await sql`
     insert into audit_logs (
@@ -217,6 +313,7 @@ export async function createSaaSUserAction(formData: FormData) {
 
 export async function updateSaaSUserRoleAction(formData: FormData) {
   const currentUser = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(currentUser, "users", "update");
   const userId = sanitizeText(formData.get("user_id"));
   const nextRole = sanitizeText(formData.get("role")) as SaaSRole;
 
@@ -249,6 +346,18 @@ export async function updateSaaSUserRoleAction(formData: FormData) {
       and organization_id = ${currentUser.organization.id}
   `;
 
+  if (nextRole === "custom") {
+    await seedDefaultCustomPermissions({
+      organizationId: currentUser.organization.id,
+      userId,
+    });
+  } else {
+    await clearCustomPermissions({
+      organizationId: currentUser.organization.id,
+      userId,
+    });
+  }
+
   await sql`
     insert into audit_logs (
       organization_id,
@@ -277,6 +386,7 @@ export async function updateSaaSUserRoleAction(formData: FormData) {
 
 export async function resetSaaSUserPasswordAction(formData: FormData) {
   const currentUser = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(currentUser, "users", "update");
   const userId = sanitizeText(formData.get("user_id"));
 
   if (!userId) throw new Error("Usuário inválido.");
@@ -349,6 +459,7 @@ export async function resetSaaSUserPasswordAction(formData: FormData) {
 
 export async function toggleSaaSUserStatusAction(formData: FormData) {
   const currentUser = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(currentUser, "users", "update");
 
   const userId = sanitizeText(formData.get("user_id"));
   const nextStatus = sanitizeText(formData.get("next_status"));
@@ -407,4 +518,88 @@ export async function toggleSaaSUserStatusAction(formData: FormData) {
   `;
 
   revalidatePath("/app/cadastros/usuarios");
+}
+
+export async function updateCustomSaaSUserPermissionsAction(formData: FormData) {
+  const currentUser = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(currentUser, "users", "update");
+
+  if (!canPerformActionForUser(currentUser, "users", "update")) {
+    throw new Error("Você não tem permissão para editar permissões de usuários.");
+  }
+
+  const userId = sanitizeText(formData.get("user_id"));
+
+  if (!userId) throw new Error("Usuário inválido.");
+  if (userId === currentUser.id) throw new Error("Você não pode editar as próprias permissões personalizadas.");
+
+  const target = await getTargetUserForOrg({
+    organizationId: currentUser.organization.id,
+    userId,
+  });
+
+  if (!target) throw new Error("Usuário não encontrado nesta organização.");
+  if (target.role !== "custom") {
+    throw new Error("Permissões personalizadas só podem ser editadas em usuários com perfil Personalizado.");
+  }
+  if (target.is_admin_master) {
+    throw new Error("Usuário vinculado ao Admin Master não pode ser personalizado aqui.");
+  }
+
+  const nextPermissions: Array<{ feature: SaaSModule; access_level: SaaSAccessLevel }> = [];
+
+  for (const module of CUSTOM_PERMISSION_MODULES) {
+    nextPermissions.push({
+      feature: module,
+      access_level: normalizeAccessLevel(formData.get(`permission_${module}`)),
+    });
+  }
+
+  for (const permission of nextPermissions) {
+    await sql`
+      insert into saas_user_permissions (
+        organization_id,
+        user_id,
+        feature,
+        access_level,
+        updated_at
+      ) values (
+        ${currentUser.organization.id},
+        ${userId},
+        ${permission.feature},
+        ${permission.access_level},
+        now()
+      )
+      on conflict (organization_id, user_id, feature)
+      do update set
+        access_level = excluded.access_level,
+        updated_at = now()
+    `;
+  }
+
+  await sql`
+    insert into audit_logs (
+      organization_id,
+      user_id,
+      module,
+      action,
+      entity_type,
+      previous_data,
+      new_data
+    ) values (
+      ${currentUser.organization.id},
+      ${currentUser.id},
+      'users',
+      'update',
+      'saas_user_permissions',
+      null,
+      ${JSON.stringify({
+        target_user_id: userId,
+        permissions: nextPermissions,
+      })}::jsonb
+    )
+  `;
+
+  revalidatePath("/app/cadastros/usuarios");
+  redirect(`/app/cadastros/usuarios?permissions=ok&permissions_email=${encodeURIComponent(target.email)}`);
 }

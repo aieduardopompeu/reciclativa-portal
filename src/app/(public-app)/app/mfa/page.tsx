@@ -23,6 +23,10 @@ export default async function SaaSMfaVerifyPage() {
           <p className="mt-3 text-sm text-slate-600">
             Informe o código de 6 dígitos do aplicativo autenticador ou um recovery code.
           </p>
+          <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">
+            <span className="font-semibold">Conta em validação:</span>{" "}
+            <span className="break-all">{challenge.email}</span>
+          </div>
 
           <form className="mt-6 space-y-4" method="POST" action="/api/app/auth/mfa/verify">
             <label className="block">

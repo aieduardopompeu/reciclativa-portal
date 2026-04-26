@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { canPerformAction } from "@/lib/saas/permissions";
+import { canPerformActionForUser } from "@/lib/saas/permissions";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
 import { createSupplierAction } from "./actions";
 
@@ -46,7 +46,7 @@ function EmptyState() {
 
 export default async function SaaSSuppliersPage() {
   const user = await getCurrentSaaSUser();
-  const canCreate = canPerformAction(user.role, "suppliers", "create");
+  const canCreate = canPerformActionForUser(user, "suppliers", "create");
   const suppliers = await getSuppliersByOrganization(user.organization.id);
 
   return (

@@ -37,6 +37,10 @@ export default async function AdminMfaVerifyPage({
       <p className="mt-2 text-sm text-neutral-600">
         Informe o código de 6 dígitos do aplicativo autenticador ou um recovery code.
       </p>
+      <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">
+        <span className="font-semibold">Conta em validação:</span>{" "}
+        <span className="break-all">{challenge.email}</span>
+      </div>
 
       <form className="mt-6 rounded-xl border bg-white p-4 shadow-sm" method="POST" action="/api/admin/auth/mfa/verify">
         <input type="hidden" name="next" value={next} />

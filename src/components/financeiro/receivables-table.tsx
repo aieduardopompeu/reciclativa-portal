@@ -315,6 +315,7 @@ export function ReceivablesTable({
   cancelAction,
   reverseAction,
   histories,
+  canManage = true,
 }: {
   items: ReceivableRow[];
   bulkAction: (formData: FormData) => void | Promise<void>;
@@ -323,8 +324,9 @@ export function ReceivablesTable({
   cancelAction: (formData: FormData) => void | Promise<void>;
   reverseAction: (formData: FormData) => void | Promise<void>;
   histories: Record<string, HistoryItem[]>;
+  canManage?: boolean;
 }) {
-  const selectableIds = useMemo(() => items.filter((item) => item.status === "open" || item.status === "partial").map((item) => item.id), [items]);
+  const selectableIds = useMemo(() => canManage ? items.filter((item) => item.status === "open" || item.status === "partial").map((item) => item.id) : [], [items, canManage]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [openDesktopRow, setOpenDesktopRow] = useState<string | null>(null);
   const [openMobileRow, setOpenMobileRow] = useState<string | null>(null);
@@ -336,6 +338,7 @@ export function ReceivablesTable({
 
   return (
     <div className="space-y-4">
+      {canManage ? (
       <div className="flex flex-col gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-sm font-semibold text-emerald-900">Ação em lote</p>
@@ -369,6 +372,7 @@ export function ReceivablesTable({
           </form>
         </div>
       </div>
+      ) : null}
 
       {items.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-black/10 bg-white px-6 py-10 text-center">
@@ -382,7 +386,7 @@ export function ReceivablesTable({
           const total = Number(item.amount || 0);
           const received = Number(item.received_amount || 0);
           const remaining = Math.max(total - received, 0);
-          const canSelect = item.status === "open" || item.status === "partial";
+          const canSelect = canManage && (item.status === "open" || item.status === "partial");
           const isSelected = selectedIds.includes(item.id);
           const isOpen = openMobileRow === item.id;
 
@@ -436,7 +440,7 @@ export function ReceivablesTable({
           const total = Number(item.amount || 0);
           const received = Number(item.received_amount || 0);
           const remaining = Math.max(total - received, 0);
-          const canSelect = item.status === "open" || item.status === "partial";
+          const canSelect = canManage && (item.status === "open" || item.status === "partial");
           const isSelected = selectedIds.includes(item.id);
           const isOpen = openDesktopRow === item.id;
 

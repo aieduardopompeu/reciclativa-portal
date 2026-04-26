@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { canPerformAction } from "@/lib/saas/permissions";
+import { canPerformActionForUser } from "@/lib/saas/permissions";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
 import { createInventoryLocationAction } from "./actions";
 
@@ -61,7 +61,7 @@ function EmptyState() {
 
 export default async function SaaSInventoryLocationsPage() {
   const user = await getCurrentSaaSUser();
-  const canCreate = canPerformAction(user.role, "inventory_locations", "create");
+  const canCreate = canPerformActionForUser(user, "inventory_locations", "create");
   const locations = await getInventoryLocationsByOrganization(user.organization.id);
   const units = await getUnitsByOrganization(user.organization.id);
 

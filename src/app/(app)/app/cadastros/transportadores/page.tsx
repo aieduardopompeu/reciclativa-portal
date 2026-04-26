@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { canPerformAction } from "@/lib/saas/permissions";
+import { canPerformActionForUser } from "@/lib/saas/permissions";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
 import { createCarrierAction } from "./actions";
 
@@ -46,7 +46,7 @@ function EmptyState() {
 
 export default async function SaaSCarriersPage() {
   const user = await getCurrentSaaSUser();
-  const canCreate = canPerformAction(user.role, "carriers", "create");
+  const canCreate = canPerformActionForUser(user, "carriers", "create");
   const carriers = await getCarriersByOrganization(user.organization.id);
 
   return (

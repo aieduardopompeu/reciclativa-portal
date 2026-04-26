@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
-import { canPerformAction } from "@/lib/saas/permissions";
+import SaaSAccessDenied from "@/components/saas/access-denied";
+import { canPerformActionForUser, canAccessModuleForUser } from "@/lib/saas/permissions";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
 import { createCustomerAction } from "./actions";
 
@@ -46,7 +47,11 @@ function EmptyState() {
 
 export default async function SaaSCustomersPage() {
   const user = await getCurrentSaaSUser();
-  const canCreate = canPerformAction(user.role, "customers", "create");
+  if (!canAccessModuleForUser(user, "customers")) {
+    return <SaaSAccessDenied moduleLabel="clientes" />;
+  }
+
+  const canCreate = canPerformActionForUser(user, "customers", "create");
   const customers = await getCustomersByOrganization(user.organization.id);
 
   return (

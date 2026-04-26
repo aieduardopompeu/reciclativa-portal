@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { sql } from "@vercel/postgres";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { assertCanPerformActionForUser } from "@/lib/saas/permissions";
 
 function sanitizeText(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
@@ -16,7 +17,7 @@ function sanitizeDecimal(value: FormDataEntryValue | null): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-type ShipmentItemInput = {
+type ReceiptItemInput = {
   materialId: string;
   locationId: string | null;
   quantity: number;
@@ -131,28 +132,29 @@ async function upsertBalanceFromMovements(params: {
   }
 }
 
-export async function createShipmentAction(formData: FormData) {
+export async function createReceiptAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "operation", "create");
 
   const unitId = sanitizeText(formData.get("unit_id"));
-  const customerId = sanitizeText(formData.get("customer_id"));
+  const supplierId = sanitizeText(formData.get("supplier_id"));
   const carrierId = sanitizeText(formData.get("carrier_id"));
-  const shipmentNumber = sanitizeText(formData.get("shipment_number"));
-  const shipmentDate = sanitizeText(formData.get("shipment_date"));
+  const receiptNumber = sanitizeText(formData.get("receipt_number"));
+  const receiptDate = sanitizeText(formData.get("receipt_date"));
   const grossWeight = sanitizeDecimal(formData.get("gross_weight"));
   const netWeight = sanitizeDecimal(formData.get("net_weight"));
   const notes = sanitizeText(formData.get("notes"));
 
   if (!unitId) throw new Error("A unidade é obrigatória.");
-  if (!customerId) throw new Error("O cliente é obrigatório.");
-  if (!shipmentDate) throw new Error("A data da saída é obrigatória.");
+  if (!supplierId) throw new Error("O fornecedor é obrigatório.");
+  if (!receiptDate) throw new Error("A data da entrada é obrigatória.");
 
   const materialIds = formData.getAll("item_material_id").map((v) => sanitizeText(v));
   const locationIds = formData.getAll("item_location_id").map((v) => sanitizeText(v));
   const quantities = formData.getAll("item_quantity").map((v) => sanitizeDecimal(v));
   const unitPrices = formData.getAll("item_unit_price").map((v) => sanitizeDecimal(v) ?? 0);
 
-  const items: ShipmentItemInput[] = [];
+  const items: ReceiptItemInput[] = [];
 
   for (let i = 0; i < materialIds.length; i += 1) {
     const materialId = materialIds[i] || "";
@@ -178,10 +180,12 @@ export async function createShipmentAction(formData: FormData) {
   }
 
   if (items.length === 0) {
-    throw new Error("Adicione pelo menos 1 item à saída.");
+    throw new Error("Adicione pelo menos 1 item à entrada.");
   }
 
-  const totalAmount = Number(items.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2));
+  const totalAmount = Number(
+    items.reduce((acc, item) => acc + item.totalPrice, 0).toFixed(2),
+  );
 
   const unitCheck = await sql<{ id: string }>`
     select id
@@ -193,15 +197,15 @@ export async function createShipmentAction(formData: FormData) {
   `;
   if (!unitCheck.rows[0]) throw new Error("A unidade selecionada não pertence à organização atual.");
 
-  const customerCheck = await sql<{ id: string }>`
+  const supplierCheck = await sql<{ id: string }>`
     select id
-    from customers
-    where id = ${customerId}
+    from suppliers
+    where id = ${supplierId}
       and organization_id = ${user.organization.id}
       and is_active = true
     limit 1
   `;
-  if (!customerCheck.rows[0]) throw new Error("O cliente selecionado não pertence à organização atual.");
+  if (!supplierCheck.rows[0]) throw new Error("O fornecedor selecionado não pertence à organização atual.");
 
   if (carrierId) {
     const carrierCheck = await sql<{ id: string }>`
@@ -212,7 +216,9 @@ export async function createShipmentAction(formData: FormData) {
         and is_active = true
       limit 1
     `;
-    if (!carrierCheck.rows[0]) throw new Error("O transportador selecionado não pertence à organização atual.");
+    if (!carrierCheck.rows[0]) {
+      throw new Error("O transportador selecionado não pertence à organização atual.");
+    }
   }
 
   for (const item of items) {
@@ -241,14 +247,14 @@ export async function createShipmentAction(formData: FormData) {
     }
   }
 
-  const shipmentInsert = await sql<{ id: string }>`
-    insert into shipments (
+  const receiptInsert = await sql<{ id: string }>`
+    insert into receipts (
       organization_id,
       unit_id,
-      customer_id,
+      supplier_id,
       carrier_id,
-      shipment_number,
-      shipment_date,
+      receipt_number,
+      receipt_date,
       gross_weight,
       net_weight,
       total_amount,
@@ -258,10 +264,10 @@ export async function createShipmentAction(formData: FormData) {
     ) values (
       ${user.organization.id},
       ${unitId},
-      ${customerId},
+      ${supplierId},
       ${carrierId || null},
-      ${shipmentNumber || null},
-      ${shipmentDate},
+      ${receiptNumber || null},
+      ${receiptDate},
       ${grossWeight},
       ${netWeight},
       ${totalAmount},
@@ -272,13 +278,13 @@ export async function createShipmentAction(formData: FormData) {
     returning id
   `;
 
-  const shipmentId = shipmentInsert.rows[0]?.id;
-  if (!shipmentId) throw new Error("Não foi possível criar a saída.");
+  const receiptId = receiptInsert.rows[0]?.id;
+  if (!receiptId) throw new Error("Não foi possível criar a entrada.");
 
   for (const item of items) {
     await sql`
-      insert into shipment_items (
-        shipment_id,
+      insert into receipt_items (
+        receipt_id,
         material_id,
         quantity,
         unit_price,
@@ -286,7 +292,7 @@ export async function createShipmentAction(formData: FormData) {
         location_id,
         notes
       ) values (
-        ${shipmentId},
+        ${receiptId},
         ${item.materialId},
         ${item.quantity},
         ${item.unitPrice},
@@ -310,17 +316,17 @@ export async function createShipmentAction(formData: FormData) {
     ) values (
       ${user.organization.id},
       ${user.id},
-      'shipments',
+      'receipts',
       'create',
-      'shipments',
-      ${shipmentId},
+      'receipts',
+      ${receiptId},
       null,
       ${JSON.stringify({
         unit_id: unitId,
-        customer_id: customerId,
+        supplier_id: supplierId,
         carrier_id: carrierId || null,
-        shipment_number: shipmentNumber || null,
-        shipment_date: shipmentDate,
+        receipt_number: receiptNumber || null,
+        receipt_date: receiptDate,
         items_count: items.length,
         total_amount: totalAmount,
         status: 'draft',
@@ -328,38 +334,39 @@ export async function createShipmentAction(formData: FormData) {
     )
   `;
 
-  revalidatePath("/app/operacao/saidas");
+  revalidatePath("/app/operacao/entradas");
 }
 
-export async function confirmShipmentAction(formData: FormData) {
+export async function confirmReceiptAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
-  const shipmentId = sanitizeText(formData.get("shipment_id"));
+  assertCanPerformActionForUser(user, "operation", "update");
+  const receiptId = sanitizeText(formData.get("receipt_id"));
 
-  if (!shipmentId) {
-    throw new Error("Saída inválida.");
+  if (!receiptId) {
+    throw new Error("Entrada inválida.");
   }
 
-  const shipmentResult = await sql<{
+  const receiptResult = await sql<{
     id: string;
     organization_id: string;
     unit_id: string;
     status: string;
-    shipment_number: string | null;
+    receipt_number: string | null;
   }>`
-    select id, organization_id, unit_id, status, shipment_number
-    from shipments
-    where id = ${shipmentId}
+    select id, organization_id, unit_id, status, receipt_number
+    from receipts
+    where id = ${receiptId}
       and organization_id = ${user.organization.id}
     limit 1
   `;
 
-  const shipment = shipmentResult.rows[0];
-  if (!shipment) {
-    throw new Error("Saída não encontrada para esta organização.");
+  const receipt = receiptResult.rows[0];
+  if (!receipt) {
+    throw new Error("Entrada não encontrada para esta organização.");
   }
 
-  if (shipment.status === 'canceled') {
-    throw new Error("Saídas canceladas não podem ser confirmadas.");
+  if (receipt.status === 'canceled') {
+    throw new Error("Entradas canceladas não podem ser confirmadas.");
   }
 
   const itemsResult = await sql<{
@@ -371,80 +378,33 @@ export async function confirmShipmentAction(formData: FormData) {
     total_price: number | null;
   }>`
     select id, material_id, location_id, quantity, unit_price, total_price
-    from shipment_items
-    where shipment_id = ${shipmentId}
+    from receipt_items
+    where receipt_id = ${receiptId}
     order by id asc
   `;
 
   const items = itemsResult.rows;
   if (items.length === 0) {
-    throw new Error("A saída não possui itens para confirmação.");
+    throw new Error("A entrada não possui itens para confirmação.");
   }
 
   const movementCheck = await sql<{ id: string }>`
     select id
     from inventory_movements
-    where organization_id = ${user.organization.id}
-      and movement_type = 'shipment_confirmation'
-      and notes ilike ${`%${shipmentId}%`}
+    where receipt_id = ${receiptId}
+      and organization_id = ${user.organization.id}
     limit 1
   `;
 
   if (!movementCheck.rows[0]) {
     for (const item of items) {
-      let balanceResult;
-
-      if (item.location_id) {
-        balanceResult = await sql<{
-          id: string;
-          current_quantity: number;
-          average_cost: number;
-        }>`
-          select id, current_quantity, average_cost
-          from inventory_balances
-          where organization_id = ${user.organization.id}
-            and unit_id = ${shipment.unit_id}
-            and material_id = ${item.material_id}
-            and location_id = ${item.location_id}
-          limit 1
-        `;
-      } else {
-        balanceResult = await sql<{
-          id: string;
-          current_quantity: number;
-          average_cost: number;
-        }>`
-          select id, current_quantity, average_cost
-          from inventory_balances
-          where organization_id = ${user.organization.id}
-            and unit_id = ${shipment.unit_id}
-            and material_id = ${item.material_id}
-            and location_id is null
-          limit 1
-        `;
-      }
-
-      const existingBalance = balanceResult.rows[0];
-      if (!existingBalance) {
-        throw new Error("Saldo não encontrado para um dos itens da saída.");
-      }
-
-      const currentQuantity = Number(existingBalance.current_quantity);
-      const outgoingQuantity = Number(item.quantity);
-
-      if (currentQuantity < outgoingQuantity) {
-        throw new Error("Saldo insuficiente para confirmar a saída.");
-      }
-
-      const averageCost = Number(existingBalance.average_cost);
-      const totalCost = Number((outgoingQuantity * averageCost).toFixed(2));
-
       await sql`
         insert into inventory_movements (
           organization_id,
           unit_id,
           location_id,
           material_id,
+          receipt_id,
           movement_type,
           quantity_in,
           quantity_out,
@@ -455,16 +415,17 @@ export async function confirmShipmentAction(formData: FormData) {
           created_by
         ) values (
           ${user.organization.id},
-          ${shipment.unit_id},
+          ${receipt.unit_id},
           ${item.location_id},
           ${item.material_id},
-          'shipment_confirmation',
+          ${receiptId},
+          'receipt_confirmation',
+          ${item.quantity},
           0,
-          ${outgoingQuantity},
-          ${averageCost},
-          ${totalCost},
+          ${item.unit_price ?? 0},
+          ${item.total_price ?? 0},
           now(),
-          ${shipment.shipment_number ? `Confirmação da saída ${shipment.shipment_number} (${shipmentId})` : `Confirmação de saída (${shipmentId})`},
+          ${receipt.receipt_number ? `Confirmação da entrada ${receipt.receipt_number}` : 'Confirmação de entrada'},
           ${user.id}
         )
       `;
@@ -474,17 +435,17 @@ export async function confirmShipmentAction(formData: FormData) {
   for (const item of items) {
     await upsertBalanceFromMovements({
       organizationId: user.organization.id,
-      unitId: shipment.unit_id,
+      unitId: receipt.unit_id,
       materialId: item.material_id,
       locationId: item.location_id,
     });
   }
 
-  if (shipment.status !== 'confirmed') {
+  if (receipt.status !== 'confirmed') {
     await sql`
-      update shipments
+      update receipts
       set status = 'confirmed'
-      where id = ${shipmentId}
+      where id = ${receiptId}
     `;
   }
 
@@ -501,20 +462,24 @@ export async function confirmShipmentAction(formData: FormData) {
     ) values (
       ${user.organization.id},
       ${user.id},
-      'shipments',
+      'receipts',
       'confirm',
-      'shipments',
-      ${shipmentId},
+      'receipts',
+      ${receiptId},
       null,
       ${JSON.stringify({
-        shipment_id: shipmentId,
+        receipt_id: receiptId,
         status: 'confirmed',
         stock_balance_synced: true,
       })}::jsonb
     )
   `;
 
-  revalidatePath("/app/operacao/saidas");
+  revalidatePath("/app/operacao/entradas");
   revalidatePath("/app/operacao/estoque");
   revalidatePath("/app/operacao/movimentos");
 }
+export {
+  createReceiptAction as createShipmentAction,
+  confirmReceiptAction as confirmShipmentAction,
+};

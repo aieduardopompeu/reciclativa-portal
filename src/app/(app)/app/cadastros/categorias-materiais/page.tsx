@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { canPerformAction } from "@/lib/saas/permissions";
+import { canPerformActionForUser } from "@/lib/saas/permissions";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
 import { createMaterialCategoryAction } from "./actions";
 
@@ -38,7 +38,7 @@ function EmptyState() {
 
 export default async function SaaSMaterialCategoriesPage() {
   const user = await getCurrentSaaSUser();
-  const canCreate = canPerformAction(user.role, "material_categories", "create");
+  const canCreate = canPerformActionForUser(user, "material_categories", "create");
   const categories = await getCategoriesByOrganization(user.organization.id);
 
   return (

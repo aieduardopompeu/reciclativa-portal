@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { sql } from "@vercel/postgres";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { assertCanPerformActionForUser } from "@/lib/saas/permissions";
 
 function text(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
@@ -70,6 +71,7 @@ function revalidateFinance() {
 
 export async function createReceivableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "create");
   const unitId = text(formData.get("unit_id"));
   const customerId = text(formData.get("customer_id"));
   const financialAccountId = text(formData.get("financial_account_id"));
@@ -116,6 +118,7 @@ export async function createReceivableAction(formData: FormData) {
 
 export async function updateReceivableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const receivableId = text(formData.get("receivable_id"));
   const unitId = text(formData.get("unit_id"));
   const customerId = text(formData.get("customer_id"));
@@ -193,6 +196,7 @@ export async function updateReceivableAction(formData: FormData) {
 
 export async function receiveReceivableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const receivableId = text(formData.get("receivable_id"));
   if (!receivableId) throw new Error("Conta inválida.");
 
@@ -220,6 +224,7 @@ export async function receiveReceivableAction(formData: FormData) {
 
 export async function receivePartialReceivableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const receivableId = text(formData.get("receivable_id"));
   const partialAmount = decimal(formData.get("partial_amount"));
   if (!receivableId) throw new Error("Conta inválida.");
@@ -264,6 +269,7 @@ export async function receivePartialReceivableAction(formData: FormData) {
 
 export async function cancelReceivableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const receivableId = text(formData.get("receivable_id"));
   const cancelReason = text(formData.get("cancel_reason"));
   if (!receivableId) throw new Error("Conta inválida.");
@@ -293,6 +299,7 @@ export async function cancelReceivableAction(formData: FormData) {
 
 export async function reverseReceivableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const receivableId = text(formData.get("receivable_id"));
   const reverseReason = text(formData.get("reverse_reason"));
   if (!receivableId) throw new Error("Conta inválida.");
@@ -319,6 +326,7 @@ export async function reverseReceivableAction(formData: FormData) {
 
 export async function receiveSelectedReceivablesAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const receivableIds = formData.getAll("receivable_ids").map((value) => text(value)).filter(Boolean);
   if (receivableIds.length === 0) throw new Error("Selecione ao menos uma conta para receber em lote.");
 

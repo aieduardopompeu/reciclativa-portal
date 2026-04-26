@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { sql } from "@vercel/postgres";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { assertCanPerformActionForUser } from "@/lib/saas/permissions";
 
 function sanitizeText(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
@@ -10,6 +11,7 @@ function sanitizeText(value: FormDataEntryValue | null): string {
 
 export async function createInventoryLocationAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "inventory_locations", "create");
 
   const unitId = sanitizeText(formData.get("unit_id"));
   const name = sanitizeText(formData.get("name"));

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { sql } from "@vercel/postgres";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { assertCanPerformActionForUser } from "@/lib/saas/permissions";
 
 function sanitizeText(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
@@ -18,6 +19,7 @@ function sanitizeDecimal(value: FormDataEntryValue | null): number | null {
 
 export async function createMaterialAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "materials", "create");
 
   const categoryId = sanitizeText(formData.get("category_id"));
   const code = sanitizeText(formData.get("code")).toUpperCase();

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { sql } from "@vercel/postgres";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { assertCanPerformActionForUser } from "@/lib/saas/permissions";
 
 function text(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
@@ -70,6 +71,7 @@ function revalidateFinance() {
 
 export async function createPayableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "create");
   const unitId = text(formData.get("unit_id"));
   const supplierId = text(formData.get("supplier_id"));
   const financialAccountId = text(formData.get("financial_account_id"));
@@ -131,6 +133,7 @@ export async function createPayableAction(formData: FormData) {
 
 export async function updatePayableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const payableId = text(formData.get("payable_id"));
   const unitId = text(formData.get("unit_id"));
   const supplierId = text(formData.get("supplier_id"));
@@ -238,6 +241,7 @@ export async function updatePayableAction(formData: FormData) {
 
 export async function payPayableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const payableId = text(formData.get("payable_id"));
   if (!payableId) throw new Error("Conta inválida.");
 
@@ -278,6 +282,7 @@ export async function payPayableAction(formData: FormData) {
 
 export async function payPartialPayableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const payableId = text(formData.get("payable_id"));
   const partialAmount = decimal(formData.get("partial_amount"));
   if (!payableId) throw new Error("Conta inválida.");
@@ -344,6 +349,7 @@ export async function payPartialPayableAction(formData: FormData) {
 
 export async function cancelPayableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const payableId = text(formData.get("payable_id"));
   const cancelReason = text(formData.get("cancel_reason"));
   if (!payableId) throw new Error("Conta inválida.");
@@ -387,6 +393,7 @@ export async function cancelPayableAction(formData: FormData) {
 
 export async function reversePayableAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const payableId = text(formData.get("payable_id"));
   const reverseReason = text(formData.get("reverse_reason"));
   if (!payableId) throw new Error("Conta inválida.");
@@ -438,6 +445,7 @@ export async function reversePayableAction(formData: FormData) {
 
 export async function paySelectedPayablesAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "finance", "update");
   const payableIds = formData
     .getAll("payable_ids")
     .map((value) => text(value))

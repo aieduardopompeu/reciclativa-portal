@@ -1,5 +1,8 @@
 import { ReceivablesTable } from "@/components/financeiro/receivables-table";
 import { sql } from "@vercel/postgres";
+import SaaSAccessDenied from "@/components/saas/access-denied";
+import SaaSReadOnlyNotice from "@/components/saas/read-only-notice";
+import { canAccessModuleForUser, canPerformActionForUser } from "@/lib/saas/permissions";
 import {
   cancelReceivableAction,
   createReceivableAction,
@@ -264,6 +267,12 @@ function FeedbackBanner({ feedback, count, amount }: { feedback: string; count: 
 
 export default async function Page({ searchParams }: { searchParams: SearchParams }) {
   const user = await getCurrentSaaSUser();
+  if (!canAccessModuleForUser(user, "finance")) {
+    return <SaaSAccessDenied moduleLabel="financeiro" />;
+  }
+
+  const canCreate = canPerformActionForUser(user, "finance", "create");
+  const canManage = canPerformActionForUser(user, "finance", "update");
   const params = await searchParams;
   const atalho = (params.atalho || "").trim();
   const inferredStatus = params.status || (atalho === "parciais" ? "partial" : atalho === "abertas" ? "open" : "");
@@ -307,7 +316,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
             <p className="mt-1 text-sm text-slate-500">Acesse rapidamente contas em aberto, parciais ou vencidas.</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <a href="#nova-conta-receber" className="rounded-2xl bg-[#1d4f77] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#163d5c]">Nova conta a receber</a>
+            {canCreate ? (<a href="#nova-conta-receber" className="rounded-2xl bg-[#1d4f77] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#163d5c]">Nova conta a receber</a>) : null}
             <a href={csvHref} download={csvFileName} className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-100">Exportar CSV</a>
             <a href="/app/dashboard" className="rounded-2xl border border-black/10 px-4 py-2.5 text-sm font-semibold text-slate-700">Voltar ao dashboard</a>
           </div>
@@ -330,6 +339,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
         <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm"><p className="text-sm font-medium text-slate-500">Total recebido</p><p className="mt-2 text-3xl font-bold tracking-tight text-slate-900">{formatMoney(Number(summary.total_recebido ?? 0))}</p></div>
       </section>
 
+      {canCreate ? (
       <section id="nova-conta-receber" className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
         <div className="mb-4">
           <h2 className="text-lg font-semibold text-slate-900">Nova conta a receber</h2>
@@ -350,6 +360,9 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
           <div className="flex flex-wrap items-center gap-3"><button type="submit" className="rounded-2xl bg-[#1d4f77] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#163d5c]">Salvar conta</button><p className="text-sm text-slate-500">As ações e o histórico da conta ficam disponíveis diretamente na listagem.</p></div>
         </form>
       </section>
+      ) : (
+        <SaaSReadOnlyNotice description="Seu perfil permite consultar o financeiro, mas não permite criar novos lançamentos." />
+      )}
 
       <section className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
         {receivables.length === 0 ? (
@@ -363,6 +376,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
             cancelAction={cancelReceivableAction}
             reverseAction={reverseReceivableAction}
             histories={histories}
+            canManage={canManage}
           />
         )}
         <p className="mt-4 text-sm text-slate-500">As ações operacionais e o histórico da conta ficam disponíveis diretamente na listagem.</p>

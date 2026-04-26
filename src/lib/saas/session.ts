@@ -2,10 +2,15 @@ import { cookies, headers } from "next/headers";
 import { sql } from "@vercel/postgres";
 import { createHash, randomBytes } from "crypto";
 import { redirect } from "next/navigation";
-import type { SaaSRole, SaaSSessionUser } from "@/types/saas";
+import type { SaaSAccessLevel, SaaSModule, SaaSModuleAccessMap, SaaSRole, SaaSSessionUser } from "@/types/saas";
 
 export const SAAS_SESSION_COOKIE = "saas-session";
 export const SAAS_SESSION_MAX_AGE = 60 * 60 * 8;
+
+type SaaSCustomPermissionRow = {
+  feature: SaaSModule;
+  access_level: SaaSAccessLevel;
+};
 
 type SaaSUserRow = {
   session_id: string;
@@ -32,6 +37,7 @@ const allowedRoles: SaaSRole[] = [
   "manager_commercial",
   "operator",
   "viewer",
+  "custom",
 ];
 
 function sha256(value: string) {
@@ -88,6 +94,24 @@ function mapRow(row: SaaSUserRow): SaaSSessionUser {
   };
 }
 
+async function loadCustomPermissions(params: {
+  organizationId: string;
+  userId: string;
+}): Promise<SaaSModuleAccessMap> {
+  const { rows } = await sql<SaaSCustomPermissionRow>`
+    select
+      feature,
+      access_level
+    from saas_user_permissions
+    where organization_id = ${params.organizationId}
+      and user_id = ${params.userId}
+  `;
+
+  return Object.fromEntries(
+    rows.map((row) => [row.feature, row.access_level]),
+  ) as SaaSModuleAccessMap;
+}
+
 async function findUserBySessionToken(token: string): Promise<SaaSSessionUser | null> {
   const tokenHash = sha256(token);
 
@@ -120,7 +144,18 @@ async function findUserBySessionToken(token: string): Promise<SaaSSessionUser | 
     limit 1
   `;
 
-  return rows[0] ? mapRow(rows[0]) : null;
+  if (!rows[0]) return null;
+
+  const user = mapRow(rows[0]);
+
+  if (user.role === "custom") {
+    user.permissions = await loadCustomPermissions({
+      organizationId: user.organization.id,
+      userId: user.id,
+    });
+  }
+
+  return user;
 }
 
 export async function createSaaSSession(params: {

@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { canPerformAction } from "@/lib/saas/permissions";
+import { canPerformActionForUser } from "@/lib/saas/permissions";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
 import { createMaterialAction } from "./actions";
 
@@ -75,7 +75,7 @@ function formatMoney(value: number | null): string {
 
 export default async function SaaSMaterialsPage() {
   const user = await getCurrentSaaSUser();
-  const canCreate = canPerformAction(user.role, "materials", "create");
+  const canCreate = canPerformActionForUser(user, "materials", "create");
   const materials = await getMaterialsByOrganization(user.organization.id);
   const categories = await getCategoriesByOrganization(user.organization.id);
 

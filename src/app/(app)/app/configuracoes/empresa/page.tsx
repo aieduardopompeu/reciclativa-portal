@@ -1,5 +1,7 @@
 import { sql } from "@vercel/postgres";
+import SaaSAccessDenied from "@/components/saas/access-denied";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { canAccessModuleForUser } from "@/lib/saas/permissions";
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +54,10 @@ function Field({
 
 export default async function SaaSCompanyPage() {
   const user = await getCurrentSaaSUser();
+  if (!canAccessModuleForUser(user, "company")) {
+    return <SaaSAccessDenied moduleLabel="os dados da empresa" />;
+  }
+
   const organization = await getOrganizationById(user.organization.id);
 
   if (!organization) {

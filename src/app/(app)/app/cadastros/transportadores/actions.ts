@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { sql } from "@vercel/postgres";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { assertCanPerformActionForUser } from "@/lib/saas/permissions";
 
 function sanitizeText(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
@@ -10,6 +11,7 @@ function sanitizeText(value: FormDataEntryValue | null): string {
 
 export async function createCarrierAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "carriers", "create");
 
   const name = sanitizeText(formData.get("name"));
   const document = sanitizeText(formData.get("document"));

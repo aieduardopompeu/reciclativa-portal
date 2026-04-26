@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { sql } from "@vercel/postgres";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { assertCanPerformActionForUser } from "@/lib/saas/permissions";
 
 function sanitizeText(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value.trim() : "";
@@ -133,6 +134,7 @@ async function upsertBalanceFromMovements(params: {
 
 export async function createReceiptAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "operation", "create");
 
   const unitId = sanitizeText(formData.get("unit_id"));
   const supplierId = sanitizeText(formData.get("supplier_id"));
@@ -337,6 +339,7 @@ export async function createReceiptAction(formData: FormData) {
 
 export async function confirmReceiptAction(formData: FormData) {
   const user = await getCurrentSaaSUser();
+  assertCanPerformActionForUser(user, "operation", "update");
   const receiptId = sanitizeText(formData.get("receipt_id"));
 
   if (!receiptId) {

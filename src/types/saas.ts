@@ -6,7 +6,8 @@ export type SaaSRole =
   | "manager_financial"
   | "manager_commercial"
   | "operator"
-  | "viewer";
+  | "viewer"
+  | "custom";
 
 export type SaaSModule =
   | "dashboard"
@@ -19,9 +20,16 @@ export type SaaSModule =
   | "material_categories"
   | "materials"
   | "inventory_locations"
+  | "operation"
+  | "finance"
+  | "settings"
   | "audit_logs";
 
 export type SaaSAction = "view" | "create" | "update" | "archive";
+
+export type SaaSAccessLevel = "none" | "read" | "write" | "admin";
+
+export type SaaSModuleAccessMap = Partial<Record<SaaSModule, SaaSAccessLevel>>;
 
 export type SaaSOrganization = {
   id: string;
@@ -39,6 +47,7 @@ export type SaaSSessionUser = {
   name: string;
   email: string;
   role: SaaSRole;
+  permissions?: SaaSModuleAccessMap;
   mustChangePassword: boolean;
   passwordChangedAt?: Date | null;
   mfaEnabled: boolean;

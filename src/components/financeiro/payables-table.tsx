@@ -182,6 +182,7 @@ function RowActions({
   cancelAction,
   reverseAction,
   histories,
+  canManage,
 }: {
   item: PayableRow;
   payAction: (formData: FormData) => void | Promise<void>;
@@ -189,8 +190,18 @@ function RowActions({
   cancelAction: (formData: FormData) => void | Promise<void>;
   reverseAction: (formData: FormData) => void | Promise<void>;
   histories: Record<string, HistoryItem[]>;
+  canManage: boolean;
 }) {
   const remaining = Math.max(Number(item.amount || 0) - Number(item.paid_amount || 0), 0);
+
+  if (!canManage) {
+    return (
+      <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-xs text-amber-900">
+        <p className="font-semibold">Somente leitura</p>
+        <p className="mt-1">Você pode consultar esta conta, mas não pode registrar baixa, cancelar ou estornar.</p>
+      </div>
+    );
+  }
 
   if (item.status === "paid") {
     return (
@@ -317,6 +328,7 @@ export function PayablesTable({
   cancelAction,
   reverseAction,
   histories,
+  canManage = true,
 }: {
   items: PayableRow[];
   bulkAction: (formData: FormData) => void | Promise<void>;
@@ -325,8 +337,9 @@ export function PayablesTable({
   cancelAction: (formData: FormData) => void | Promise<void>;
   reverseAction: (formData: FormData) => void | Promise<void>;
   histories: Record<string, HistoryItem[]>;
+  canManage?: boolean;
 }) {
-  const selectableIds = useMemo(() => items.filter((item) => item.status === "open" || item.status === "partial").map((item) => item.id), [items]);
+  const selectableIds = useMemo(() => canManage ? items.filter((item) => item.status === "open" || item.status === "partial").map((item) => item.id) : [], [items, canManage]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [openDesktopRow, setOpenDesktopRow] = useState<string | null>(null);
   const [openMobileRow, setOpenMobileRow] = useState<string | null>(null);
@@ -338,6 +351,7 @@ export function PayablesTable({
 
   return (
     <div className="space-y-4">
+      {canManage ? (
       <div className="flex flex-col gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-sm font-semibold text-emerald-900">Ação em lote</p>
@@ -371,6 +385,7 @@ export function PayablesTable({
           </form>
         </div>
       </div>
+      ) : null}
 
 
       {items.length === 0 ? (
@@ -385,7 +400,7 @@ export function PayablesTable({
           const total = Number(item.amount || 0);
           const paid = Number(item.paid_amount || 0);
           const remaining = Math.max(total - paid, 0);
-          const canSelect = item.status === "open" || item.status === "partial";
+          const canSelect = canManage && (item.status === "open" || item.status === "partial");
           const isSelected = selectedIds.includes(item.id);
           const isOpen = openMobileRow === item.id;
 
@@ -425,7 +440,7 @@ export function PayablesTable({
 
               {isOpen ? (
                 <div className="mt-4 space-y-4 border-t border-black/10 pt-4">
-                  <div><RowActions item={item} payAction={payAction} partialPayAction={partialPayAction} cancelAction={cancelAction} reverseAction={reverseAction} histories={histories} /></div>
+                  <div><RowActions item={item} payAction={payAction} partialPayAction={partialPayAction} cancelAction={cancelAction} reverseAction={reverseAction} histories={histories} canManage={canManage} /></div>
                   <div><HistoryTimeline items={histories[item.id] || []} /></div>
                 </div>
               ) : null}
@@ -439,7 +454,7 @@ export function PayablesTable({
           const total = Number(item.amount || 0);
           const paid = Number(item.paid_amount || 0);
           const remaining = Math.max(total - paid, 0);
-          const canSelect = item.status === "open" || item.status === "partial";
+          const canSelect = canManage && (item.status === "open" || item.status === "partial");
           const isSelected = selectedIds.includes(item.id);
           const isOpen = openDesktopRow === item.id;
 
@@ -533,6 +548,7 @@ export function PayablesTable({
                         cancelAction={cancelAction}
                         reverseAction={reverseAction}
                         histories={histories}
+                        canManage={canManage}
                       />
                     </div>
                     <div className="xl:col-span-2">

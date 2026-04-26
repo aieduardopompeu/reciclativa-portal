@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { canAccessModule } from "@/lib/saas/permissions";
+import { canAccessModuleForUser } from "@/lib/saas/permissions";
 import { saasNavigation, saasNavGroups, type SaaSNavGroupKey, type SaaSNavItem } from "@/lib/saas/navigation";
 import type { SaaSSessionUser } from "@/types/saas";
 import IdleLogout from "@/components/auth/IdleLogout";
@@ -105,7 +105,7 @@ export default function SaaSShell({
   user: SaaSSessionUser;
   children: React.ReactNode;
 }) {
-  const navItems = saasNavigation.filter((item) => canAccessModule(user.role, item.module));
+  const navItems = saasNavigation.filter((item) => canAccessModuleForUser(user, item.module));
 
   return (
     <div className="min-h-screen bg-[#f6faf7] text-slate-900">

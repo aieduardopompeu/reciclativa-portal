@@ -55,6 +55,10 @@ export default async function SaaSMfaSetupPage() {
           <p className="mt-3 text-sm text-slate-600">
             Antes de entrar no sistema, ative o segundo fator no aplicativo autenticador.
           </p>
+          <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">
+            <span className="font-semibold">Configurando MFA para:</span>{" "}
+            <span className="break-all">{user.email}</span>
+          </div>
 
           {qrCodeDataUrl ? (
             <div className="mt-6 flex flex-col items-center rounded-xl border border-slate-200 bg-slate-50 p-4">

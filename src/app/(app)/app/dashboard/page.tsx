@@ -1,5 +1,7 @@
 import { sql } from "@vercel/postgres";
+import SaaSAccessDenied from "@/components/saas/access-denied";
 import { getCurrentSaaSUser } from "@/lib/saas/session";
+import { canAccessModuleForUser } from "@/lib/saas/permissions";
 
 export const dynamic = "force-dynamic";
 
@@ -326,7 +328,11 @@ function formatStatus(status: string): string {
   }
 }
 
-function HeroActions() {
+function HeroActions({ canAccessFinance }: { canAccessFinance: boolean }) {
+  if (!canAccessFinance) {
+    return null;
+  }
+
   return (
     <div className="flex flex-wrap gap-3">
       <a href="/app/financeiro/contas-a-pagar" className="rounded-2xl border border-black/10 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ir para pagar</a>
@@ -417,7 +423,11 @@ function ScheduleCard({ title, description, items, emptyText, compactWhenEmpty =
   );
 }
 
-function QuickActionsCard() {
+function QuickActionsCard({ canAccessFinance }: { canAccessFinance: boolean }) {
+  if (!canAccessFinance) {
+    return null;
+  }
+
   const actions = [
     { title: "Nova conta a pagar", description: "Abrir o financeiro de saídas para cadastrar uma nova saída.", href: "/app/financeiro/contas-a-pagar", tone: "default" as const },
     { title: "Nova conta a receber", description: "Abrir o financeiro de cobranças para cadastrar uma nova entrada.", href: "/app/financeiro/contas-a-receber", tone: "primary" as const },
@@ -525,6 +535,32 @@ function ConsolidatedReportCard({ period, rows }: { period: PeriodKey; rows: Con
 
 export default async function SaaSDashboardPage({ searchParams }: { searchParams: SearchParams }) {
   const user = await getCurrentSaaSUser();
+  if (!canAccessModuleForUser(user, "dashboard")) {
+    return <SaaSAccessDenied moduleLabel="o dashboard" />;
+  }
+
+  const canAccessFinance = canAccessModuleForUser(user, "finance");
+
+  if (!canAccessFinance) {
+    return (
+      <div className="space-y-6">
+        <section className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">Dashboard</p>
+          <div className="mt-3 max-w-3xl">
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900">Visão geral da empresa</h1>
+            <p className="mt-3 text-slate-600">Seu perfil não possui acesso ao módulo Financeiro. Use os módulos disponíveis no menu lateral para continuar trabalhando na {user.organization.tradeName ?? user.organization.legalName}.</p>
+          </div>
+        </section>
+
+        <section className="rounded-3xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Acesso limitado</p>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900">Acesso financeiro não disponível para este perfil</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-amber-800">Os atalhos, indicadores e relatórios financeiros ficam disponíveis apenas para usuários com permissão de visualização, criação/edição ou gerenciamento no módulo Financeiro.</p>
+        </section>
+      </div>
+    );
+  }
+
   const params = await searchParams;
   const period: PeriodKey = ["today", "7d", "30d", "month"].includes(params.period || "") ? (params.period as PeriodKey) : "month";
   const [overview, upcomingItems, overdueItems, consolidatedRows] = await Promise.all([
@@ -547,11 +583,11 @@ export default async function SaaSDashboardPage({ searchParams }: { searchParams
             <h1 className="text-3xl font-bold tracking-tight text-slate-900">Visão inicial do financeiro</h1>
             <p className="mt-3 text-slate-600">Painel inicial para acompanhar contas a pagar, contas a receber, valores liquidados e prioridades de vencimento da {user.organization.tradeName ?? user.organization.legalName}.</p>
           </div>
-          <HeroActions />
+          <HeroActions canAccessFinance={canAccessFinance} />
         </div>
       </section>
       <PeriodFilter active={period} />
-      <QuickActionsCard />
+      <QuickActionsCard canAccessFinance={canAccessFinance} />
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <SummaryCard label="Contas a pagar em aberto" value={formatMoney(overview.payables_open)} helper="Saldo restante das obrigações abertas e parciais." />
         <SummaryCard label="Contas a receber em aberto" value={formatMoney(overview.receivables_open)} helper="Saldo restante dos recebimentos abertos e parciais." />
