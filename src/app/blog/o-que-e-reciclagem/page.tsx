@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
+import AdUnit from "@/components/ads/AdUnit";
+import { AD_SLOTS } from "@/config/ads";
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ||
@@ -94,9 +96,10 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Conteúdo (padrão ITAD: sem prose) */}
+      {/* Conteúdo + Sidebar */}
       <section className="mt-10">
-        <article className="mx-auto max-w-3xl">
+        <div className="flex gap-8 items-start">
+          <article className="min-w-0 flex-1">
           {/* Box editorial: resumo rápido */}
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
@@ -356,7 +359,14 @@ export default function Page() {
               </Link>
             </div>
           </section>
-        </article>
+          </article>
+
+          {/* Sidebar — visível apenas em telas lg+ */}
+          <aside className="hidden lg:block w-[300px] flex-shrink-0 space-y-4 sticky top-6 self-start">
+            <AdUnit slot={AD_SLOTS.ARTICLE_SIDEBAR_TOP} format="rectangle" showLabel={false} />
+            <AdUnit slot={AD_SLOTS.ARTICLE_SIDEBAR_MID} format="rectangle" showLabel={false} />
+          </aside>
+        </div>
       </section>
     </main>
   );

@@ -87,17 +87,19 @@ export default function Page() {
                 O que é a Reciclativa
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                A Reciclativa é um portal digital focado em reciclagem,
-                sustentabilidade e economia circular. O objetivo é organizar
-                informações práticas — sem jargão — para ajudar pessoas,
-                escolas, empresas e profissionais a tomar decisões melhores no
-                dia a dia.
+                A Reciclativa é um portal digital brasileiro focado em reciclagem,
+                sustentabilidade e economia circular. Criado em 2024 e sediado no
+                Brasil, o objetivo é organizar informações práticas — sem jargão —
+                para ajudar pessoas, escolas, empresas e profissionais a tomar
+                decisões melhores no dia a dia.
               </p>
 
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Aqui você encontra páginas pilar, guias, checklists e conteúdos
                 educativos pensados para aplicação real, não apenas leitura
-                teórica.
+                teórica. O portal é independente, sem vínculo com marcas ou
+                fabricantes, e o conteúdo é produzido com base em fontes
+                públicas e institucionais.
               </p>
             </div>
 

@@ -111,22 +111,39 @@ export default async function ProfissionaisHubPage() {
 
               <ProfissionaisStatePicker ufs={ufs} />
 
-              {/* ✅ Padronizado: sem dados (humano + CTA, sem texto técnico) */}
               {!hasUFs ? (
-                <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-semibold text-slate-900">
-                    Ainda não há profissionais cadastrados.
-                  </p>
-                  <p className="mt-1 text-sm text-slate-700">
-                    Cadastre seu serviço para aparecer nas buscas por estado e cidade.
-                  </p>
-                  <div className="mt-3">
-                    <Link
-                      href="/anuncie"
-                      className="inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
-                    >
-                      Cadastrar meu serviço
-                    </Link>
+                <div className="mt-6 space-y-4">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                    <p className="text-sm font-semibold text-slate-900">
+                      Seja o primeiro a aparecer no seu estado
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                      O diretório conecta pessoas e empresas que buscam soluções sustentáveis —
+                      coleta, consultoria, logística reversa, educação ambiental e mais —
+                      com profissionais e serviços locais. O cadastro é gratuito e sem compromisso.
+                    </p>
+                    <div className="mt-4">
+                      <Link
+                        href="/anuncie"
+                        className="inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                      >
+                        Cadastrar meu serviço gratuitamente
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-white p-5">
+                    <p className="text-sm font-semibold text-slate-900">
+                      Quem pode se cadastrar
+                    </p>
+                    <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                      <li>Empresas de coleta seletiva e logística reversa</li>
+                      <li>Consultores e especialistas em sustentabilidade</li>
+                      <li>Cooperativas e associações de reciclagem</li>
+                      <li>Prestadores de educação ambiental</li>
+                      <li>Empresas de gestão de resíduos (PGRS / PGRCC)</li>
+                      <li>Operadores de descarte de eletrônicos (e-lixo / ITAD)</li>
+                    </ul>
                   </div>
                 </div>
               ) : null}

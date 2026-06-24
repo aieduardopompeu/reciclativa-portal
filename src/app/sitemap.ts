@@ -146,7 +146,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/sobre",
     "/contato",
     "/faq",
-    "/anuncie",
     "/gestao",
 
     // Hubs adicionais (importantes e rastreáveis)
@@ -179,9 +178,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ) {
         priority = 0.3;
         changeFrequency = "yearly";
-      } else if (route === "/anuncie") {
-        priority = 0.6;
-        changeFrequency = "monthly";
       } else {
         priority = 0.6;
         changeFrequency = "monthly";

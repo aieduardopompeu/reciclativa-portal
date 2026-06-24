@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { POSTS, getAllTags, getAllCategories, type CategoryUI, type PostCard } from "@/content/blog/posts";
+import AdUnit from "@/components/ads/AdUnit";
+import { AD_SLOTS } from "@/config/ads";
 
 export const metadata: Metadata = {
   title: "Blog | Reciclativa",
@@ -127,6 +129,11 @@ export default async function BlogPage({
           </nav>
         </div>
       </header>
+
+      {/* blog-leaderboard-top — abaixo do hero, antes dos posts */}
+      <div className="mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6 lg:px-8">
+        <AdUnit slot={AD_SLOTS.BLOG_LEADERBOARD_TOP} format="horizontal" />
+      </div>
 
       {/* Conteúdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
@@ -391,6 +398,11 @@ export default async function BlogPage({
           </aside>
         </section>
       </section>
+
+      {/* blog-rectangle-bottom — antes do fechamento da listagem */}
+      <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
+        <AdUnit slot={AD_SLOTS.BLOG_RECTANGLE_BOTTOM} format="auto" />
+      </div>
     </main>
   );
 }

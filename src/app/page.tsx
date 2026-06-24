@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import AdUnit from "@/components/ads/AdUnit";
+import { AD_SLOTS } from "@/config/ads";
 
 type Pillar = {
   title: string;
@@ -239,6 +241,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* display_topo_portal — entre pilares e guias */}
+      <div className="mx-auto w-full max-w-6xl px-4 pb-4 sm:px-6 lg:px-8">
+        <AdUnit slot={AD_SLOTS.DISPLAY_TOPO_PORTAL} format="auto" />
+      </div>
 
       {/* GUIAS EM DESTAQUE */}
       <section className="border-y border-slate-200 bg-emerald-50/40">
@@ -497,6 +504,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* display_footer_global — antes do encerramento da home */}
+      <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
+        <AdUnit slot={AD_SLOTS.DISPLAY_FOOTER_GLOBAL} format="auto" />
+      </div>
     </main>
   );
 }
