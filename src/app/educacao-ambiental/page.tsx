@@ -88,12 +88,17 @@ export default function Page() {
           <div className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Conteúdo em construção
+                Educação ambiental: informação que vira hábito
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Esta rota foi criada para remover 404 e servir de base para uma
-                página pilar/guia. Em seguida, vamos incluir seções práticas,
-                checklist, FAQ e links internos.
+                Educação ambiental é o processo de formar consciência sobre o impacto das nossas
+                escolhas no meio ambiente — e traduzir essa consciência em ações concretas. Não se
+                trata apenas de teoria: o objetivo é criar hábitos sustentáveis que se mantêm no dia
+                a dia, em casa, na escola e no trabalho.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Esta página reúne conceitos, práticas e recursos para quem quer entender o tema
+                ou aplicar iniciativas de educação ambiental em comunidades, escolas e empresas.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">

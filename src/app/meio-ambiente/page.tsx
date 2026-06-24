@@ -86,12 +86,17 @@ export default function Page() {
           <div className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                Conteúdo em construção
+                Meio ambiente: o que podemos fazer na prática
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Esta rota foi criada para remover 404 e servir de base para uma
-                página pilar/guia. Em seguida, vamos incluir seções práticas,
-                checklist, FAQ e links internos.
+                Cuidar do meio ambiente não depende de grandes gestos. Na maioria dos casos, as ações
+                mais eficazes são simples: separar resíduos corretamente, reduzir o que é descartado
+                e reutilizar antes de reciclar. Pequenas mudanças de rotina, quando praticadas por
+                muitas pessoas, geram impacto real na redução de resíduos e poluição.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Esta página reúne conceitos essenciais e caminhos práticos para quem quer entender
+                melhor o tema e aplicar no dia a dia — em casa, no trabalho ou na escola.
               </p>
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
