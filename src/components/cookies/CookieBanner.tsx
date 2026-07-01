@@ -146,16 +146,22 @@ export default function CookieBanner() {
                 Usamos cookies necessários para o funcionamento da plataforma e, com sua escolha,
                 cookies de analytics e marketing para medir desempenho, entender o uso e apoiar
                 campanhas. Saiba mais em{" "}
-                <Link href="/cookies" className="font-semibold text-emerald-800 hover:underline">
-                  /cookies
+                <Link
+                  href="/politica-de-cookies"
+                  className="font-semibold text-emerald-800 hover:underline"
+                >
+                  Política de Cookies
                 </Link>
                 ,{" "}
-                <Link href="/privacidade" className="font-semibold text-emerald-800 hover:underline">
-                  /privacidade
+                <Link
+                  href="/politica-de-privacidade"
+                  className="font-semibold text-emerald-800 hover:underline"
+                >
+                  Política de Privacidade
                 </Link>{" "}
                 e{" "}
                 <Link href="/lgpd" className="font-semibold text-emerald-800 hover:underline">
-                  /lgpd
+                  LGPD
                 </Link>
                 .
               </p>
@@ -276,11 +282,17 @@ export default function CookieBanner() {
             <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-4">
               <div className="text-sm text-slate-600">
                 Veja também{" "}
-                <Link href="/cookies" className="font-semibold text-emerald-800 hover:underline">
+                <Link
+                  href="/politica-de-cookies"
+                  className="font-semibold text-emerald-800 hover:underline"
+                >
                   Política de Cookies
                 </Link>
                 ,{" "}
-                <Link href="/privacidade" className="font-semibold text-emerald-800 hover:underline">
+                <Link
+                  href="/politica-de-privacidade"
+                  className="font-semibold text-emerald-800 hover:underline"
+                >
                   Privacidade
                 </Link>{" "}
                 e{" "}

@@ -1,33 +1,21 @@
 // src/app/reciclagem/[slug]/page.tsx
-import { notFound } from "next/navigation";
-import { getReciclagemArticle } from "@/content/reciclagem";
+import { notFound, redirect } from "next/navigation";
 
 type PageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export default function ReciclagemArticlePage({ params }: PageProps) {
-  const { slug } = params;
+// Os dois conteúdos que já existiram aqui têm versões completas e canônicas em
+// outro lugar do site: evita duas páginas concorrendo pelo mesmo tema.
+const REDIRECTS: Record<string, string> = {
+  "simbolos-da-reciclagem": "/simbolos-da-reciclagem",
+  "o-que-pode-ser-reciclado": "/blog/o-que-pode-ser-reciclado",
+};
 
-  const article = getReciclagemArticle(slug);
-  if (!article) return notFound();
+export default async function ReciclagemArticleRedirect({ params }: PageProps) {
+  const { slug } = await params;
 
-  return (
-    <main className="mx-auto w-full max-w-3xl px-4 py-10">
-      <header className="space-y-3">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {article.title}
-        </h1>
-        <p className="text-base text-muted-foreground">{article.description}</p>
-      </header>
+  if (REDIRECTS[slug]) redirect(REDIRECTS[slug]);
 
-      <article className="mt-8 space-y-5">
-        {article.content.map((p, idx) => (
-          <p key={idx} className="leading-relaxed">
-            {p}
-          </p>
-        ))}
-      </article>
-    </main>
-  );
+  return notFound();
 }

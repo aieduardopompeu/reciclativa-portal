@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import fs from "node:fs";
 import path from "node:path";
-import { reciclagemArticles } from "@/content/reciclagem";
 import {
   POSTS,
   getAllCategories,
@@ -174,9 +173,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Conversão / geração de leads
     "/anuncie",
-    "/profissionais/anuncie",
     "/profissionais/saiba-mais",
-    "/diretorio/cadastrar",
     "/gestao/contato",
 
     // Legais canônicas (mantém apenas estas 3)
@@ -214,14 +211,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ) {
         priority = 0.7;
         changeFrequency = "monthly";
-      } else if (
-        [
-          "/anuncie",
-          "/profissionais/anuncie",
-          "/profissionais/saiba-mais",
-          "/diretorio/cadastrar",
-        ].includes(route)
-      ) {
+      } else if (["/anuncie", "/profissionais/saiba-mais"].includes(route)) {
         priority = 0.5;
         changeFrequency = "monthly";
       } else if (route === "/gestao/contato") {
@@ -268,14 +258,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     };
   });
-
-  // Artigos do hub /reciclagem (conteúdo estático em src/content/reciclagem.ts)
-  const reciclagemRoutes: MetadataRoute.Sitemap = reciclagemArticles.map((article) => ({
-    url: `${SITE_URL}/reciclagem/${article.slug}`,
-    lastModified: new Date(article.dateISO),
-    changeFrequency: "monthly",
-    priority: 0.75,
-  }));
 
   // Categorias e tags do blog (enumeráveis a partir de src/content/blog/posts.ts)
   const categoryRoutes: MetadataRoute.Sitemap = getAllCategories().map((category) => {
@@ -337,7 +319,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticRoutes,
     ...blogRoutes,
-    ...reciclagemRoutes,
     ...categoryRoutes,
     ...tagRoutes,
     ...profissionaisRoutes,
