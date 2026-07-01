@@ -51,6 +51,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
             <Link
               href="/admin/logout"
+              prefetch={false}
               className="inline-flex items-center rounded-lg border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
             >
               Sair
