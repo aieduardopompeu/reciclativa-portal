@@ -1,6 +1,20 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://www.reciclativa.com";
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(
+  /\/+$/,
+  ""
+);
+
+// Área administrativa, área logada do SaaS, autenticação e API nunca devem ser indexadas
+const DISALLOW = [
+  "/admin/",
+  "/admin-login",
+  "/app/",
+  "/api/",
+  "/login",
+  "/recuperar-senha",
+  "/redefinir-senha",
+];
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,29 +22,29 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/api/"],
+        disallow: DISALLOW,
       },
 
       // Opcional: regras explícitas por bot (mais compatível que “multi User-Agent” no mesmo bloco)
       {
         userAgent: "AhrefsBot",
         allow: "/",
-        disallow: ["/admin/", "/api/"],
+        disallow: DISALLOW,
       },
       {
         userAgent: "SemrushBot",
         allow: "/",
-        disallow: ["/admin/", "/api/"],
+        disallow: DISALLOW,
       },
       {
         userAgent: "MJ12bot",
         allow: "/",
-        disallow: ["/admin/", "/api/"],
+        disallow: DISALLOW,
       },
       {
         userAgent: "DotBot",
         allow: "/",
-        disallow: ["/admin/", "/api/"],
+        disallow: DISALLOW,
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

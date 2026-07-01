@@ -1,10 +1,23 @@
 import type { MetadataRoute } from "next";
 import fs from "node:fs";
 import path from "node:path";
+import { reciclagemArticles } from "@/content/reciclagem";
+import {
+  POSTS,
+  getAllCategories,
+  getAllTags,
+  getPostsByCategorySlug,
+  getPostsByTag,
+  toSlug,
+} from "@/content/blog/posts";
+import { citiesByUF, normalizeCity, uniqueUFs } from "@/content/profissionais";
 
 export const runtime = "nodejs";
 
-const SITE_URL = "https://www.reciclativa.com";
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.reciclativa.com").replace(
+  /\/+$/,
+  ""
+);
 const APP_DIR = path.join(process.cwd(), "src", "app");
 
 function existsFile(p: string) {
@@ -133,13 +146,16 @@ function getBlogSlugs(): Array<{ slug: string; pageFile: string }> {
   return unique;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Rotas principais (inclui apenas canônicas legais para evitar duplicidade)
   const desiredStatic = [
     "/",
     "/reciclagem",
     "/sustentabilidade",
     "/guias",
+    "/guias/coleta-seletiva",
+    "/guias/o-que-pode-reciclar",
+    "/guias/compostagem",
     "/diretorio",
     "/profissionais",
     "/blog",
@@ -151,6 +167,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Hubs adicionais (importantes e rastreáveis)
     "/meio-ambiente",
     "/educacao-ambiental",
+    "/coleta-seletiva",
+    "/economia-circular",
+    "/residuos-solidos",
+    "/simbolos-da-reciclagem",
+
+    // Conversão / geração de leads
+    "/anuncie",
+    "/profissionais/anuncie",
+    "/profissionais/saiba-mais",
+    "/diretorio/cadastrar",
+    "/gestao/contato",
 
     // Legais canônicas (mantém apenas estas 3)
     "/politica-de-privacidade",
@@ -174,6 +201,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority = 0.85;
         changeFrequency = "weekly";
       } else if (
+        ["/guias/coleta-seletiva", "/guias/o-que-pode-reciclar", "/guias/compostagem"].includes(
+          route
+        )
+      ) {
+        priority = 0.75;
+        changeFrequency = "monthly";
+      } else if (
+        ["/coleta-seletiva", "/economia-circular", "/residuos-solidos", "/simbolos-da-reciclagem"].includes(
+          route
+        )
+      ) {
+        priority = 0.7;
+        changeFrequency = "monthly";
+      } else if (
+        [
+          "/anuncie",
+          "/profissionais/anuncie",
+          "/profissionais/saiba-mais",
+          "/diretorio/cadastrar",
+        ].includes(route)
+      ) {
+        priority = 0.5;
+        changeFrequency = "monthly";
+      } else if (route === "/gestao/contato") {
+        priority = 0.4;
+        changeFrequency = "monthly";
+      } else if (
         ["/politica-de-privacidade", "/politica-de-cookies", "/termos-de-uso"].includes(route)
       ) {
         priority = 0.3;
@@ -189,15 +243,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return { url, lastModified, changeFrequency, priority };
     });
 
-  // Posts do blog (pastas reais)
+  // Posts do blog (pastas reais). lastModified vem da data real do post em POSTS
+  // (dateISO), não do mtime do arquivo — mtime reflete a data do deploy, não da edição.
   const blogSlugs = getBlogSlugs();
+  const postBySlug = new Map(POSTS.map((p) => [p.slug, p]));
 
   const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map(({ slug, pageFile }) => {
-    let lastModified = new Date();
-    try {
-      lastModified = fs.statSync(pageFile).mtime;
-    } catch {
-      // ignore
+    const post = postBySlug.get(slug);
+    let lastModified: Date;
+    if (post) {
+      lastModified = new Date(post.dateISO);
+    } else {
+      try {
+        lastModified = fs.statSync(pageFile).mtime;
+      } catch {
+        lastModified = new Date();
+      }
     }
 
     return {
@@ -208,5 +269,77 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
-  return [...staticRoutes, ...blogRoutes];
+  // Artigos do hub /reciclagem (conteúdo estático em src/content/reciclagem.ts)
+  const reciclagemRoutes: MetadataRoute.Sitemap = reciclagemArticles.map((article) => ({
+    url: `${SITE_URL}/reciclagem/${article.slug}`,
+    lastModified: new Date(article.dateISO),
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
+
+  // Categorias e tags do blog (enumeráveis a partir de src/content/blog/posts.ts)
+  const categoryRoutes: MetadataRoute.Sitemap = getAllCategories().map((category) => {
+    const posts = getPostsByCategorySlug(toSlug(category));
+    const dates = posts.map((p) => p.dateISO).sort();
+    const lastModified = dates.length ? new Date(dates[dates.length - 1]) : new Date();
+
+    return {
+      url: `${SITE_URL}/blog/categorias/${toSlug(category)}`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    };
+  });
+
+  const tagRoutes: MetadataRoute.Sitemap = getAllTags().map((tag) => {
+    const posts = getPostsByTag(tag);
+    const dates = posts.map((p) => p.dateISO).sort();
+    const lastModified = dates.length ? new Date(dates[dates.length - 1]) : new Date();
+
+    return {
+      url: `${SITE_URL}/blog/tags/${tag}`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.4,
+    };
+  });
+
+  // Diretório de profissionais por UF / cidade (dados vêm do Postgres)
+  let profissionaisRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const ufs = await uniqueUFs();
+    const perUF = await Promise.all(
+      ufs.map(async (uf) => {
+        const ufRoute: MetadataRoute.Sitemap[number] = {
+          url: `${SITE_URL}/profissionais/${uf}`,
+          lastModified: new Date(),
+          changeFrequency: "weekly",
+          priority: 0.5,
+        };
+
+        const cities = await citiesByUF(uf);
+        const cityRoutes: MetadataRoute.Sitemap = cities.map((city) => ({
+          url: `${SITE_URL}/profissionais/${uf}/${normalizeCity(city)}`,
+          lastModified: new Date(),
+          changeFrequency: "monthly",
+          priority: 0.45,
+        }));
+
+        return [ufRoute, ...cityRoutes];
+      })
+    );
+    profissionaisRoutes = perUF.flat();
+  } catch {
+    // Se o banco não responder, o sitemap continua sem essas rotas dinâmicas
+    profissionaisRoutes = [];
+  }
+
+  return [
+    ...staticRoutes,
+    ...blogRoutes,
+    ...reciclagemRoutes,
+    ...categoryRoutes,
+    ...tagRoutes,
+    ...profissionaisRoutes,
+  ];
 }

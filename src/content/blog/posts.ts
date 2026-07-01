@@ -142,6 +142,16 @@ export const POSTS: PostCard[] = [
     readMin: 8,
     tags: ["materiais-sustentaveis", "bioplasticos"],
   },
+  {
+    slug: "itad",
+    title: "ITAD: o que é e como funciona (IT Asset Disposition)",
+    excerpt:
+      "Entenda ITAD (IT Asset Disposition): destinação de ativos de TI com segurança, rastreabilidade e conformidade — do inventário ao descarte final.",
+    category: "Sustentabilidade",
+    dateISO: "2026-01-03",
+    readMin: 8,
+    tags: ["sustentabilidade", "lixo-eletronico", "itad"],
+  },
 ];
 
 /** Helpers */
