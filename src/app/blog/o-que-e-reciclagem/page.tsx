@@ -30,8 +30,7 @@ export const metadata: Metadata = {
     type: "article",
     siteName: "Reciclativa",
     locale: "pt_BR",
-    // Se você tiver uma OG padrão, pode ativar. Se não tiver, pode remover este bloco.
-    images: [{ url: `${SITE_URL}/og/blog-default.webp` }],
+    images: [{ url: `${SITE_URL}/opengraph-image` }],
   },
 
   robots: {

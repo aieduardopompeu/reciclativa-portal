@@ -16,14 +16,7 @@ export const metadata: Metadata = {
       "Conteúdos práticos sobre reciclagem, sustentabilidade e economia circular.",
     url: "/blog",
     type: "website",
-    images: [
-      {
-        url: "/og/blog-default.webp",
-        width: 1200,
-        height: 630,
-        alt: "Reciclativa — Blog",
-      },
-    ],
+    images: [{ url: "/opengraph-image" }],
   },
 };
 
@@ -60,7 +53,7 @@ export default async function BlogPage({
     POSTS.find((p) => p.slug === "economia-circular-exemplos"),
   ].filter(Boolean) as PostCard[];
 
-  const mostRead = [
+  const recommended = [
     POSTS.find((p) => p.slug === "o-que-pode-ser-reciclado"),
     POSTS.find((p) => p.slug === "o-que-e-reciclagem"),
     POSTS.find((p) => p.slug === "economia-circular-exemplos"),
@@ -356,14 +349,14 @@ export default async function BlogPage({
 
             <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Mais lidos
+                Recomendados
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                Os conteúdos que resolvem as dúvidas mais comuns.
+                Selecionados pela redação para resolver as dúvidas mais comuns.
               </p>
 
               <div className="mt-4 space-y-3">
-                {mostRead.map((p) => (
+                {recommended.map((p) => (
                   <Link
                     key={p.slug}
                     href={`/blog/${p.slug}`}
