@@ -233,6 +233,8 @@ export function Footer() {
       <div className="border-t border-emerald-200/70 py-4">
         <div className="mx-auto max-w-6xl px-4 text-xs text-slate-600">
           © {new Date().getFullYear()} Reciclativa. Todos os direitos reservados.
+          <span className="mx-1.5">·</span>
+          Responsável: Eduardo Pompeu — São Gonçalo/RJ
         </div>
       </div>
     </footer>

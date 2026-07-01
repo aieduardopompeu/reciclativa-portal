@@ -88,10 +88,10 @@ export default function Page() {
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 A Reciclativa é um portal digital brasileiro focado em reciclagem,
-                sustentabilidade e economia circular. Criado em 2024 e sediado no
-                Brasil, o objetivo é organizar informações práticas — sem jargão —
-                para ajudar pessoas, escolas, empresas e profissionais a tomar
-                decisões melhores no dia a dia.
+                sustentabilidade e economia circular. Sediado no Brasil, o objetivo
+                é organizar informações práticas — sem jargão — para ajudar
+                pessoas, escolas, empresas e profissionais a tomar decisões
+                melhores no dia a dia.
               </p>
 
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
@@ -233,6 +233,21 @@ export default function Page() {
                   LGPD
                 </Link>
               </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Quem mantém a Reciclativa
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                O portal é mantido por <strong>Eduardo Pompeu</strong>, em São Gonçalo/RJ.
+                Dúvidas, sugestões ou solicitações relacionadas ao site podem ser enviadas
+                pelo canal de{" "}
+                <Link href="/contato" className="font-semibold text-emerald-800 hover:underline">
+                  contato
+                </Link>
+                .
+              </p>
             </div>
 
             <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">

@@ -56,8 +56,9 @@ export default function Page() {
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-lg font-extrabold tracking-tight">1) Controlador e contato</h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                A Reciclativa atua como <strong>controladora</strong> dos dados pessoais tratados no
-                contexto do portal, quando aplicável.
+                A Reciclativa é operada por <strong>Eduardo Pompeu</strong> (São Gonçalo/RJ), que
+                atua como <strong>controlador</strong> dos dados pessoais tratados no contexto do
+                portal, quando aplicável.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Canal de contato para solicitações LGPD:{" "}

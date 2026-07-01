@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { headers } from "next/headers";
 import "./globals.css";
 
 import { site } from "@/config/site";
@@ -44,7 +45,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const host = (await headers()).get("host") ?? "";
+  const isAppSubdomain =
+    host === "app.reciclativa.com" || host.startsWith("app.reciclativa.com:");
+
   return (
     <html lang="pt-BR">
       <body className="min-h-screen bg-white text-slate-900">
@@ -58,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           crossOrigin="anonymous"
         />
 
-        <ConditionalLayout>{children}</ConditionalLayout>
+        <ConditionalLayout isAppSubdomain={isAppSubdomain}>{children}</ConditionalLayout>
       </body>
     </html>
   );

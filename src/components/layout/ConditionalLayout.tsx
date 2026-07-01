@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -9,29 +8,17 @@ import CookieBanner from "@/components/cookies/CookieBanner";
 
 export default function ConditionalLayout({
   children,
+  isAppSubdomain,
 }: {
   children: React.ReactNode;
+  isAppSubdomain: boolean;
 }) {
   const pathname = usePathname() || "/";
-  const [hostname, setHostname] = useState("");
-  const [checkedHost, setCheckedHost] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setHostname(window.location.hostname.toLowerCase());
-      setCheckedHost(true);
-    }
-  }, []);
 
   const isAdminRoute = pathname.startsWith("/admin");
   const isAppHomeRoute = pathname === "/app-home";
-  const isAppSubdomain = hostname === "app.reciclativa.com";
 
   if (isAdminRoute) {
-    return <>{children}</>;
-  }
-
-  if (!checkedHost) {
     return <>{children}</>;
   }
 
