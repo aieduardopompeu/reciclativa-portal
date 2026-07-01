@@ -6,12 +6,12 @@ import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 export const metadata: Metadata = {
   title: "Economia Circular | Reciclativa",
   description:
-    "Economia circular: reuso, reparo, reciclagem e modelos sustentáveis para reduzir desperdício.",
+    "Economia circular: reduzir, reusar, reparar e reciclar — conceito, exemplos práticos e como aplicar em casa ou no negócio.",
   alternates: { canonical: "/economia-circular" },
   openGraph: {
     title: "Economia Circular | Reciclativa",
     description:
-      "Reuso, reparo, reciclagem e modelos sustentáveis para reduzir desperdício.",
+      "Reduzir, reusar, reparar e reciclar: conceito, exemplos práticos e modelos de negócio circulares.",
     url: "/economia-circular",
     type: "article",
   },
@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* HERO com imagem (padrão) */}
       <header className="relative overflow-hidden border-b border-slate-200">
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -61,7 +60,6 @@ export default function Page() {
             </Link>
           </div>
 
-          {/* Breadcrumb simples */}
           <nav className="mt-8 text-sm text-slate-600">
             <ol className="flex flex-wrap gap-2">
               <li>
@@ -78,20 +76,20 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Conteúdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
-            {/* Bloco de abertura (prioridade 1) */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
                 O que é economia circular (de verdade)
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                Economia circular é reduzir desperdício mantendo materiais em uso por mais tempo:
-                reduzir, reusar, reparar e remanufaturar antes de reciclar. Aqui você entende o
-                conceito com exemplos práticos e como aplicar no dia a dia e em negócios.
+                Economia circular é um modelo de produção e consumo que busca manter materiais e
+                produtos em uso pelo maior tempo possível, em vez de descartá-los depois de um
+                único uso. Na prática, isso significa priorizar reduzir, reusar, reparar e
+                remanufaturar — e só depois reciclar o que realmente não tem mais uso possível.
+                O objetivo final é reduzir a extração de recursos naturais e a geração de
+                resíduos ao mesmo tempo.
               </p>
 
               <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -111,20 +109,29 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Seção base */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Circular x linear (resumo rápido)
+                Circular x linear (a diferença que importa)
               </h2>
-              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                O modelo tradicional de produção é linear: extrair matéria-prima, produzir,
+                consumir e descartar. Esse fluxo de mão única esgota recursos naturais e gera
+                cada vez mais lixo, porque o valor do material é usado uma única vez. O modelo
+                circular reorganiza essa lógica: produtos são desenhados para durar mais, ser
+                reparados com facilidade e, quando chegam ao fim de vida, seus materiais voltam
+                ao ciclo produtivo em vez de irem para o aterro.
+              </p>
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
                 <li>
                   <strong>Modelo linear:</strong> extrair → produzir → consumir → descartar.
                 </li>
                 <li>
-                  <strong>Modelo circular:</strong> desenhar para durar, reusar, reparar e reinserir materiais no ciclo.
+                  <strong>Modelo circular:</strong> desenhar para durar, reusar, reparar e
+                  reinserir materiais no ciclo produtivo.
                 </li>
                 <li>
-                  <strong>Reciclagem é parte do ciclo:</strong> mas não substitui reduzir e reusar.
+                  <strong>Reciclagem é parte do ciclo</strong> — mas é a última etapa, não a
+                  primeira solução. Reduzir e reusar evitam que o resíduo exista.
                 </li>
               </ul>
 
@@ -144,7 +151,20 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Leituras recomendadas */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Como aplicar no dia a dia e no negócio
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                Em casa, economia circular aparece em decisões simples: comprar produtos mais
+                duráveis, consertar em vez de trocar, doar o que ainda funciona e comprar usado
+                quando possível. Em empresas, o modelo se traduz em logística reversa (recolher
+                embalagens ou produtos pós-consumo), remanufatura (recondicionar peças e
+                equipamentos) e serviços que substituem a posse pelo uso, como aluguel e
+                compartilhamento — reduzindo a necessidade de fabricar itens novos.
+              </p>
+            </div>
+
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
                 Leituras recomendadas
@@ -161,7 +181,7 @@ export default function Page() {
                   Página pilar: Reciclagem →
                 </Link>
                 <Link
-                  href="/coleta-seletiva"
+                  href="/guias/coleta-seletiva"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Coleta seletiva →
@@ -181,15 +201,37 @@ export default function Page() {
               </div>
             </div>
 
-            {/* CTA Profissionais */}
             <ProfissionaisCta />
-
-            {/* CTA Anuncie */}
             <AdCtaCard />
           </div>
 
-          {/* Sidebar */}
           <aside className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                FAQ rápido
+              </h3>
+              <div className="mt-4 space-y-4 text-sm text-slate-700">
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Economia circular é a mesma coisa que reciclagem?
+                  </p>
+                  <p className="mt-1">
+                    Não. Reciclagem é uma das etapas do ciclo, geralmente a última. Reduzir,
+                    reusar e reparar costumam ter impacto ambiental maior.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Isso só se aplica a empresas grandes?
+                  </p>
+                  <p className="mt-1">
+                    Não — pequenos negócios e pessoas físicas também aplicam economia circular ao
+                    reparar, doar, comprar usado ou compartilhar em vez de comprar novo.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
                 Links úteis
@@ -224,17 +266,6 @@ export default function Page() {
                   reparar costuma gerar mais impacto.
                 </p>
               </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
-              </h3>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Adicionar “Circular vs. linear” com exemplos</li>
-                <li>Incluir checklist “comece hoje”</li>
-                <li>Criar FAQ (SEO) para dúvidas comuns</li>
-              </ul>
             </div>
           </aside>
         </div>

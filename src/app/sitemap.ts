@@ -166,7 +166,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Hubs adicionais (importantes e rastreáveis)
     "/meio-ambiente",
     "/educacao-ambiental",
-    "/coleta-seletiva",
     "/economia-circular",
     "/residuos-solidos",
     "/simbolos-da-reciclagem",
@@ -205,9 +204,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority = 0.75;
         changeFrequency = "monthly";
       } else if (
-        ["/coleta-seletiva", "/economia-circular", "/residuos-solidos", "/simbolos-da-reciclagem"].includes(
-          route
-        )
+        ["/economia-circular", "/residuos-solidos", "/simbolos-da-reciclagem"].includes(route)
       ) {
         priority = 0.7;
         changeFrequency = "monthly";

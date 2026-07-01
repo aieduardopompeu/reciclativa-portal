@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import AdCtaCard from "@/components/AdCtaCard";
 import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
@@ -6,7 +6,7 @@ import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 export const metadata: Metadata = {
   title: "Educação Ambiental | Reciclativa",
   description:
-    "Educação ambiental: conceitos, práticas e ações para formar hábitos sustentáveis e reduzir impacto no dia a dia.",
+    "Educação ambiental: conceito, práticas e ideias de ação para escola, condomínio e empresa, com foco em hábitos que se sustentam.",
   alternates: { canonical: "/educacao-ambiental" },
   openGraph: {
     title: "Educação Ambiental | Reciclativa",
@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* HERO com imagem (padrão) */}
       <header className="relative overflow-hidden border-b border-slate-200">
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -62,7 +61,6 @@ export default function Page() {
             </Link>
           </div>
 
-          {/* Breadcrumb simples */}
           <nav className="mt-8 text-sm text-slate-600">
             <ol className="flex flex-wrap gap-2">
               <li>
@@ -81,10 +79,8 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Conteúdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
@@ -92,9 +88,12 @@ export default function Page() {
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Educação ambiental é o processo de formar consciência sobre o impacto das nossas
-                escolhas no meio ambiente — e traduzir essa consciência em ações concretas. Não se
-                trata apenas de teoria: o objetivo é criar hábitos sustentáveis que se mantêm no dia
-                a dia, em casa, na escola e no trabalho.
+                escolhas no meio ambiente — e traduzir essa consciência em ações concretas. No
+                Brasil, o tema tem inclusive respaldo legal: a Política Nacional de Educação
+                Ambiental (Lei nº 9.795/1999) reconhece a educação ambiental como um componente
+                essencial da educação, a ser trabalhado em todos os níveis de ensino. Mas o
+                conceito vai além da escola: o objetivo é criar hábitos sustentáveis que se
+                mantêm no dia a dia, em casa, no trabalho e na comunidade.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-slate-700">
                 Esta página reúne conceitos, práticas e recursos para quem quer entender o tema
@@ -124,15 +123,103 @@ export default function Page() {
               </div>
             </div>
 
-            {/* CTA Profissionais */}
-            <ProfissionaisCta />
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Como aplicar em cada ambiente
+              </h2>
 
-            {/* CTA Anuncie */}
+              <div className="mt-4 space-y-4">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">Na escola</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Projetos com resultado visível funcionam melhor do que aula teórica isolada:
+                    horta escolar, composteira no pátio, gincana de separação de resíduos e
+                    mutirões de coleta de recicláveis criam experiência prática, não só conteúdo.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">No condomínio</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Comunicação visual clara nas lixeiras (cores e exemplos do que entra em cada
+                    uma), um canal para dúvidas e parceria com cooperativas locais reduzem o erro
+                    de separação mais do que regras escritas sem reforço visual.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">Na empresa</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Treinamentos curtos e recorrentes, metas simples de redução de resíduos e
+                    pontos de coleta seletiva visíveis no escritório costumam gerar mais adesão do
+                    que uma única palestra de lançamento.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Leituras recomendadas
+              </h2>
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Link
+                  href="/reciclagem"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Página pilar: Reciclagem →
+                </Link>
+                <Link
+                  href="/guias/coleta-seletiva"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Coleta seletiva →
+                </Link>
+                <Link
+                  href="/sustentabilidade"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Sustentabilidade →
+                </Link>
+                <Link
+                  href="/blog"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Ver blog →
+                </Link>
+              </div>
+            </div>
+
+            <ProfissionaisCta />
             <AdCtaCard />
           </div>
 
-          {/* Sidebar */}
           <aside className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                FAQ rápido
+              </h3>
+              <div className="mt-4 space-y-4 text-sm text-slate-700">
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Educação ambiental é obrigatória nas escolas?
+                  </p>
+                  <p className="mt-1">
+                    A Lei nº 9.795/1999 trata a educação ambiental como componente essencial da
+                    educação nacional, a ser trabalhado de forma integrada em todos os níveis de
+                    ensino.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    O que funciona melhor: campanha pontual ou rotina?
+                  </p>
+                  <p className="mt-1">
+                    Rotina. Campanhas isoladas geram pico de atenção, mas hábito se forma com
+                    repetição, reforço visual e metas simples de acompanhar.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
                 Links úteis
@@ -145,7 +232,7 @@ export default function Page() {
                   Página pilar: Reciclagem →
                 </Link>
                 <Link
-                  href="/coleta-seletiva"
+                  href="/guias/coleta-seletiva"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Coleta seletiva →
@@ -173,17 +260,6 @@ export default function Page() {
                   reforço visual e metas fáceis de acompanhar.
                 </p>
               </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
-              </h3>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Adicionar “Plano de ação” (escola/condomínio/empresa)</li>
-                <li>Incluir checklist “comece hoje”</li>
-                <li>Criar FAQ (SEO) com dúvidas comuns</li>
-              </ul>
             </div>
           </aside>
         </div>

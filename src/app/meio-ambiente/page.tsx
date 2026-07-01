@@ -6,7 +6,7 @@ import ProfissionaisCta from "@/components/ctas/ProfissionaisCta";
 export const metadata: Metadata = {
   title: "Meio Ambiente | Reciclativa",
   description:
-    "Meio ambiente: conceitos, impactos e práticas para reduzir resíduos, poluição e desperdício no dia a dia.",
+    "Meio ambiente: principais causas de impacto urbano, hábitos sustentáveis e práticas para reduzir resíduos e poluição no dia a dia.",
   alternates: { canonical: "/meio-ambiente" },
   openGraph: {
     title: "Meio Ambiente | Reciclativa",
@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* HERO com imagem (padrão do site) */}
       <header className="relative overflow-hidden border-b border-slate-200">
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -62,7 +61,6 @@ export default function Page() {
             </Link>
           </div>
 
-          {/* Breadcrumb simples */}
           <nav className="mt-8 text-sm text-slate-600">
             <ol className="flex flex-wrap gap-2">
               <li>
@@ -79,10 +77,8 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Conteúdo */}
       <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* Coluna principal */}
           <div className="space-y-6 lg:col-span-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
@@ -142,15 +138,103 @@ export default function Page() {
               </div>
             </div>
 
-            {/* CTA Profissionais */}
-            <ProfissionaisCta />
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Principais causas de impacto ambiental urbano
+              </h2>
+              <div className="mt-4 space-y-4">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">Descarte incorreto</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Resíduos misturados sem separação vão inteiros para aterros, mesmo quando boa
+                    parte poderia ser reciclada ou compostada — reduzindo a vida útil dos aterros e
+                    aumentando custos de gestão urbana.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">Consumo sem planejamento</p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Compra por impulso e desperdício de alimentos aumentam a geração de resíduos
+                    antes mesmo do descarte — o primeiro ponto de melhoria costuma ser reduzir, não
+                    reciclar mais.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-semibold text-slate-900">
+                    Poluição de solo e água
+                  </p>
+                  <p className="mt-2 text-sm text-slate-700">
+                    Descarte irregular de resíduos (inclusive e-lixo e produtos químicos) pode
+                    contaminar solo e lençóis freáticos quando não segue rotas de coleta
+                    adequadas.
+                  </p>
+                </div>
+              </div>
+            </div>
 
-            {/* CTA Anuncie */}
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-lg font-extrabold tracking-tight text-slate-900">
+                Leituras recomendadas
+              </h2>
+              <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Link
+                  href="/sustentabilidade"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Sustentabilidade →
+                </Link>
+                <Link
+                  href="/economia-circular"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Economia circular →
+                </Link>
+                <Link
+                  href="/residuos-solidos"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Resíduos sólidos →
+                </Link>
+                <Link
+                  href="/educacao-ambiental"
+                  className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                >
+                  Educação ambiental →
+                </Link>
+              </div>
+            </div>
+
+            <ProfissionaisCta />
             <AdCtaCard />
           </div>
 
-          {/* Sidebar */}
           <aside className="space-y-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
+                FAQ rápido
+              </h3>
+              <div className="mt-4 space-y-4 text-sm text-slate-700">
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    O que tem maior impacto: reciclar ou reduzir?
+                  </p>
+                  <p className="mt-1">
+                    Reduzir. Evitar que o resíduo exista tem impacto maior do que dar destinação
+                    correta a ele depois de gerado.
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Descarte incorreto de e-lixo contamina o solo?
+                  </p>
+                  <p className="mt-1">
+                    Pode, sim — componentes eletrônicos têm metais pesados que exigem descarte em
+                    pontos de coleta específicos, não no lixo comum.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
                 Links úteis
@@ -170,7 +254,7 @@ export default function Page() {
                   Economia circular →
                 </Link>
                 <Link
-                  href="/coleta-seletiva"
+                  href="/guias/coleta-seletiva"
                   className="block rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                 >
                   Coleta seletiva →
@@ -198,17 +282,6 @@ export default function Page() {
                   — antes de depender da reciclagem.
                 </p>
               </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Próximos passos
-              </h3>
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>Adicionar FAQ (SEO) “o que é meio ambiente” + dúvidas comuns</li>
-                <li>Incluir checklist “comece hoje”</li>
-                <li>Linkar 6–10 conteúdos relacionados (blog/guias/pilares)</li>
-              </ul>
             </div>
           </aside>
         </div>
