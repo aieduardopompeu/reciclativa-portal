@@ -59,7 +59,7 @@ export default function Page() {
       </div>
 
       {/* Banner */}
-      <div className="relative mt-6 aspect-[1200/630] w-full overflow-hidden rounded-3xl">
+      <div className="relative mt-6 aspect-[3/1] w-full overflow-hidden rounded-3xl">
         <Image
           src={`/blog/${SLUG}/opengraph-image`}
           alt=""
@@ -107,7 +107,7 @@ export default function Page() {
 
       {/* Corpo editorial — PADRÃO ITAD */}
       <section className="mt-10">
-        <article className="mx-auto max-w-3xl">
+        <article className="mx-auto max-w-none">
           {/* Box editorial (mesmo padrão do ITAD) */}
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
