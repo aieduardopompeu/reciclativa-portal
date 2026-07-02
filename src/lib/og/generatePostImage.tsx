@@ -2,36 +2,47 @@ import { ImageResponse } from "next/og";
 
 export const POST_IMAGE_SIZE = { width: 1200, height: 630 };
 
-type Shape = (strokeWidth: number) => React.ReactNode;
+type Shape = (strokeWidth: number, stroke: string) => React.ReactNode;
 
 // Cada ícone é desenhado centrado em (0,0), com raio aproximado de 45-50
 // unidades, para que escala/rotação/posição sejam feitas via transform.
+// São símbolos reconhecíveis (não formas geométricas abstratas): o símbolo
+// universal de reciclagem, um check de "guia/checklist", uma seta em loop
+// e uma folha com nervura central.
+const RECYCLE_ARROW = "M -22,-7 L 8,-7 L 8,-15 L 28,0 L 8,15 L 8,7 L -22,7 Z";
+
 const ICONS: Record<string, Shape> = {
-  Reciclagem: (sw) => (
-    <g fill="none" strokeLinejoin="round">
-      <polygon points="0,-46 40,26 -40,26" strokeWidth={sw} />
-      <polygon points="0,-14 22,26 -22,26" strokeWidth={sw * 0.75} opacity={0.65} />
+  Reciclagem: (sw, stroke) => (
+    <g fill={stroke} stroke="none">
+      <g transform="translate(26 0) rotate(90)">
+        <path d={RECYCLE_ARROW} />
+      </g>
+      <g transform="translate(-13 22.5) rotate(210)">
+        <path d={RECYCLE_ARROW} />
+      </g>
+      <g transform="translate(-13 -22.5) rotate(330)">
+        <path d={RECYCLE_ARROW} />
+      </g>
     </g>
   ),
   Guias: (sw) => (
     <g fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M-46,32 L8,-32 L46,32" strokeWidth={sw} />
-      <circle cx="30" cy="-6" r="15" strokeWidth={sw * 0.85} opacity={0.65} />
+      <circle cx="0" cy="0" r="44" strokeWidth={sw} />
+      <path d="M-20,2 L-4,20 L24,-16" strokeWidth={sw} />
     </g>
   ),
   "Economia circular": (sw) => (
     <g fill="none" strokeLinecap="round">
       <path d="M18,-46 A46,46 0 1 1 -34,30" strokeWidth={sw} />
-      <path d="M-46,14 L-34,30 L-16,18" strokeWidth={sw} strokeLinejoin="round" />
+      <path d="M-48,12 L-34,30 L-14,16" strokeWidth={sw} strokeLinejoin="round" />
     </g>
   ),
   Sustentabilidade: (sw) => (
-    <path
-      d="M0,-48 C-30,-26 -30,26 0,54 C30,26 30,-26 0,-48 Z"
-      fill="none"
-      strokeWidth={sw}
-      strokeLinejoin="round"
-    />
+    <g fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M0,-48 C-30,-26 -30,26 0,54 C30,26 30,-26 0,-48 Z" strokeWidth={sw} />
+      <path d="M0,-38 L0,45" strokeWidth={sw * 0.6} opacity={0.7} />
+      <path d="M0,54 L0,70" strokeWidth={sw * 0.7} />
+    </g>
   ),
 };
 
@@ -80,12 +91,12 @@ export function generatePostImage(category: string) {
               stroke={art.stroke}
               opacity={p.opacity}
             >
-              {icon(6)}
+              {icon(6, art.stroke)}
             </g>
           ))}
 
           <g transform="translate(860 300) rotate(-6) scale(4.6)" stroke={art.stroke} opacity={0.92}>
-            {icon(4.2)}
+            {icon(4.2, art.stroke)}
           </g>
         </svg>
       </div>
