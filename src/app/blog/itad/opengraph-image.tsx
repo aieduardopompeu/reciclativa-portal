@@ -5,5 +5,5 @@ export const contentType = "image/png";
 export const alt = "ITAD: o que é e como funciona (IT Asset Disposition)";
 
 export default async function Image() {
-  return generatePostImage("ITAD: o que é e como funciona (IT Asset Disposition)", "Sustentabilidade");
+  return generatePostImage("Sustentabilidade");
 }

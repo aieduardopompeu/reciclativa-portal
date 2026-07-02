@@ -1,6 +1,7 @@
 // src/app/blog/tipos-de-reciclagem/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
 
@@ -47,6 +48,18 @@ export default function Page() {
         </Link>
         <span className="mx-2">/</span>
         <span className="text-slate-700">Tipos de reciclagem</span>
+      </div>
+
+      {/* Banner */}
+      <div className="relative mt-6 aspect-[1200/630] w-full overflow-hidden rounded-3xl">
+        <Image
+          src={`/blog/${SLUG}/opengraph-image`}
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 1152px, 100vw"
+          className="object-cover"
+          priority
+        />
       </div>
 
       {/* Header */}

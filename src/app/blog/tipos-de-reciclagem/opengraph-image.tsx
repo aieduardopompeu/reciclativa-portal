@@ -5,8 +5,5 @@ export const contentType = "image/png";
 export const alt = "Tipos de reciclagem: mecânica, química, energética e orgânica";
 
 export default async function Image() {
-  return generatePostImage(
-    "Tipos de reciclagem: mecânica, química, energética e orgânica",
-    "Reciclagem"
-  );
+  return generatePostImage("Reciclagem");
 }

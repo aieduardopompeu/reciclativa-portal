@@ -5,8 +5,5 @@ export const contentType = "image/png";
 export const alt = "O que é reciclagem: conceito, etapas e por que isso muda tudo";
 
 export default async function Image() {
-  return generatePostImage(
-    "O que é reciclagem: conceito, etapas e por que isso muda tudo",
-    "Reciclagem"
-  );
+  return generatePostImage("Reciclagem");
 }

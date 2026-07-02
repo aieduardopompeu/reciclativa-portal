@@ -2,15 +2,93 @@ import { ImageResponse } from "next/og";
 
 export const POST_IMAGE_SIZE = { width: 1200, height: 630 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Reciclagem: "#059669",
-  Sustentabilidade: "#0284c7",
-  Guias: "#7c3aed",
-  "Economia circular": "#b45309",
+type CategoryArt = {
+  bg: string;
+  stroke: string;
+  motif: (stroke: string) => React.ReactNode;
 };
 
-export function generatePostImage(title: string, category: string) {
-  const accent = CATEGORY_COLORS[category] ?? "#059669";
+const CATEGORY_ART: Record<string, CategoryArt> = {
+  Reciclagem: {
+    bg: "#E1F5EE",
+    stroke: "#085041",
+    motif: (stroke) => (
+      <g>
+        <polygon
+          points="100,20 170,160 30,160"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="7"
+          strokeLinejoin="round"
+        />
+        <polygon
+          points="100,60 145,150 55,150"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="5"
+          strokeLinejoin="round"
+          opacity="0.6"
+        />
+      </g>
+    ),
+  },
+  Guias: {
+    bg: "#EEEDFE",
+    stroke: "#3C3489",
+    motif: (stroke) => (
+      <g>
+        <path
+          d="M25 155 L85 45 L145 155"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="140" cy="80" r="24" fill="none" stroke={stroke} strokeWidth="6" opacity="0.6" />
+      </g>
+    ),
+  },
+  "Economia circular": {
+    bg: "#FAEEDA",
+    stroke: "#633806",
+    motif: (stroke) => (
+      <g>
+        <path
+          d="M100 30 A70 70 0 1 1 38 135"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="7"
+          strokeLinecap="round"
+        />
+        <path
+          d="M22 118 L38 135 L58 122"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="7"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    ),
+  },
+  Sustentabilidade: {
+    bg: "#E6F1FB",
+    stroke: "#042C53",
+    motif: (stroke) => (
+      <path
+        d="M100 25 C55 55 55 115 100 165 C145 115 145 55 100 25 Z"
+        fill="none"
+        stroke={stroke}
+        strokeWidth="7"
+        strokeLinejoin="round"
+      />
+    ),
+  },
+};
+
+export function generatePostImage(category: string) {
+  const art = CATEGORY_ART[category] ?? CATEGORY_ART.Reciclagem;
 
   return new ImageResponse(
     (
@@ -19,56 +97,28 @@ export function generatePostImage(title: string, category: string) {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: 64,
-          background: "linear-gradient(135deg, #f0fdf4 0%, #ffffff 60%)",
-          fontFamily: "sans-serif",
+          alignItems: "center",
+          justifyContent: "center",
+          background: art.bg,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div
-            style={{
-              display: "flex",
-              width: 48,
-              height: 48,
-              borderRadius: 9999,
-              border: `8px solid ${accent}`,
-            }}
-          />
-          <div style={{ display: "flex", fontSize: 28, fontWeight: 800, color: "#065f46" }}>
-            Reciclativa
-          </div>
-        </div>
+        <svg viewBox="0 0 200 200" width="360" height="360">
+          {art.motif(art.stroke)}
+        </svg>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div
-            style={{
-              display: "flex",
-              alignSelf: "flex-start",
-              fontSize: 22,
-              fontWeight: 700,
-              color: "#ffffff",
-              background: accent,
-              padding: "8px 22px",
-              borderRadius: 9999,
-            }}
-          >
-            {category}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 52,
-              fontWeight: 800,
-              color: "#0f172a",
-              lineHeight: 1.15,
-              maxWidth: 1020,
-            }}
-          >
-            {title}
-          </div>
-        </div>
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            top: 32,
+            left: 32,
+            width: 28,
+            height: 28,
+            borderRadius: 9999,
+            border: `5px solid ${art.stroke}`,
+            opacity: 0.7,
+          }}
+        />
       </div>
     ),
     { ...POST_IMAGE_SIZE }

@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { POSTS, getAllTags, getAllCategories, type CategoryUI, type PostCard } from "@/content/blog/posts";
+import { POSTS, getAllTags, getAllCategories, type CategoryUI } from "@/content/blog/posts";
 import AdUnit from "@/components/ads/AdUnit";
 import { AD_SLOTS } from "@/config/ads";
 
@@ -48,17 +48,7 @@ export default async function BlogPage({
   const filtered = activeCategory ? POSTS.filter((p) => p.category === activeCategory) : POSTS;
   const postsSorted = [...filtered].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
 
-  const startCards = [
-    POSTS.find((p) => p.slug === "o-que-e-reciclagem"),
-    POSTS.find((p) => p.slug === "o-que-pode-ser-reciclado"),
-    POSTS.find((p) => p.slug === "economia-circular-exemplos"),
-  ].filter(Boolean) as PostCard[];
-
-  const recommended = [
-    POSTS.find((p) => p.slug === "o-que-pode-ser-reciclado"),
-    POSTS.find((p) => p.slug === "o-que-e-reciclagem"),
-    POSTS.find((p) => p.slug === "economia-circular-exemplos"),
-  ].filter(Boolean) as PostCard[];
+  const [featured, ...rest] = postsSorted;
 
   const tags = getAllTags();
 
@@ -202,73 +192,52 @@ export default async function BlogPage({
         <section className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* COLUNA PRINCIPAL */}
           <div className="space-y-6 lg:col-span-2">
-            {/* COMEÇE AQUI */}
-            <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div>
+            {/* DESTAQUE */}
+            {featured ? (
+              <Link
+                href={`/blog/${featured.slug}`}
+                className="grid grid-cols-1 overflow-hidden rounded-3xl border border-slate-200 bg-white transition hover:bg-slate-50 sm:grid-cols-2"
+              >
+                <div className="relative aspect-[1200/630] w-full sm:aspect-auto sm:min-h-[220px]">
+                  <Image
+                    src={`/blog/${featured.slug}/opengraph-image`}
+                    alt=""
+                    fill
+                    sizes="(min-width: 640px) 50vw, 100vw"
+                    className="object-cover"
+                    priority
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-900">
+                    Em destaque
+                  </span>
+                </div>
+
+                <div className="flex flex-col justify-center gap-3 p-6">
+                  <span className="w-fit rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
+                    {featured.category}
+                  </span>
                   <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                    Comece aqui
+                    {featured.title}
                   </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                    Uma trilha curta para entender o básico e separar corretamente.
+                  <p className="text-sm leading-relaxed text-slate-700">{featured.excerpt}</p>
+                  <p className="text-xs text-slate-500">
+                    {toBRDate(featured.dateISO)} • {featured.readMin} min
                   </p>
                 </div>
-              </div>
+              </Link>
+            ) : null}
 
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {startCards.map((p) => (
-                  <Link
-                    key={p.slug}
-                    href={`/blog/${p.slug}`}
-                    className="block overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition hover:bg-slate-100"
-                  >
-                    <div className="relative aspect-[1200/630] w-full">
-                      <Image
-                        src={`/blog/${p.slug}/opengraph-image`}
-                        alt=""
-                        fill
-                        sizes="(min-width: 640px) 33vw, 100vw"
-                        className="object-cover"
-                      />
-                    </div>
-
-                    <div className="p-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-                        {p.category}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-900 line-clamp-2">
-                        {p.title}
-                      </p>
-                      <p className="mt-2 text-sm text-slate-700 line-clamp-3">
-                        {p.excerpt}
-                      </p>
-                      <p className="mt-3 text-xs text-slate-500">
-                        {toBRDate(p.dateISO)} • {p.readMin} min
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
-
-            {/* ÚLTIMOS ARTIGOS */}
+            {/* GRADE */}
             <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex items-center justify-between gap-3">
-                <div>
-                  <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-                    Últimos artigos
-                  </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                    Conteúdos objetivos, organizados para virar hábito.
-                  </p>
-                </div>
-                <div className="text-sm text-slate-500">
-                  {postsSorted.length} artigos
-                </div>
+                <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+                  {activeCategory ? `Mais em ${activeCategory}` : "Todos os artigos"}
+                </h2>
+                <div className="text-sm text-slate-500">{postsSorted.length} artigos</div>
               </div>
 
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {postsSorted.map((p) => (
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {rest.map((p) => (
                   <Link
                     key={p.slug}
                     href={`/blog/${p.slug}`}
@@ -296,9 +265,7 @@ export default async function BlogPage({
                       <h3 className="mt-3 text-base font-extrabold tracking-tight text-slate-900">
                         {p.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                        {p.excerpt}
-                      </p>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-700">{p.excerpt}</p>
                     </div>
                   </Link>
                 ))}
@@ -366,35 +333,9 @@ export default async function BlogPage({
                   Como aproveitar melhor
                 </p>
                 <p className="mt-2 text-sm text-slate-800">
-                  Se você está começando, leia a trilha “Comece aqui”. Depois,
+                  Se você está começando, veja o artigo em destaque acima. Depois,
                   vá para os guias e aplique o checklist na sua rotina.
                 </p>
-              </div>
-            </section>
-
-            <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-extrabold tracking-tight text-slate-900">
-                Recomendados
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                Selecionados pela redação para resolver as dúvidas mais comuns.
-              </p>
-
-              <div className="mt-4 space-y-3">
-                {recommended.map((p) => (
-                  <Link
-                    key={p.slug}
-                    href={`/blog/${p.slug}`}
-                    className="block rounded-2xl border border-slate-200 bg-white p-4 hover:bg-slate-50"
-                  >
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-                      {p.category}
-                    </p>
-                    <p className="mt-2 text-sm font-semibold text-slate-900">
-                      {p.title}
-                    </p>
-                  </Link>
-                ))}
               </div>
             </section>
 

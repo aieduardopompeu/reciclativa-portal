@@ -5,8 +5,5 @@ export const contentType = "image/png";
 export const alt = "Economia circular vs. economia linear: diferenças e exemplos";
 
 export default async function Image() {
-  return generatePostImage(
-    "Economia circular vs. economia linear: diferenças e exemplos",
-    "Economia circular"
-  );
+  return generatePostImage("Economia circular");
 }

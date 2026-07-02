@@ -5,8 +5,5 @@ export const contentType = "image/png";
 export const alt = "Economia circular no Brasil: exemplos práticos e como aplicar";
 
 export default async function Image() {
-  return generatePostImage(
-    "Economia circular no Brasil: exemplos práticos e como aplicar",
-    "Economia circular"
-  );
+  return generatePostImage("Economia circular");
 }

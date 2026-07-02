@@ -5,8 +5,5 @@ export const contentType = "image/png";
 export const alt = "O que pode ser reciclado: guia rápido para acertar no descarte";
 
 export default async function Image() {
-  return generatePostImage(
-    "O que pode ser reciclado: guia rápido para acertar no descarte",
-    "Guias"
-  );
+  return generatePostImage("Guias");
 }
