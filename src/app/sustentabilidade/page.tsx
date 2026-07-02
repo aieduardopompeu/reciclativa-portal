@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Ideias práticas para reduzir impacto, reaproveitar recursos e tomar decisões mais conscientes.",
     url: "/sustentabilidade",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
       "Encontre coleta, consultoria, educação ambiental e serviços ligados à reciclagem e sustentabilidade. Comece escolhendo o estado.",
     url: "/profissionais",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

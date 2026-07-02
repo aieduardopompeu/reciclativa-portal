@@ -115,6 +115,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: `Encontre profissionais e serviços ligados à reciclagem e sustentabilidade em ${name} (${UF}), por cidade e categoria.`,
       url: `/profissionais/${uf}`,
       type: "website",
+      images: [{ url: "/opengraph-image" }],
     },
   };
 }

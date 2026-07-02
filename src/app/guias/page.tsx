@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Checklists e passo a passo para aplicar reciclagem e sustentabilidade sem complicação.",
     url: "/guias",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

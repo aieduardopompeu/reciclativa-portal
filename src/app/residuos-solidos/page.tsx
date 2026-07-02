@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Classificação, manejo e boas práticas para reduzir impacto e melhorar a destinação de resíduos.",
     url: "/residuos-solidos",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

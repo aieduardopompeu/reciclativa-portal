@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Guia completo de compostagem: materiais permitidos, métodos, passo a passo e como evitar erros comuns.",
     url: "/guias/compostagem",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

@@ -11,6 +11,7 @@ export const metadata: Metadata = {
       "Acesso rápido a páginas-base, guias práticos e ao Diretório de Profissionais por UF e cidade.",
     url: "/diretorio",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

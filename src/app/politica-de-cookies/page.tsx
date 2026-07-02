@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "Como usamos cookies e como você pode gerenciar preferências de privacidade, medição e publicidade.",
     url: "/politica-de-cookies",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

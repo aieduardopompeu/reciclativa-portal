@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "Como tratamos dados, cookies, publicidade e métricas de uso na Reciclativa.",
     url: "/politica-de-privacidade",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

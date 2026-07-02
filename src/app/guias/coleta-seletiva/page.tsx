@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Cores, dicas e organização para tornar a separação eficiente e correta.",
     url: "/guias/coleta-seletiva",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

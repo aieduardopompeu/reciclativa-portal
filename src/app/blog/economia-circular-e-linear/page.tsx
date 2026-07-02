@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
+import { CircularVsLinearDiagram } from "@/components/blog/CircularVsLinearDiagram";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
@@ -160,6 +161,8 @@ export default function Page() {
                 → reciclar o que sobrar.
               </li>
             </ul>
+
+            <CircularVsLinearDiagram />
 
             <h2>Exemplos práticos do dia a dia</h2>
 

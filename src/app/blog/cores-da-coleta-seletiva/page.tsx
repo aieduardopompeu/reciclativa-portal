@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
+import { ColorCodeChart } from "@/components/blog/ColorCodeChart";
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ||
@@ -155,6 +156,8 @@ export default function Page() {
               campanhas de coleta seletiva. Prefeituras e cooperativas podem ter variações locais,
               mas essa é a referência oficial.
             </p>
+
+            <ColorCodeChart />
 
             <h2>O padrão mais comum (o que você precisa memorizar)</h2>
             <p>

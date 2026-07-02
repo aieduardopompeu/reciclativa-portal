@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Aprenda a separar recicláveis, reduzir rejeito e entender os símbolos da reciclagem para acertar no descarte.",
     url: "/reciclagem",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

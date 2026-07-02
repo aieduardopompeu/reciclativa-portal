@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Entenda os símbolos nas embalagens, os códigos do plástico e como separar corretamente.",
     url: "/simbolos-da-reciclagem",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

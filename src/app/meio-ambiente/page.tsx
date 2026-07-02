@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Conceitos, impactos e práticas para reduzir resíduos, poluição e desperdício.",
     url: "/meio-ambiente",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

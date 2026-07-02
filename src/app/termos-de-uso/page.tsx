@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "Regras de uso do site Reciclativa: responsabilidades, conteúdo, links externos e condições gerais.",
     url: "/termos-de-uso",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

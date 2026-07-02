@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Conceitos, práticas e ações para formar hábitos sustentáveis e reduzir impacto no dia a dia.",
     url: "/educacao-ambiental",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

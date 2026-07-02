@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "Propósito, missão e transparência da Reciclativa — informação prática para transformar resíduos em recursos.",
     url: "/sobre",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "Como tratamos dados pessoais segundo a LGPD: direitos, cookies, publicidade e solicitações.",
     url: "/lgpd",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

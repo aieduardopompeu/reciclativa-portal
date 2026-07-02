@@ -115,6 +115,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `/profissionais/${uf}/${cidadeSlug}`,
       type: "website",
+      images: [{ url: "/opengraph-image" }],
     },
   };
 }

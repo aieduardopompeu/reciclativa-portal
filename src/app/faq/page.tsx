@@ -15,6 +15,7 @@ export const metadata: Metadata = {
       "Respostas diretas para dúvidas comuns sobre reciclagem, coleta seletiva e descarte.",
     url: "/faq",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

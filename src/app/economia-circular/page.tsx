@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Reduzir, reusar, reparar e reciclar: conceito, exemplos práticos e modelos de negócio circulares.",
     url: "/economia-circular",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

@@ -14,6 +14,7 @@ export const metadata: Metadata = {
       "Checklist prático por material para reduzir rejeição na triagem e fazer o descarte do jeito certo.",
     url: "/guias/o-que-pode-reciclar",
     type: "article",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

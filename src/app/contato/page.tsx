@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     description: "Dúvidas, sugestões, correções, parcerias e contato comercial.",
     url: "/contato",
     type: "website",
+    images: [{ url: "/opengraph-image" }],
   },
 };
 

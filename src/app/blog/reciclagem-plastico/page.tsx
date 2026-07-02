@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
+import { PlasticResinCodesChart } from "@/components/blog/PlasticResinCodesChart";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
@@ -145,6 +146,8 @@ export default function Page() {
               Aquele triângulo com um número (1 a 7) é o <strong>código de resina</strong>. Ele indica o
               tipo de plástico. Não é “garantia de reciclagem”, mas ajuda muito na separação.
             </p>
+
+            <PlasticResinCodesChart />
 
             <h3>1 — PET (Polietileno Tereftalato)</h3>
             <ul>
