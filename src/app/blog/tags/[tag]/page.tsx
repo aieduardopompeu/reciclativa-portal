@@ -10,15 +10,25 @@ function siteUrl() {
   return process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.reciclativa.com";
 }
 
+// Tags com poucos posts viram hub fraco (pouco texto, pouca substância).
+// Até acumularem massa crítica, ficam fora do índice, mas continuam
+// navegáveis normalmente.
+const MIN_POSTS_TO_INDEX = 3;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params;
   const decoded = decodeURIComponent(tag);
   const label = decoded.replace(/-/g, " ");
+  const postCount = getPostsByTag(decoded).length;
 
   return {
     title: `Tag: ${label} | Blog Reciclativa`,
     description: `Artigos marcados com a tag ${label}.`,
     alternates: { canonical: `/blog/tags/${decoded}` },
+    robots: {
+      index: postCount >= MIN_POSTS_TO_INDEX,
+      follow: true,
+    },
   };
 }
 

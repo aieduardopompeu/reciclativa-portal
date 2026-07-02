@@ -270,18 +270,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  const tagRoutes: MetadataRoute.Sitemap = getAllTags().map((tag) => {
-    const posts = getPostsByTag(tag);
-    const dates = posts.map((p) => p.dateISO).sort();
-    const lastModified = dates.length ? new Date(dates[dates.length - 1]) : new Date();
+  // Tags com menos de 3 posts ficam noindex (ver src/app/blog/tags/[tag]/page.tsx)
+  // e por isso não entram no sitemap.
+  const MIN_TAG_POSTS_TO_INDEX = 3;
 
-    return {
-      url: `${SITE_URL}/blog/tags/${tag}`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.4,
-    };
-  });
+  const tagRoutes: MetadataRoute.Sitemap = getAllTags()
+    .filter((tag) => getPostsByTag(tag).length >= MIN_TAG_POSTS_TO_INDEX)
+    .map((tag) => {
+      const posts = getPostsByTag(tag);
+      const dates = posts.map((p) => p.dateISO).sort();
+      const lastModified = dates.length ? new Date(dates[dates.length - 1]) : new Date();
+
+      return {
+        url: `${SITE_URL}/blog/tags/${tag}`,
+        lastModified,
+        changeFrequency: "monthly",
+        priority: 0.4,
+      };
+    });
 
   // Diretório de profissionais por UF / cidade (dados vêm do Postgres)
   let profissionaisRoutes: MetadataRoute.Sitemap = [];

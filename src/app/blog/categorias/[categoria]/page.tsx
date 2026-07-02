@@ -15,14 +15,28 @@ function siteUrl() {
   return process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.reciclativa.com";
 }
 
+// Descrição única por categoria (evita subtítulo genérico repetido nas 4 páginas).
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  Reciclagem:
+    "Como reciclar corretamente: tipos de material, símbolos do plástico, separação e o que costuma dar errado na triagem.",
+  Sustentabilidade:
+    "Hábitos, materiais e decisões do dia a dia que reduzem desperdício e impacto ambiental, sem radicalismo.",
+  Guias:
+    "Passo a passo prático para separar resíduos, participar da coleta seletiva e acertar no descarte.",
+  "Economia circular":
+    "Como reduzir, reusar, reparar e reciclar formam um ciclo — com exemplos reais de aplicação no Brasil.",
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { categoria } = await params;
   const decoded = decodeURIComponent(categoria);
   const categoryLabel = getCategoryBySlug(decoded) ?? decoded;
+  const description =
+    CATEGORY_DESCRIPTIONS[categoryLabel] ?? `Artigos na categoria ${categoryLabel}.`;
 
   return {
     title: `Categoria: ${categoryLabel} | Blog Reciclativa`,
-    description: `Artigos na categoria ${categoryLabel}.`,
+    description,
     alternates: { canonical: `/blog/categorias/${decoded}` },
   };
 }
@@ -59,6 +73,8 @@ export default async function CategoryPage({ params }: Props) {
   const decoded = decodeURIComponent(categoria);
 
   const categoryLabel = getCategoryBySlug(decoded) ?? decoded;
+  const categoryDescription =
+    CATEGORY_DESCRIPTIONS[categoryLabel] ?? "Conteúdos organizados por tema para facilitar sua leitura.";
   const posts = getPostsByCategorySlug(decoded).sort((a, b) =>
     a.dateISO < b.dateISO ? 1 : -1
   );
@@ -150,7 +166,7 @@ export default async function CategoryPage({ params }: Props) {
           </h1>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-700">
-            Conteúdos organizados por tema para facilitar sua leitura.
+            {categoryDescription}
           </p>
 
           {/* Chips dinâmicos */}
