@@ -52,7 +52,11 @@ export default function Page() {
 
       {/* Header */}
       <header className="mt-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <div className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          Por Eduardo Pompeu · Publicado em 05/12/2025
+        </p>
+
+        <div className="mt-3 inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
           Guias
         </div>
 
@@ -137,6 +141,19 @@ export default function Page() {
               As cores são um <strong>código visual</strong> para orientar a separação de resíduos.
               Elas facilitam a coleta e a triagem, reduzindo contaminação (um dos principais motivos
               de rejeição na reciclagem).
+            </p>
+            <p>
+              O padrão de cores usado no Brasil vem da{" "}
+              <a
+                href="https://www.ibama.gov.br/component/legislacao/?view=legislacao&legislacao=105856"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resolução CONAMA nº 275/2001
+              </a>
+              , que estabelece o código nacional de cores para identificação de coletores e
+              campanhas de coleta seletiva. Prefeituras e cooperativas podem ter variações locais,
+              mas essa é a referência oficial.
             </p>
 
             <h2>O padrão mais comum (o que você precisa memorizar)</h2>

@@ -60,7 +60,11 @@ export default function Page() {
 
       {/* Header */}
       <header className="mt-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <div className="inline-flex items-center rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700 ring-1 ring-violet-200">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          Por Eduardo Pompeu · Publicado em 04/12/2025
+        </p>
+
+        <div className="mt-3 inline-flex items-center rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700 ring-1 ring-violet-200">
           Guias
         </div>
 
@@ -132,6 +136,18 @@ export default function Page() {
               Coleta seletiva é o sistema de coleta e destinação de resíduos separados por tipo (em
               geral, recicláveis e orgânicos/rejeitos). O objetivo é reduzir o que vai para aterros,
               recuperar materiais e facilitar o trabalho de triagem (muitas vezes feito por cooperativas).
+            </p>
+            <p>
+              No Brasil, a coleta seletiva é um dos instrumentos previstos pela{" "}
+              <a
+                href="https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12305.htm"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Política Nacional de Resíduos Sólidos (Lei nº 12.305/2010)
+              </a>
+              , que estabelece a ordem de prioridade não gerar, reduzir, reutilizar, reciclar e
+              tratar resíduos, deixando a disposição final como último recurso.
             </p>
 
             <h2>Como funciona na prática (o fluxo básico)</h2>

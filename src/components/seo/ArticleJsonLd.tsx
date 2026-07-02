@@ -8,7 +8,8 @@ type ArticleJsonLdProps = {
   description: string;
   datePublished: string; // ISO (YYYY-MM-DD)
   dateModified?: string; // ISO
-  authorName?: string; // default: Reciclativa
+  authorName?: string; // default: Eduardo Pompeu (responsável pelo site)
+  authorType?: "Person" | "Organization"; // default: Person
   publisherName?: string; // default: Reciclativa
   imageUrl?: string; // absoluto
 };
@@ -20,7 +21,8 @@ export function ArticleJsonLd({
   description,
   datePublished,
   dateModified,
-  authorName = "Reciclativa",
+  authorName = "Eduardo Pompeu",
+  authorType = "Person",
   publisherName = "Reciclativa",
   imageUrl,
 }: ArticleJsonLdProps) {
@@ -36,9 +38,9 @@ export function ArticleJsonLd({
     datePublished,
     ...(dateModified ? { dateModified } : {}),
     author: {
-      "@type": "Organization",
+      "@type": authorType,
       name: authorName,
-      url: siteUrl,
+      ...(authorType === "Organization" ? { url: siteUrl } : {}),
     },
     publisher: {
       "@type": "Organization",

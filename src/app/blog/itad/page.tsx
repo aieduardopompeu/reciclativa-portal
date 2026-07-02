@@ -62,7 +62,11 @@ export default function Page() {
 
       {/* Header */}
       <header className="mt-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <div className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          Por Eduardo Pompeu · Publicado em 03/01/2026
+        </p>
+
+        <div className="mt-3 inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
           Sustentabilidade
         </div>
 
@@ -166,6 +170,19 @@ export default function Page() {
                 tratamento especializado.
               </li>
             </ul>
+            <p>
+              No Brasil, essa responsabilidade tem base legal: a{" "}
+              <a
+                href="https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12305.htm"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Política Nacional de Resíduos Sólidos (Lei nº 12.305/2010)
+              </a>{" "}
+              inclui eletroeletrônicos entre os produtos com logística reversa obrigatória, o que
+              torna rastreabilidade e comprovação de destino uma exigência formal, não só uma boa
+              prática corporativa.
+            </p>
 
             <h2>Etapas típicas de um programa ITAD</h2>
             <ol>

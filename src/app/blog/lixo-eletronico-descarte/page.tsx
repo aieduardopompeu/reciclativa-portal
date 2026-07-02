@@ -50,7 +50,11 @@ export default function Page() {
 
       {/* Header */}
       <header className="mt-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <div className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          Por Eduardo Pompeu · Publicado em 07/12/2025
+        </p>
+
+        <div className="mt-3 inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
           Sustentabilidade
         </div>
 
@@ -135,6 +139,19 @@ export default function Page() {
                 <strong>Perda de recursos:</strong> materiais recicláveis são desperdiçados.
               </li>
             </ul>
+            <p>
+              A{" "}
+              <a
+                href="https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12305.htm"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Política Nacional de Resíduos Sólidos (Lei nº 12.305/2010)
+              </a>{" "}
+              inclui eletroeletrônicos entre os produtos sujeitos a sistemas de logística reversa,
+              obrigando fabricantes, importadores e distribuidores a estruturar canais de devolução
+              pós-consumo — a base legal por trás dos pontos de coleta de e-lixo.
+            </p>
 
             <h2>Regra de ouro: separar por categoria</h2>
 

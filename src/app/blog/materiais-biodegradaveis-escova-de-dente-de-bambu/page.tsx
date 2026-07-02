@@ -64,7 +64,11 @@ export default function Page() {
 
       {/* Header */}
       <header className="mt-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-        <div className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          Por Eduardo Pompeu · Publicado em 20/01/2026
+        </p>
+
+        <div className="mt-3 inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
           Sustentabilidade
         </div>
 
