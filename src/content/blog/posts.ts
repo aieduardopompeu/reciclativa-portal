@@ -152,6 +152,66 @@ export const POSTS: PostCard[] = [
     readMin: 8,
     tags: ["sustentabilidade", "lixo-eletronico", "itad"],
   },
+  {
+    slug: "educacao-ambiental-na-pratica",
+    title: "Educação ambiental na prática: como aplicar em casa, na escola e no trabalho",
+    excerpt:
+      "Projetos práticos de educação ambiental para escola, condomínio e empresa, com exemplos reais e base legal.",
+    category: "Sustentabilidade",
+    dateISO: "2026-07-02",
+    readMin: 8,
+    tags: ["educacao-ambiental", "habitos"],
+  },
+  {
+    slug: "economia-circular-empresas-brasil",
+    title: "Economia circular nas empresas: cases reais no Brasil",
+    excerpt:
+      "Como empresas brasileiras de diferentes portes aplicam economia circular na prática: design modular, matéria-prima renovável, brechós e mais.",
+    category: "Economia circular",
+    dateISO: "2026-07-02",
+    readMin: 8,
+    tags: ["economia-circular"],
+  },
+  {
+    slug: "pegada-ecologica-impacto-consumo",
+    title: "Pegada ecológica: o que é e como o consumo do dia a dia impacta o meio ambiente",
+    excerpt:
+      "Entenda o conceito de pegada ecológica e quais mudanças práticas realmente reduzem impacto ambiental.",
+    category: "Sustentabilidade",
+    dateISO: "2026-07-03",
+    readMin: 7,
+    tags: ["habitos", "sustentabilidade"],
+  },
+  {
+    slug: "reciclagem-de-vidro",
+    title: "Reciclagem de vidro: por que ele é infinitamente reciclável e como descartar certo",
+    excerpt:
+      "Como separar vidro corretamente para reciclagem e por que ele é diferente dos outros materiais recicláveis.",
+    category: "Reciclagem",
+    dateISO: "2026-07-03",
+    readMin: 7,
+    tags: ["reciclagem", "vidro", "separacao"],
+  },
+  {
+    slug: "compostagem-erros-comuns",
+    title: "Erros mais comuns na compostagem doméstica (e como corrigir)",
+    excerpt:
+      "Os erros mais comuns de quem está começando a compostar em casa, e como corrigir cada um.",
+    category: "Guias",
+    dateISO: "2026-07-04",
+    readMin: 6,
+    tags: ["guias", "habitos", "compostagem"],
+  },
+  {
+    slug: "selos-certificacoes-ambientais",
+    title: "Selos e certificações ambientais: o que realmente significam",
+    excerpt:
+      "O que selos como FSC, Cradle to Cradle e OK Compost certificam de verdade, e como diferenciar certificação real de marketing.",
+    category: "Sustentabilidade",
+    dateISO: "2026-07-04",
+    readMin: 8,
+    tags: ["materiais-sustentaveis", "bioplasticos"],
+  },
 ];
 
 /** Helpers */
