@@ -7,6 +7,7 @@ import {
   getAllTags,
   getPostsByCategorySlug,
   getPostsByTag,
+  isSlugPublished,
   toSlug,
 } from "@/content/blog/posts";
 import { citiesByUF, normalizeCity, uniqueUFs } from "@/content/profissionais";
@@ -232,7 +233,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Posts do blog (pastas reais). lastModified vem da data real do post em POSTS
   // (dateISO), não do mtime do arquivo — mtime reflete a data do deploy, não da edição.
-  const blogSlugs = getBlogSlugs();
+  // Posts agendados (dateISO no futuro) ficam fora do sitemap até a data chegar.
+  const blogSlugs = getBlogSlugs().filter(({ slug }) => isSlugPublished(slug));
   const postBySlug = new Map(POSTS.map((p) => [p.slug, p]));
 
   const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map(({ slug, pageFile }) => {

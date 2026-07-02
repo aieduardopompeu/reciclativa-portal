@@ -224,13 +224,35 @@ export function toSlug(input: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+/**
+ * Agendamento de posts: dateISO no futuro = post agendado, n\u00e3o publicado
+ * ainda. Compara pela data no fuso de Bras\u00edlia para bater com o dia do
+ * leitor, n\u00e3o o UTC do servidor.
+ */
+function todayISOInBrazil(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+}
+
+export function isPostPublished(dateISO: string): boolean {
+  return dateISO <= todayISOInBrazil();
+}
+
+export function getPublishedPosts(): PostCard[] {
+  return POSTS.filter((p) => isPostPublished(p.dateISO));
+}
+
+export function isSlugPublished(slug: string): boolean {
+  const post = POSTS.find((p) => p.slug === slug);
+  return post ? isPostPublished(post.dateISO) : false;
+}
+
 export function getPostsByTag(tag: string) {
-  return POSTS.filter((p) => (p.tags ?? []).includes(tag));
+  return getPublishedPosts().filter((p) => (p.tags ?? []).includes(tag));
 }
 
 export function getAllTags() {
   const set = new Set<string>();
-  for (const p of POSTS) for (const t of p.tags ?? []) set.add(t);
+  for (const p of getPublishedPosts()) for (const t of p.tags ?? []) set.add(t);
   return Array.from(set).sort((a, b) => a.localeCompare(b));
 }
 
@@ -246,6 +268,7 @@ export function getCategoryBySlug(slug: string): CategoryUI | null {
 
 export function getPostsByCategorySlug(slug: string) {
   const cat = getCategoryBySlug(slug);
-  if (cat) return POSTS.filter((p) => p.category === cat);
-  return POSTS.filter((p) => toSlug(p.category) === slug);
+  const published = getPublishedPosts();
+  if (cat) return published.filter((p) => p.category === cat);
+  return published.filter((p) => toSlug(p.category) === slug);
 }

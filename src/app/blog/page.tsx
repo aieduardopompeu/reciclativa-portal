@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { POSTS, getAllTags, getAllCategories, type CategoryUI } from "@/content/blog/posts";
+import { getPublishedPosts, getAllTags, getAllCategories, type CategoryUI } from "@/content/blog/posts";
 import AdUnit from "@/components/ads/AdUnit";
 import { AD_SLOTS } from "@/config/ads";
 
@@ -45,7 +45,10 @@ export default async function BlogPage({
     ? (tagParam as CategoryUI)
     : null;
 
-  const filtered = activeCategory ? POSTS.filter((p) => p.category === activeCategory) : POSTS;
+  const publishedPosts = getPublishedPosts();
+  const filtered = activeCategory
+    ? publishedPosts.filter((p) => p.category === activeCategory)
+    : publishedPosts;
   const postsSorted = [...filtered].sort((a, b) => (a.dateISO < b.dateISO ? 1 : -1));
 
   const [featured, ...rest] = postsSorted;

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 import RecommendedLinks from "@/components/RecommendedLinks";
+import { isSlugPublished } from "@/content/blog/posts";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
@@ -26,6 +28,8 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  if (!isSlugPublished(SLUG)) return notFound();
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
       <ArticleJsonLd
