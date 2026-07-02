@@ -31,10 +31,28 @@ const ICONS: Record<string, Shape> = {
       <path d="M-20,2 L-4,20 L24,-16" strokeWidth={sw} />
     </g>
   ),
-  "Economia circular": (sw) => (
-    <g fill="none" strokeLinecap="round">
-      <path d="M18,-46 A46,46 0 1 1 -34,30" strokeWidth={sw} />
-      <path d="M-48,12 L-34,30 L-14,16" strokeWidth={sw} strokeLinejoin="round" />
+  "Economia circular": (sw, stroke) => (
+    <g>
+      <g transform="rotate(0)">
+        <path
+          d="M 14.4,-39.5 A 42,42 0 0 1 14.4,39.5"
+          fill="none"
+          stroke={stroke}
+          strokeWidth={sw}
+          strokeLinecap="round"
+        />
+        <path d="M -0.6,45 L 17.1,47 L 11.7,32 Z" fill={stroke} stroke="none" />
+      </g>
+      <g transform="rotate(180)">
+        <path
+          d="M 14.4,-39.5 A 42,42 0 0 1 14.4,39.5"
+          fill="none"
+          stroke={stroke}
+          strokeWidth={sw}
+          strokeLinecap="round"
+        />
+        <path d="M -0.6,45 L 17.1,47 L 11.7,32 Z" fill={stroke} stroke="none" />
+      </g>
     </g>
   ),
   Sustentabilidade: (sw) => (
