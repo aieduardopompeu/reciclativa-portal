@@ -1,6 +1,7 @@
 // src/app/blog/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { POSTS, getAllTags, getAllCategories, type CategoryUI, type PostCard } from "@/content/blog/posts";
 import AdUnit from "@/components/ads/AdUnit";
 import { AD_SLOTS } from "@/config/ads";
@@ -219,20 +220,32 @@ export default async function BlogPage({
                   <Link
                     key={p.slug}
                     href={`/blog/${p.slug}`}
-                    className="block rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-100"
+                    className="block overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition hover:bg-slate-100"
                   >
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-                      {p.category}
-                    </p>
-                    <p className="mt-2 text-sm font-semibold text-slate-900 line-clamp-2">
-                      {p.title}
-                    </p>
-                    <p className="mt-2 text-sm text-slate-700 line-clamp-3">
-                      {p.excerpt}
-                    </p>
-                    <p className="mt-3 text-xs text-slate-500">
-                      {toBRDate(p.dateISO)} • {p.readMin} min
-                    </p>
+                    <div className="relative aspect-[1200/630] w-full">
+                      <Image
+                        src={`/blog/${p.slug}/opengraph-image`}
+                        alt=""
+                        fill
+                        sizes="(min-width: 640px) 33vw, 100vw"
+                        className="object-cover"
+                      />
+                    </div>
+
+                    <div className="p-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                        {p.category}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-slate-900 line-clamp-2">
+                        {p.title}
+                      </p>
+                      <p className="mt-2 text-sm text-slate-700 line-clamp-3">
+                        {p.excerpt}
+                      </p>
+                      <p className="mt-3 text-xs text-slate-500">
+                        {toBRDate(p.dateISO)} • {p.readMin} min
+                      </p>
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -259,22 +272,34 @@ export default async function BlogPage({
                   <Link
                     key={p.slug}
                     href={`/blog/${p.slug}`}
-                    className="block rounded-2xl border border-slate-200 bg-white p-5 transition hover:bg-slate-50"
+                    className="block overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:bg-slate-50"
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
-                        {p.category}
-                      </span>
-                      <span className="text-xs text-slate-500">
-                        {toBRDate(p.dateISO)} • {p.readMin} min
-                      </span>
+                    <div className="relative aspect-[1200/630] w-full">
+                      <Image
+                        src={`/blog/${p.slug}/opengraph-image`}
+                        alt=""
+                        fill
+                        sizes="(min-width: 640px) 50vw, 100vw"
+                        className="object-cover"
+                      />
                     </div>
-                    <h3 className="mt-3 text-base font-extrabold tracking-tight text-slate-900">
-                      {p.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                      {p.excerpt}
-                    </p>
+
+                    <div className="p-5">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
+                          {p.category}
+                        </span>
+                        <span className="text-xs text-slate-500">
+                          {toBRDate(p.dateISO)} • {p.readMin} min
+                        </span>
+                      </div>
+                      <h3 className="mt-3 text-base font-extrabold tracking-tight text-slate-900">
+                        {p.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                        {p.excerpt}
+                      </p>
+                    </div>
                   </Link>
                 ))}
               </div>

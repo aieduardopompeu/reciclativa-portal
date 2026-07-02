@@ -30,7 +30,6 @@ export const metadata: Metadata = {
     type: "article",
     siteName: "Reciclativa",
     locale: "pt_BR",
-    images: [{ url: `${SITE_URL}/opengraph-image` }],
   },
 
   robots: {
