@@ -24,3 +24,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Radar Ambiental — badge "curadoria editorial" pulsando */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1a5c2e;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes radar-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.radar-skeleton {
+  background: #f0f7ee
+    linear-gradient(90deg, #f0f7ee 0%, #e3f1e6 50%, #f0f7ee 100%);
+  background-size: 400px 100%;
+  animation: radar-shimmer 1.4s ease-in-out infinite;
+}

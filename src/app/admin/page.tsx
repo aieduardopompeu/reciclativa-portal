@@ -55,11 +55,21 @@ export default async function AdminHome({
 
           <Link
             href="/admin/cadastros-empresas"
-            className="rounded-2xl border border-black/10 bg-slate-50 p-5 transition hover:bg-slate-100 sm:col-span-2"
+            className="rounded-2xl border border-black/10 bg-slate-50 p-5 transition hover:bg-slate-100"
           >
             <h2 className="text-lg font-semibold text-slate-900">Cadastros de empresas</h2>
             <p className="mt-2 text-sm text-slate-600">
               Gerenciar solicitações enviadas para acesso à Reciclativa Gestão.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/radar"
+            className="rounded-2xl border border-black/10 bg-slate-50 p-5 transition hover:bg-slate-100"
+          >
+            <h2 className="text-lg font-semibold text-slate-900">Radar Ambiental</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Aprovar, rejeitar e publicar matérias do clipping editorial.
             </p>
           </Link>
         </div>

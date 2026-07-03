@@ -12,6 +12,7 @@ type ArticleJsonLdProps = {
   authorType?: "Person" | "Organization"; // default: Person
   publisherName?: string; // default: Reciclativa
   imageUrl?: string; // absoluto
+  type?: "Article" | "NewsArticle"; // default: Article
 };
 
 export function ArticleJsonLd({
@@ -25,10 +26,11 @@ export function ArticleJsonLd({
   authorType = "Person",
   publisherName = "Reciclativa",
   imageUrl,
+  type = "Article",
 }: ArticleJsonLdProps) {
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": type,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,

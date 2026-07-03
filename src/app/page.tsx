@@ -1,7 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from "react";
 import AdUnit from "@/components/ads/AdUnit";
 import { AD_SLOTS } from "@/config/ads";
+import RadarAmbiental from "@/components/radar/RadarAmbiental";
+import { RadarAmbientalSkeleton } from "@/components/radar/RadarAmbientalSkeleton";
 
 type Pillar = {
   title: string;
@@ -241,6 +244,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* RADAR AMBIENTAL — curadoria editorial, some da home se não houver publicações */}
+      <Suspense fallback={<RadarAmbientalSkeleton />}>
+        <RadarAmbiental />
+      </Suspense>
 
       {/* display_topo_portal — entre pilares e guias */}
       <div className="mx-auto w-full max-w-6xl px-4 pb-4 sm:px-6 lg:px-8">
