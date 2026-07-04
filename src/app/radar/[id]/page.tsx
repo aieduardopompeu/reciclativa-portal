@@ -129,10 +129,10 @@ export default async function RadarDetailPage({ params }: Props) {
           Sua empresa precisa descartar eletrônicos?
         </p>
         <Link
-          href="/contato?assunto=coleta-eletronicos"
+          href="/profissionais"
           className="mt-2 inline-flex items-center text-sm font-bold text-[#1a5c2e] hover:underline"
         >
-          Solicitar coleta →
+          Encontre perto de você →
         </Link>
       </div>
 

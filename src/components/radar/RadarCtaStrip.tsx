@@ -13,11 +13,11 @@ export function RadarCtaStrip() {
           </p>
         </div>
         <Link
-          href="/contato?assunto=coleta-eletronicos"
-          aria-label="Solicitar coleta gratuita de eletrônicos"
+          href="/profissionais"
+          aria-label="Encontrar profissionais e empresas de coleta perto de você"
           className="inline-flex shrink-0 items-center justify-center rounded-lg bg-[#1a5c2e] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#227a3c]"
         >
-          Solicitar coleta grátis
+          Encontre perto de você
         </Link>
       </div>
     </div>
