@@ -28,7 +28,12 @@ function stars(relevancia: number) {
 export default async function AdminRadarPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ status?: string }>;
+  searchParams?: Promise<{
+    status?: string;
+    buscadas?: string;
+    ignoradas?: string;
+    busca_erro?: string;
+  }>;
 }) {
   await requireAdminMasterReady("/admin/radar");
   const sp = (await searchParams) ?? {};
@@ -73,6 +78,54 @@ export default async function AdminRadarPage({
           </p>
         </div>
       </div>
+
+      {sp.buscadas !== undefined ? (
+        <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+          Busca concluída: <strong>{sp.buscadas}</strong> matéria(s) nova(s) criada(s) como
+          pendente
+          {Number(sp.ignoradas) > 0 ? (
+            <span>
+              {" "}
+              · {sp.ignoradas} ignorada(s) (já existente ou sem relação com o tema)
+            </span>
+          ) : null}
+          .
+        </div>
+      ) : null}
+      {sp.busca_erro ? (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+          Falha na busca: {sp.busca_erro}
+        </div>
+      ) : null}
+
+      <section className="mt-6 rounded-2xl border border-black/5 bg-white p-5 shadow-sm">
+        <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-slate-600">
+          Buscar notícias automaticamente
+        </h2>
+        <p className="mt-1 text-sm text-slate-600">
+          Pesquisa notícias reais na web e redige rascunhos com IA, já entrando como pendente
+          (com notificação no Telegram se a relevância for alta).
+        </p>
+        <form
+          method="post"
+          action="/api/admin/radar/buscar"
+          className="mt-4 flex flex-wrap gap-3"
+        >
+          <input type="hidden" name="returnTo" value={status} />
+          <input
+            type="text"
+            name="query"
+            placeholder="Tema da busca (opcional — ex: legislação lixo eletrônico São Paulo)"
+            className="min-w-[260px] flex-1 rounded-xl border border-black/10 px-3 py-2 text-sm"
+          />
+          <button
+            type="submit"
+            className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+          >
+            Buscar notícias
+          </button>
+        </form>
+      </section>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">
         <div className="rounded-2xl border border-black/5 bg-white p-5 shadow-sm">

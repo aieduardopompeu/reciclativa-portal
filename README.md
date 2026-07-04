@@ -63,6 +63,13 @@ Copie os valores de `.env.example` (seção "Radar Ambiental") para `.env.local`
 - `RADAR_CACHE_TTL` — TTL em segundos do cache em memória de `GET /api/radar/home` (padrão: 900).
 - `RADAR_AUTO_PUBLISH` — `true` publica direto no ingest, sem aprovação humana (não recomendado).
 - `RADAR_MIN_RELEVANCIA` — relevância mínima (1-5) para disparar a notificação de aprovação (padrão: 4).
+- `TAVILY_API_KEY` — usada pelo botão "Buscar notícias" em `/admin/radar` para
+  pesquisar notícias reais na web ([tavily.com](https://tavily.com), plano
+  grátis de 1.000 buscas/mês).
+- `OPENAI_API_KEY` / `OPENAI_MODEL` — usadas pelo mesmo botão para redigir o
+  rascunho estruturado a partir do resultado da busca (padrão: `gpt-4o-mini`).
+  Sem essas duas chaves, o botão de busca retorna um erro amigável, sem afetar
+  o resto do fluxo (ingest manual via API continua funcionando normalmente).
 
 ### Endpoints
 
@@ -73,6 +80,8 @@ Copie os valores de `.env.example` (seção "Radar Ambiental") para `.env.local`
 - `GET /api/radar/home` — dados para a seção da home (cacheado em memória por `RADAR_CACHE_TTL`).
 - `POST /api/admin/radar/status` — ações do painel admin (aprovar/rejeitar/publicar/destaque/excluir).
 - `POST /api/admin/radar/:id/edit` — edita título/resumo/tag/cidade e opcionalmente publica.
+- `POST /api/admin/radar/buscar` — busca notícias reais (Tavily) e redige rascunhos (OpenAI),
+  inserindo cada uma como pendente (requer sessão admin).
 
 ### Páginas
 
@@ -114,7 +123,16 @@ redireciona para `/admin/radar/:id` (pede login admin), de onde é só clicar em
   mantém seu próprio cache (staleness máxima = TTL, sem inconsistência grave).
 - `conteudo` é renderizado como HTML confiável (`dangerouslySetInnerHTML`) em
   `/radar/:id`: só chega ali o que o pipeline autenticado por `RADAR_API_KEY`
-  enviar, nunca input de usuário final — por isso não há sanitização adicional.
+  enviar, ou o que o botão "Buscar notícias" gerar via OpenAI (acionado só por
+  sessão admin) — nunca input de usuário final. Por isso não há sanitização
+  adicional; o checkpoint de segurança real é a aprovação humana antes de
+  publicar (por isso `RADAR_AUTO_PUBLISH=true` não é recomendado).
+- `POST /api/admin/radar/buscar` evita duplicar notícia já existente checando
+  `fonte_url` antes de inserir; resultados sem relação real com o tema (o
+  próprio modelo decide) são ignorados, não inseridos.
+- Busca (Tavily) e redação (OpenAI) usam `fetch` direto contra a API REST de
+  cada serviço, sem adicionar SDK como dependência nova — mesmo padrão já
+  usado no envio via Telegram.
 - Paginação de `/radar` é por página (`?page=`), não infinite scroll: mais
   simples e alinhado ao resto do site, que é 100% Server Components sem
   client-side state.

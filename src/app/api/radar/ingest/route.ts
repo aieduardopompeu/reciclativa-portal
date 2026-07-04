@@ -1,7 +1,6 @@
-import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
-import { isRadarTag, invalidateRadarHomeCache } from "@/lib/radar";
-import { sendRadarApprovalTelegram } from "@/lib/radar-telegram";
+import { isRadarTag } from "@/lib/radar";
+import { insertRadarNoticiaAndNotify } from "@/lib/radar-ingest";
 
 export const runtime = "nodejs";
 
@@ -58,47 +57,17 @@ export async function POST(req: Request) {
     );
   }
 
-  const conteudo = asText(body.conteudo);
-  const fonteUrl = asText(body.fonte_url);
-  const fonteNome = asText(body.fonte_nome);
-  const cidadeUf = asText(body.cidade_uf);
-  const relevancia = asIntInRange(body.relevancia, 1, 5, 3);
-  const risco = asIntInRange(body.risco, 1, 5, 1);
+  const result = await insertRadarNoticiaAndNotify({
+    titulo,
+    resumo,
+    conteudo: asText(body.conteudo),
+    fonte_url: asText(body.fonte_url),
+    fonte_nome: asText(body.fonte_nome),
+    tag: tagRaw,
+    cidade_uf: asText(body.cidade_uf),
+    relevancia: asIntInRange(body.relevancia, 1, 5, 3),
+    risco: asIntInRange(body.risco, 1, 5, 1),
+  });
 
-  const inserted = await sql<{ id: number; token_aprovacao: string }>`
-    insert into radar_noticias (
-      titulo, resumo, conteudo, fonte_url, fonte_nome, tag, cidade_uf, relevancia, risco, status
-    )
-    values (
-      ${titulo}, ${resumo}, ${conteudo}, ${fonteUrl}, ${fonteNome}, ${tagRaw}, ${cidadeUf}, ${relevancia}, ${risco}, 'pendente'
-    )
-    returning id, token_aprovacao
-  `;
-
-  const row = inserted.rows[0];
-
-  const minRelevancia = Number(process.env.RADAR_MIN_RELEVANCIA || 4);
-  if (relevancia >= minRelevancia) {
-    await sendRadarApprovalTelegram({
-      id: row.id,
-      titulo,
-      resumo,
-      tag: tagRaw,
-      cidade_uf: cidadeUf,
-      relevancia,
-      token_aprovacao: row.token_aprovacao,
-    });
-  }
-
-  if (process.env.RADAR_AUTO_PUBLISH === "true") {
-    await sql`
-      update radar_noticias
-      set status = 'publicado', aprovado_em = now(), publicado_em = now(), atualizado_em = now()
-      where id = ${row.id}
-    `;
-    invalidateRadarHomeCache();
-    return NextResponse.json({ id: row.id, token_aprovacao: row.token_aprovacao, status: "publicado" });
-  }
-
-  return NextResponse.json({ id: row.id, token_aprovacao: row.token_aprovacao, status: "pendente" });
+  return NextResponse.json(result);
 }
