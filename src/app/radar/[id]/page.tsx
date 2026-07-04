@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: noticia.resumo,
       url,
       type: "article",
+      images: noticia.imagem_url ? [{ url: noticia.imagem_url }] : undefined,
     },
   };
 }
@@ -79,6 +80,15 @@ export default async function RadarDetailPage({ params }: Props) {
           </li>
         </ol>
       </nav>
+
+      {noticia.imagem_url ? (
+        // eslint-disable-next-line @next/next/no-img-element -- imagem externa e imprevisível, sem domínio fixo pro next/image otimizar
+        <img
+          src={noticia.imagem_url}
+          alt=""
+          className="mt-6 h-56 w-full rounded-xl object-cover sm:h-80"
+        />
+      ) : null}
 
       {/* Header */}
       <header className="mt-6 rounded-xl border border-[#d0e8d4] bg-[#f5f9f5] p-7 sm:p-10">

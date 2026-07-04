@@ -53,9 +53,18 @@ export default async function RadarAmbiental() {
         <Link
           href={`/radar/${mainCard.id}`}
           aria-label={`Ler matéria completa: ${mainCard.titulo}`}
-          className="group flex flex-col justify-between rounded-xl bg-[#0d1f12] p-7 text-white"
+          className="group relative flex flex-col justify-between overflow-hidden rounded-xl p-7 text-white"
         >
-          <div>
+          <div
+            className="absolute inset-0 bg-[#0d1f12] bg-cover bg-center"
+            style={mainCard.imagem_url ? { backgroundImage: `url(${mainCard.imagem_url})` } : undefined}
+            aria-hidden
+          />
+          {mainCard.imagem_url ? (
+            <div className="absolute inset-0 bg-[#0d1f12]/65" aria-hidden />
+          ) : null}
+
+          <div className="relative">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white">
                 <span className="pulse-dot" style={{ background: "#ffffff" }} aria-hidden />
@@ -69,7 +78,7 @@ export default async function RadarAmbiental() {
             </h3>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="relative mt-6 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-white/70">
               {mainCard.cidade_uf ? `${mainCard.cidade_uf} · ` : ""}
               {tempoMain}

@@ -15,6 +15,7 @@ export type RadarDraftInput = {
   conteudo?: string | null;
   fonte_url?: string | null;
   fonte_nome?: string | null;
+  imagem_url?: string | null;
   tag: RadarTag;
   cidade_uf?: string | null;
   relevancia: number;
@@ -26,12 +27,12 @@ export async function insertRadarNoticiaAndNotify(
 ): Promise<{ id: number; token_aprovacao: string; status: RadarStatus }> {
   const inserted = await sql<{ id: number; token_aprovacao: string }>`
     insert into radar_noticias (
-      titulo, resumo, conteudo, fonte_url, fonte_nome, tag, cidade_uf, relevancia, risco, status
+      titulo, resumo, conteudo, fonte_url, fonte_nome, imagem_url, tag, cidade_uf, relevancia, risco, status
     )
     values (
       ${input.titulo}, ${input.resumo}, ${input.conteudo ?? null}, ${input.fonte_url ?? null},
-      ${input.fonte_nome ?? null}, ${input.tag}, ${input.cidade_uf ?? null}, ${input.relevancia},
-      ${input.risco}, 'pendente'
+      ${input.fonte_nome ?? null}, ${input.imagem_url ?? null}, ${input.tag}, ${input.cidade_uf ?? null},
+      ${input.relevancia}, ${input.risco}, 'pendente'
     )
     returning id, token_aprovacao
   `;

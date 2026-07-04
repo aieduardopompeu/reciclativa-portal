@@ -19,6 +19,7 @@ export type RadarNoticiaRow = {
   conteudo: string | null;
   fonte_url: string | null;
   fonte_nome: string | null;
+  imagem_url: string | null;
   tag: RadarTag;
   cidade_uf: string | null;
   relevancia: number;
@@ -111,6 +112,7 @@ export function toPublicNoticia(row: RadarNoticiaRow): RadarNoticiaPublic {
     resumo: row.resumo,
     conteudo: row.conteudo,
     fonte_nome: row.fonte_nome,
+    imagem_url: row.imagem_url,
     tag: row.tag,
     cidade_uf: row.cidade_uf,
     relevancia: row.relevancia,

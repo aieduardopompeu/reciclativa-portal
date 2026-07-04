@@ -26,6 +26,7 @@ export async function POST(
   const conteudo = (form.get("conteudo") || "").toString().trim();
   const tag = (form.get("tag") || "").toString().trim();
   const cidadeUf = (form.get("cidade_uf") || "").toString().trim();
+  const imagemUrl = (form.get("imagem_url") || "").toString().trim();
   const publicarAgora = form.get("publicar_agora") === "1";
 
   if (!titulo || !resumo || !tag || !isRadarTag(tag)) {
@@ -39,6 +40,7 @@ export async function POST(
         conteudo = ${conteudo || null},
         tag = ${tag},
         cidade_uf = ${cidadeUf || null},
+        imagem_url = ${imagemUrl || null},
         atualizado_em = now()
     where id = ${noticiaId}
   `;

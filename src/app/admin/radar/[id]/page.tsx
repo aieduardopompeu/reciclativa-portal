@@ -82,12 +82,18 @@ export default async function AdminRadarDetailPage({ params, searchParams }: Pro
       {/* Preview como ficará publicada */}
       <section className="mt-6 rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Preview</p>
-        <div className="mt-3 rounded-xl bg-[#0d1f12] p-6 text-white">
-          <RadarTagBadge tag={noticia.tag} />
-          <h2 className="mt-3 text-xl font-black">{noticia.titulo}</h2>
-          <p className="mt-2 text-sm text-white/70">
-            {noticia.cidade_uf ?? "Sem cidade/UF"} · relevância {noticia.relevancia}/5
-          </p>
+        <div
+          className="relative overflow-hidden rounded-xl bg-[#0d1f12] bg-cover bg-center p-6 text-white"
+          style={noticia.imagem_url ? { backgroundImage: `url(${noticia.imagem_url})` } : undefined}
+        >
+          {noticia.imagem_url ? <div className="absolute inset-0 bg-[#0d1f12]/65" /> : null}
+          <div className="relative">
+            <RadarTagBadge tag={noticia.tag} />
+            <h2 className="mt-3 text-xl font-black">{noticia.titulo}</h2>
+            <p className="mt-2 text-sm text-white/70">
+              {noticia.cidade_uf ?? "Sem cidade/UF"} · relevância {noticia.relevancia}/5
+            </p>
+          </div>
         </div>
         <p className="mt-4 text-sm text-slate-700">{noticia.resumo}</p>
 
@@ -149,6 +155,19 @@ export default async function AdminRadarDetailPage({ params, searchParams }: Pro
               name="resumo"
               defaultValue={noticia.resumo}
               className="mt-1 min-h-[96px] w-full rounded-xl border border-black/10 px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-semibold text-slate-700" htmlFor="imagem_url">
+              Imagem de destaque (URL)
+            </label>
+            <input
+              id="imagem_url"
+              name="imagem_url"
+              defaultValue={noticia.imagem_url ?? ""}
+              placeholder="https://..."
+              className="mt-1 w-full rounded-xl border border-black/10 px-3 py-2 text-sm"
             />
           </div>
 

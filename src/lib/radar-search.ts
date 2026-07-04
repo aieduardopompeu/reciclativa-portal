@@ -6,13 +6,29 @@ export type RadarSearchResult = {
   title: string;
   url: string;
   content: string;
+  imageUrl: string | null;
+};
+
+type TavilyImage = {
+  url?: string;
+  description_source?: string | null;
+  score?: number;
 };
 
 type TavilyRawResult = {
   title?: string;
   url?: string;
   content?: string;
+  images?: TavilyImage[];
 };
+
+function pickBestImage(images: TavilyImage[] | undefined): string | null {
+  if (!Array.isArray(images) || images.length === 0) return null;
+  // A imagem og:image da própria página é a mais confiável (score mais alto);
+  // como fallback, usa a primeira imagem retornada (já vem ordenada por score).
+  const ogImage = images.find((img) => img.description_source === "og:image");
+  return (ogImage ?? images[0])?.url ?? null;
+}
 
 export async function searchRadarNews(
   query: string,
@@ -37,6 +53,8 @@ export async function searchRadarNews(
       topic: "general",
       country: "brazil",
       include_answer: false,
+      include_images: true,
+      include_image_descriptions: true,
     }),
   });
 
@@ -54,5 +72,6 @@ export async function searchRadarNews(
       title: String(r.title),
       url: String(r.url),
       content: String(r.content ?? ""),
+      imageUrl: pickBestImage(r.images),
     }));
 }

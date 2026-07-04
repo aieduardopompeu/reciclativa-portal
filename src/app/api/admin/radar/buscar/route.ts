@@ -74,6 +74,7 @@ export async function POST(req: Request) {
       conteudo: draft.conteudo,
       fonte_url: result.url,
       fonte_nome: fonteNome,
+      imagem_url: result.imageUrl,
       tag: draft.tag,
       cidade_uf: draft.cidade_uf,
       relevancia: draft.relevancia,

@@ -136,6 +136,16 @@ redireciona para `/admin/radar/:id` (pede login admin), de onde é só clicar em
 - Busca (Tavily) e redação (OpenAI) usam `fetch` direto contra a API REST de
   cada serviço, sem adicionar SDK como dependência nova — mesmo padrão já
   usado no envio via Telegram.
+- `imagem_url` vem do `og:image` da página fonte (via Tavily `include_images`,
+  priorizando `description_source: "og:image"`, que é o mais confiável).
+  Renderizada com `<img>` simples, não `next/image` — a URL é de um domínio
+  externo imprevisível a cada busca, e o Next exige allowlist de domínios pra
+  otimizar imagem remota, o que não é viável aqui. Opcional: nem toda matéria
+  tem uma imagem confiável.
+- A home (`src/app/page.tsx`) precisa de `export const dynamic =
+  "force-dynamic"` — sem isso o Next pode tratar a rota como estática e a
+  seção Radar não reflete publicações novas até um rebuild, independente do
+  cache de dados por tag.
 - Paginação de `/radar` é por página (`?page=`), não infinite scroll: mais
   simples e alinhado ao resto do site, que é 100% Server Components sem
   client-side state.

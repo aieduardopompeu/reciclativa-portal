@@ -6,6 +6,11 @@ import { AD_SLOTS } from "@/config/ads";
 import RadarAmbiental from "@/components/radar/RadarAmbiental";
 import { RadarAmbientalSkeleton } from "@/components/radar/RadarAmbientalSkeleton";
 
+// A seção Radar Ambiental depende de dados que mudam a qualquer publicação;
+// sem isso, o Next pode cachear a home inteira estaticamente e a seção fica
+// desatualizada até um novo build, independente do cache de dados por tag.
+export const dynamic = "force-dynamic";
+
 type Pillar = {
   title: string;
   desc: string;

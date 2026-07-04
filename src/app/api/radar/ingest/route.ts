@@ -16,6 +16,7 @@ type IngestBody = {
   conteudo?: unknown;
   fonte_url?: unknown;
   fonte_nome?: unknown;
+  imagem_url?: unknown;
   tag?: unknown;
   cidade_uf?: unknown;
   relevancia?: unknown;
@@ -63,6 +64,7 @@ export async function POST(req: Request) {
     conteudo: asText(body.conteudo),
     fonte_url: asText(body.fonte_url),
     fonte_nome: asText(body.fonte_nome),
+    imagem_url: asText(body.imagem_url),
     tag: tagRaw,
     cidade_uf: asText(body.cidade_uf),
     relevancia: asIntInRange(body.relevancia, 1, 5, 3),
