@@ -1,5 +1,6 @@
 // src/lib/radar.ts
 import { sql } from "@vercel/postgres";
+import { unstable_cache, revalidateTag } from "next/cache";
 
 export type RadarTag =
   | "oportunidade"
@@ -120,7 +121,10 @@ export function toPublicNoticia(row: RadarNoticiaRow): RadarNoticiaPublic {
   };
 }
 
-// --- /api/radar/home: sem Redis no projeto, cache em memória do processo ---
+// --- /api/radar/home: sem Redis no projeto — usa o Data Cache do Next.js
+// (unstable_cache + revalidateTag), que é compartilhado entre instâncias
+// serverless. Um cache em memória do processo (module-level) não seria
+// invalidado nas outras instâncias quando uma matéria é publicada.
 
 export type RadarHomeData = {
   destaque: RadarNoticiaPublic | null;
@@ -130,18 +134,11 @@ export type RadarHomeData = {
   ultima_atualizacao: string;
 };
 
-let homeCache: { data: RadarHomeData; expiresAt: number } | null = null;
-
 export function invalidateRadarHomeCache() {
-  homeCache = null;
+  revalidateTag("radar-home", { expire: 0 });
 }
 
-export async function getRadarHomeData(): Promise<RadarHomeData> {
-  const now = Date.now();
-  if (homeCache && homeCache.expiresAt > now) {
-    return homeCache.data;
-  }
-
+async function fetchRadarHomeData(): Promise<RadarHomeData> {
   const [{ total }] = await sql<{ total: number }>`
     select count(*)::int as total
     from radar_noticias
@@ -171,19 +168,19 @@ export async function getRadarHomeData(): Promise<RadarHomeData> {
     limit 3 offset 3
   `;
 
-  const data: RadarHomeData = {
+  return {
     destaque: destaqueRow ? toPublicNoticia(destaqueRow) : null,
     secundarias: secundariasResult.rows.map(toPublicNoticia),
     grid: gridResult.rows.map(toPublicNoticia),
     total_publicadas: total,
     ultima_atualizacao: new Date().toISOString(),
   };
-
-  const ttlSeconds = Number(process.env.RADAR_CACHE_TTL || 900);
-  homeCache = { data, expiresAt: now + ttlSeconds * 1000 };
-
-  return data;
 }
+
+export const getRadarHomeData = unstable_cache(fetchRadarHomeData, ["radar-home-data"], {
+  revalidate: Number(process.env.RADAR_CACHE_TTL || 900),
+  tags: ["radar-home"],
+});
 
 // --- /radar: listagem pública paginada, com filtro por tag e UF ---
 

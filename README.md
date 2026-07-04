@@ -117,10 +117,13 @@ redireciona para `/admin/radar/:id` (pede login admin), de onde é só clicar em
 
 ### Decisões técnicas
 
-- Sem Redis no projeto: o cache de `GET /api/radar/home` é em memória do
-  processo (module-level), com TTL de `RADAR_CACHE_TTL`. É suficiente para o
-  volume esperado; se o app rodar em múltiplas instâncias serverless, cada uma
-  mantém seu próprio cache (staleness máxima = TTL, sem inconsistência grave).
+- Sem Redis no projeto: o cache de `GET /api/radar/home` usa o Data Cache do
+  Next.js (`unstable_cache` + `revalidateTag`, TTL de `RADAR_CACHE_TTL`) em vez
+  de uma variável em memória do processo — importante porque a Vercel roda
+  múltiplas instâncias serverless, e um cache module-level só seria invalidado
+  na instância que processou o publish, deixando a home com dado velho nas
+  outras. `revalidateTag` invalida o cache compartilhado, então publicar já
+  reflete na home de qualquer instância no próximo request.
 - `conteudo` é renderizado como HTML confiável (`dangerouslySetInnerHTML`) em
   `/radar/:id`: só chega ali o que o pipeline autenticado por `RADAR_API_KEY`
   enviar, ou o que o botão "Buscar notícias" gerar via OpenAI (acionado só por
