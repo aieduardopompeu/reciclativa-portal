@@ -90,6 +90,38 @@ export default async function AdminRadarDetailPage({ params, searchParams }: Pro
           </p>
         </div>
         <p className="mt-4 text-sm text-slate-700">{noticia.resumo}</p>
+
+        {noticia.fonte_url ? (
+          <p className="mt-3 text-xs text-slate-500">
+            Fonte:{" "}
+            <a
+              href={noticia.fonte_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-emerald-700 hover:underline"
+            >
+              {noticia.fonte_nome ?? noticia.fonte_url}
+            </a>
+          </p>
+        ) : null}
+
+        {noticia.conteudo ? (
+          <div className="mt-5 border-t border-black/5 pt-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+              Conteúdo completo
+            </p>
+            <div
+              className={[
+                "mt-3 space-y-3 text-sm leading-relaxed text-slate-800",
+                "[&_h2]:mt-4 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-slate-900",
+                "[&_h3]:mt-3 [&_h3]:text-base [&_h3]:font-bold [&_h3]:text-slate-900",
+                "[&_ul]:list-disc [&_ul]:pl-5",
+                "[&_ol]:list-decimal [&_ol]:pl-5",
+              ].join(" ")}
+              dangerouslySetInnerHTML={{ __html: noticia.conteudo }}
+            />
+          </div>
+        ) : null}
       </section>
 
       {/* Campos editáveis */}
@@ -117,6 +149,18 @@ export default async function AdminRadarDetailPage({ params, searchParams }: Pro
               name="resumo"
               defaultValue={noticia.resumo}
               className="mt-1 min-h-[96px] w-full rounded-xl border border-black/10 px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-semibold text-slate-700" htmlFor="conteudo">
+              Conteúdo (HTML)
+            </label>
+            <textarea
+              id="conteudo"
+              name="conteudo"
+              defaultValue={noticia.conteudo ?? ""}
+              className="mt-1 min-h-[220px] w-full rounded-xl border border-black/10 px-3 py-2 font-mono text-xs"
             />
           </div>
 

@@ -23,6 +23,7 @@ export async function POST(
   const form = await req.formData();
   const titulo = (form.get("titulo") || "").toString().trim();
   const resumo = (form.get("resumo") || "").toString().trim();
+  const conteudo = (form.get("conteudo") || "").toString().trim();
   const tag = (form.get("tag") || "").toString().trim();
   const cidadeUf = (form.get("cidade_uf") || "").toString().trim();
   const publicarAgora = form.get("publicar_agora") === "1";
@@ -35,6 +36,7 @@ export async function POST(
     update radar_noticias
     set titulo = ${titulo},
         resumo = ${resumo},
+        conteudo = ${conteudo || null},
         tag = ${tag},
         cidade_uf = ${cidadeUf || null},
         atualizado_em = now()
